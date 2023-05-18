@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3f421a1e-15f2-4dca-8836-3d433cfd34ed" name="Default Changelist" comment="Finished designing 3-link, 2-joint robot">
-      <change afterPath="$PROJECT_DIR$/analyze.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/mybots.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/mybots.iml" afterDir="false" />
+    <list default="true" id="3f421a1e-15f2-4dca-8836-3d433cfd34ed" name="Default Changelist" comment="Finished plotting robot interaction w/ environment.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/body.urdf" beforeDir="false" afterPath="$PROJECT_DIR$/body.urdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generate.py" beforeDir="false" afterPath="$PROJECT_DIR$/generate.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/analyze.py" beforeDir="false" afterPath="$PROJECT_DIR$/analyze.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/backLegSensorValues.npy" beforeDir="false" afterPath="$PROJECT_DIR$/data/backLegSensorValues.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/frontLegSensorValues.npy" beforeDir="false" afterPath="$PROJECT_DIR$/data/frontLegSensorValues.npy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/simulate.py" beforeDir="false" afterPath="$PROJECT_DIR$/simulate.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -27,7 +26,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="joints" />
+        <entry key="$PROJECT_DIR$" value="sensors" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -51,9 +50,14 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
     <property name="settings.editor.selected.configurable" value="preferences.fileTypes" />
   </component>
-  <component name="RunManager" selected="Python.analyze">
+  <component name="RunManager" selected="Python.simulate">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="mybots" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -80,9 +84,6 @@
       <module name="mybots" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
@@ -121,6 +122,7 @@
       <method v="2" />
     </configuration>
     <configuration name="simulate" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="mybots" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -131,7 +133,6 @@
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/simulate.py" />
       <option name="PARAMETERS" value="" />
@@ -151,8 +152,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.analyze" />
         <item itemvalue="Python.simulate" />
+        <item itemvalue="Python.analyze" />
         <item itemvalue="Python.simulate" />
         <item itemvalue="Python.simulate" />
       </list>
@@ -170,6 +171,12 @@
       <workItem from="1678683890696" duration="11102000" />
       <workItem from="1678858839730" duration="2808000" />
       <workItem from="1679086166018" duration="4566000" />
+      <workItem from="1679358016129" duration="1429000" />
+      <workItem from="1679607566574" duration="2799000" />
+      <workItem from="1679873873416" duration="136000" />
+      <workItem from="1680231299890" duration="55000" />
+      <workItem from="1680237513983" duration="459000" />
+      <workItem from="1684279880942" duration="5601000" />
     </task>
     <task id="LOCAL-00001" summary="New branch!">
       <created>1678683810111</created>
@@ -206,7 +213,14 @@
       <option name="project" value="LOCAL" />
       <updated>1678745061791</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Finished plotting robot interaction w/ environment.">
+      <created>1679358132259</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1679358132259</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -241,11 +255,12 @@
     <MESSAGE value="Created box.sdf in generate.py and simulated it in simulate.py" />
     <MESSAGE value="Finished designing arch robot" />
     <MESSAGE value="Finished designing 3-link, 2-joint robot" />
-    <option name="LAST_COMMIT_MESSAGE" value="Finished designing 3-link, 2-joint robot" />
+    <MESSAGE value="Finished plotting robot interaction w/ environment." />
+    <option name="LAST_COMMIT_MESSAGE" value="Finished plotting robot interaction w/ environment." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/mybots$ludo.coverage" NAME="ludo Coverage Results" MODIFIED="1678670539289" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/mybots$generate.coverage" NAME="generate Coverage Results" MODIFIED="1679088219483" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/mybots$simulate.coverage" NAME="simulate Coverage Results" MODIFIED="1679088219880" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/mybots$generate.coverage" NAME="generate Coverage Results" MODIFIED="1684383804999" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/mybots$simulate.coverage" NAME="simulate Coverage Results" MODIFIED="1684383805395" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
