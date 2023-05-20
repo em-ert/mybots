@@ -2,6 +2,8 @@ import numpy
 
 simSteps = 1000
 
+maxForce = 8
+
 BackLeg_Amplitude = (numpy.pi / 4)
 BackLeg_Frequency = 6
 BackLeg_PhaseOffset = (numpy.pi / 4)

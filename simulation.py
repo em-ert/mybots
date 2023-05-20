@@ -13,8 +13,6 @@ class SIMULATION:
         p.setGravity(0, 0, -9.8)
         self.world = WORLD()
         self.robot = ROBOT()
-        pyrosim.Prepare_To_Simulate(self.robot.robotId)
-        self.robot.Prepare_To_Sense()
 
     def __del__(self):
         p.disconnect()
@@ -23,5 +21,11 @@ class SIMULATION:
         for t in range(c.simSteps):
             p.stepSimulation()
             self.robot.Sense(t)
+            self.robot.Act(t)
             time.sleep(0.00166)
             print(t)
+
+    def Save_Values(self):
+        for sensor in self.robot.sensors:
+            numpy.save("data/" + self.robot.sensors[sensor].name + "_sensor_values.npy", self.robot.sensors[sensor].values)
+            print("Data saved to /data/" + self.robot.sensors[sensor].name + "_sensor_values.npy")
