@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3f421a1e-15f2-4dca-8836-3d433cfd34ed" name="Default Changelist" comment="Finished plotting robot interaction w/ environment.">
+    <list default="true" id="3f421a1e-15f2-4dca-8836-3d433cfd34ed" name="Default Changelist" comment="Got robot to move forward reliably.">
+      <change afterPath="$PROJECT_DIR$/constants.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/motor.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/robot.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sensor.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simulation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/world.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/analyze.py" beforeDir="false" afterPath="$PROJECT_DIR$/analyze.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/backLegSensorValues.npy" beforeDir="false" afterPath="$PROJECT_DIR$/data/backLegSensorValues.npy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/frontLegSensorValues.npy" beforeDir="false" afterPath="$PROJECT_DIR$/data/frontLegSensorValues.npy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/simulate.py" beforeDir="false" afterPath="$PROJECT_DIR$/simulate.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -26,7 +29,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="sensors" />
+        <entry key="$PROJECT_DIR$" value="motors" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -176,7 +179,9 @@
       <workItem from="1679873873416" duration="136000" />
       <workItem from="1680231299890" duration="55000" />
       <workItem from="1680237513983" duration="459000" />
-      <workItem from="1684279880942" duration="5601000" />
+      <workItem from="1684279880942" duration="5830000" />
+      <workItem from="1684417028289" duration="648000" />
+      <workItem from="1684431806286" duration="11081000" />
     </task>
     <task id="LOCAL-00001" summary="New branch!">
       <created>1678683810111</created>
@@ -220,7 +225,14 @@
       <option name="project" value="LOCAL" />
       <updated>1679358132259</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Got robot to move forward reliably.">
+      <created>1684383940437</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1684383940437</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -256,11 +268,12 @@
     <MESSAGE value="Finished designing arch robot" />
     <MESSAGE value="Finished designing 3-link, 2-joint robot" />
     <MESSAGE value="Finished plotting robot interaction w/ environment." />
-    <option name="LAST_COMMIT_MESSAGE" value="Finished plotting robot interaction w/ environment." />
+    <MESSAGE value="Got robot to move forward reliably." />
+    <option name="LAST_COMMIT_MESSAGE" value="Got robot to move forward reliably." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/mybots$ludo.coverage" NAME="ludo Coverage Results" MODIFIED="1678670539289" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/mybots$generate.coverage" NAME="generate Coverage Results" MODIFIED="1684383804999" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/mybots$simulate.coverage" NAME="simulate Coverage Results" MODIFIED="1684383805395" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/mybots$generate.coverage" NAME="generate Coverage Results" MODIFIED="1684455758240" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/mybots$simulate.coverage" NAME="simulate Coverage Results" MODIFIED="1684455758626" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
