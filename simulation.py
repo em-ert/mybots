@@ -1,4 +1,5 @@
 import constants as c
+import numpy
 import pybullet as p
 import pybullet_data
 import pyrosim.pyrosim as pyrosim
@@ -15,17 +16,16 @@ class SIMULATION:
         self.robot = ROBOT()
 
     def __del__(self):
+        for sensor in self.robot.sensors:
+            self.robot.sensors[sensor].Save_Values()
+        for motor in self.robot.motors:
+            self.robot.motors[motor].Save_Values()
         p.disconnect()
 
     def Run(self):
-        for t in range(c.simSteps):
+        for t in range(c.SIM_STEPS):
             p.stepSimulation()
             self.robot.Sense(t)
             self.robot.Act(t)
             time.sleep(0.00166)
             print(t)
-
-    def Save_Values(self):
-        for sensor in self.robot.sensors:
-            numpy.save("data/" + self.robot.sensors[sensor].name + "_sensor_values.npy", self.robot.sensors[sensor].values)
-            print("Data saved to /data/" + self.robot.sensors[sensor].name + "_sensor_values.npy")
