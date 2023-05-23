@@ -6,9 +6,10 @@ import pyrosim.pyrosim as pyrosim
 
 import pyrosim.constants as c
 
+
 class NEURON: 
 
-    def __init__(self,line):
+    def __init__(self, line):
 
         self.Determine_Name(line)
 
@@ -20,9 +21,17 @@ class NEURON:
 
         self.Set_Value(0.0)
 
+        self.PRE_INDEX = 0
+
+        self.POST_INDEX = 1
+
     def Add_To_Value( self, value ):
 
         self.Set_Value( self.Get_Value() + value )
+
+    def Allow_Presynaptic_Neuron_To_Influence_Me(self, synapseWeight, preNeuronValue):
+
+        self.Add_To_Value(preNeuronValue * synapseWeight)
 
     def Get_Joint_Name(self):
 
@@ -62,7 +71,7 @@ class NEURON:
 
         # print("")
 
-    def Set_Value(self,value):
+    def Set_Value(self, value):
 
         self.value = value
 
@@ -70,8 +79,17 @@ class NEURON:
 
         self.Set_Value(pyrosim.Get_Touch_Sensor_Value_For_Link(self.Get_Link_Name()))
 
-    def Update_Hidden_Or_Motor_Neuron(self):
-        self.Set_Value(0)
+    def Update_Hidden_Or_Motor_Neuron(self, neurons, synapses):
+
+        self.Set_Value(0.0)
+
+        for synapse in synapses:
+            if synapse[self.POST_INDEX] == self.Get_Name():
+                self.Allow_Presynaptic_Neuron_To_Influence_Me(
+                    synapses[synapse].Get_Weight(),
+                    neurons[synapse[self.PRE_INDEX]].Get_Value()
+                )
+        self.Threshold()
 
 # -------------------------- Private methods -------------------------
 

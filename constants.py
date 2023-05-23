@@ -1,7 +1,7 @@
 import numpy
 
 SIM_STEPS = 1000
-MAX_FORCE = 8
+MAX_FORCE = 40
 
 BACK_AMPLITUDE = (numpy.pi / 4)
 BACK_FREQUENCY = 6

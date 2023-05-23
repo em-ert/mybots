@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3f421a1e-15f2-4dca-8836-3d433cfd34ed" name="Default Changelist" comment="Fixed constant names and file saving">
+    <list default="true" id="3f421a1e-15f2-4dca-8836-3d433cfd34ed" name="Default Changelist" comment="Tasks completed--motor neurons successfully controlling neurons.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/body.urdf" beforeDir="false" afterPath="$PROJECT_DIR$/body.urdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/brain.nndf" beforeDir="false" afterPath="$PROJECT_DIR$/brain.nndf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/constants.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/BackLeg_sensor_values.npy" beforeDir="false" afterPath="$PROJECT_DIR$/data/BackLeg_sensor_values.npy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/FrontLeg_sensor_values.npy" beforeDir="false" afterPath="$PROJECT_DIR$/data/FrontLeg_sensor_values.npy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/Torso_sensor_values.npy" beforeDir="false" afterPath="$PROJECT_DIR$/data/Torso_sensor_values.npy" afterDir="false" />
@@ -11,7 +14,7 @@
       <change beforePath="$PROJECT_DIR$/pyrosim/neuralNetwork.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyrosim/neuralNetwork.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pyrosim/neuron.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyrosim/neuron.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/robot.py" beforeDir="false" afterPath="$PROJECT_DIR$/robot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simulation.py" beforeDir="false" afterPath="$PROJECT_DIR$/simulation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sensor.py" beforeDir="false" afterPath="$PROJECT_DIR$/sensor.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,7 +34,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="refactoring" />
+        <entry key="$PROJECT_DIR$" value="neurons" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -188,6 +191,7 @@
       <workItem from="1684279880942" duration="5830000" />
       <workItem from="1684417028289" duration="648000" />
       <workItem from="1684431806286" duration="11081000" />
+      <workItem from="1684865205130" duration="4277000" />
     </task>
     <task id="LOCAL-00001" summary="New branch!">
       <created>1678683810111</created>
@@ -252,7 +256,21 @@
       <option name="project" value="LOCAL" />
       <updated>1684630279870</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Tasks completed--motor neurons successfully controlling neurons.">
+      <created>1684805579287</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1684805579287</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Tasks completed--motor neurons successfully controlling neurons.">
+      <created>1684805589982</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1684805589982</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -291,7 +309,8 @@
     <MESSAGE value="Got robot to move forward reliably." />
     <MESSAGE value="Completed refactoring phase!" />
     <MESSAGE value="Fixed constant names and file saving" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed constant names and file saving" />
+    <MESSAGE value="Tasks completed--motor neurons successfully controlling neurons." />
+    <option name="LAST_COMMIT_MESSAGE" value="Tasks completed--motor neurons successfully controlling neurons." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -306,7 +325,7 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/mybots$ludo.coverage" NAME="ludo Coverage Results" MODIFIED="1678670539289" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/mybots$generate.coverage" NAME="generate Coverage Results" MODIFIED="1684805334032" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/mybots$simulate.coverage" NAME="simulate Coverage Results" MODIFIED="1684805334323" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/mybots$generate.coverage" NAME="generate Coverage Results" MODIFIED="1684869535831" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/mybots$simulate.coverage" NAME="simulate Coverage Results" MODIFIED="1684869536328" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

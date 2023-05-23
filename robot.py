@@ -15,8 +15,8 @@ class ROBOT:
         self.nn = NEURAL_NETWORK("brain.nndf")
 
         pyrosim.Prepare_To_Simulate(self.robotId)
-        self.Prepare_To_Sense()
         self.Prepare_To_Act()
+        self.Prepare_To_Sense()
 
     def Prepare_To_Sense(self):
         self.sensors = {}
@@ -37,10 +37,9 @@ class ROBOT:
             if self.nn.Is_Motor_Neuron(neuronName):
                 jointName = self.nn.Get_Motor_Neurons_Joint(neuronName)
                 desiredAngle = self.nn.Get_Value_Of(neuronName)
-                self.motors[bytes(jointName, 'UTF-8')].SetValue(self, desiredAngle)
+                self.motors[bytes(jointName, 'UTF-8')].Set_Value(self, desiredAngle)
                 # print("Name=" + neuronName + ", Joint=" + jointName  + ", Angle=" + str(desiredAngle))
-
 
     def Think(self):
         self.nn.Update()
-        self.nn.Print()
+        # self.nn.Print()
