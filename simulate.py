@@ -1,15 +1,11 @@
-﻿import constants as c
-import math
-import numpy
-import pybullet as p
-import pybullet_data
-import pyrosim.pyrosim as pyrosim
-import random
+﻿import pyrosim.pyrosim as pyrosim
 from simulation import SIMULATION
-import time
+import sys
 
-simulation = SIMULATION()
+directOrGUI = sys.argv[1]
+simulation = SIMULATION(directOrGUI)
 simulation.Run()
+simulation.Get_Fitness()
 
 """
 # numpy.save("data/sinusoidalValues", targetAngles)

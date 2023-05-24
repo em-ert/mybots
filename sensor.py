@@ -4,8 +4,9 @@ import pyrosim.pyrosim as pyrosim
 
 
 class SENSOR:
-    def __init__(self, linkName):
+    def __init__(self, linkName, name):
         self.linkName = linkName
+        self.name = name
         self.Prepare_To_Sense()
 
     def Get_Value(self, timestep):
