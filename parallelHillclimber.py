@@ -8,6 +8,8 @@ class PARALLEL_HILLCLIMBER:
     def __init__(self):
         os.system("rm brain*.nndf")
         os.system("rm fitness*.txt")
+        SOLUTION.Create_World
+        SOLUTION.Create_Body
         self.nextAvailableID = 0
         self.parents = {}
         for p in range(0, c.POPULATION_SIZE):
@@ -16,7 +18,7 @@ class PARALLEL_HILLCLIMBER:
 
     def Evaluate(self, solutions):
         for solution in solutions:
-            solutions[solution].Start_Simulation("DIRECT")
+            solutions[solution].Start_Simulation("DIRECT", False)
         for solution in solutions:
             solutions[solution].Wait_For_Simulation_To_End()
 
@@ -62,4 +64,4 @@ class PARALLEL_HILLCLIMBER:
         for parent in self.parents:
             if self.parents[parent].fitness < bestParent.fitness:
                 bestParent = self.parents[parent]
-        bestParent.Start_Simulation("GUI")
+        bestParent.Start_Simulation("GUI", True)

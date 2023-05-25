@@ -11,12 +11,14 @@ class SOLUTION:
         self.weights = (self.weights * 2) - 1
         self.myID = ID
 
-    def Create_World(self):
+    @staticmethod
+    def Create_World():
         pyrosim.Start_SDF("world.sdf")
         pyrosim.Send_Cube(name="Box", pos=[-4, 4, 0.5], size=[1, 1, 1])
         pyrosim.End()
 
-    def Create_Body(self, start_x, start_y, start_z):
+    @staticmethod
+    def Create_Body(start_x, start_y, start_z):
         pyrosim.Start_URDF("body.urdf")
 
         pyrosim.Send_Cube(name="Torso", pos=[start_x, start_y, start_z], size=[1, 1, 1])
@@ -57,11 +59,18 @@ class SOLUTION:
     def Set_ID(self, ID):
         self.myID = ID
 
-    def Start_Simulation(self, directOrGUI):
-        self.Create_World()
-        self.Create_Body(start_x=0, start_y=0, start_z=1.5)
+    def Start_Simulation(self, directOrGUI, showBest):
         self.Create_Brain()
-        os.system("python3 simulate.py " + directOrGUI + " " + str(self.myID) + " &")
+        if not showBest:
+            os.system("python3 simulate.py " + 
+                    directOrGUI + " " +
+                    str(self.myID) +
+                    " False &")
+        else:
+            os.system("python3 simulate.py " + 
+                    directOrGUI + " " +
+                    str(self.myID) +
+                    " True &")
 
     def Wait_For_Simulation_To_End(self):
         fitnessFileName = "fitness" + str(self.myID) + ".txt"
