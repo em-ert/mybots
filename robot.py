@@ -46,11 +46,13 @@ class ROBOT:
         for jointName in pyrosim.jointNamesToIndices:
             self.motors[jointName] = MOTOR(jointName)
 
-    def Sense(self, timestep):
+    def Sense(self, timestep, directOrGUI):
         for sensor in self.sensors:
             curr_sensor = self.sensors[sensor]
             curr_sensor.Get_Value(timestep)
-            # self.Step_Audio(timestep, curr_sensor)
+            """
+            if directOrGUI == "GUI":
+                self.Step_Audio(timestep, curr_sensor)"""
 
     def Step_Audio(self, timestep, curr_sensor):
         old_value = curr_sensor.values[timestep - 1]
