@@ -1,3 +1,4 @@
+import os
 from playsound import playsound
 import pybullet as p
 from pyrosim.neuralNetwork import NEURAL_NETWORK
@@ -7,26 +8,31 @@ from motor import MOTOR
 
 
 class ROBOT:
-    def __init__(self):
+    def __init__(self, solutionID):
         self.robotId = p.loadURDF("body.urdf")
         self.motors = {}
         self.sensors = {}
 
-        self.nn = NEURAL_NETWORK("brain.nndf")
+        self.nn = NEURAL_NETWORK("brain" + str(solutionID) + ".nndf")
 
         pyrosim.Prepare_To_Simulate(self.robotId)
         self.Prepare_To_Act()
         self.Prepare_To_Sense()
         self.old_values = [1,1,1]
+        os.system("rm brain" + str(solutionID) + ".nndf")
 
-    def Get_Fitness(self):
+    def Get_Fitness(self, solutionID):
         stateOfLinkZero = p.getLinkState(self.robotId, 0)
         positionOfLinkZero = stateOfLinkZero[0]
         xCoordinateOfLinkZero = positionOfLinkZero[0]
-        fitnessFile = open("fitness.txt", "w")
-        fitnessFile.write(str(xCoordinateOfLinkZero))
-        fitnessFile.close()
-
+        # Define tmp and true fitness file names
+        tmpFitnessFileName = "tmp" + str(solutionID) + ".txt"
+        fitnessFileName = "fitness" + str(solutionID) + ".txt"
+        # Write to temp file so reading doesn't occur before writing concludes
+        tmpFitnessFile = open(tmpFitnessFileName, "w")
+        tmpFitnessFile.write(str(xCoordinateOfLinkZero))
+        tmpFitnessFile.close()
+        os.system("mv " + tmpFitnessFileName + " " + fitnessFileName)
 
     def Prepare_To_Sense(self):
         self.sensors = {}

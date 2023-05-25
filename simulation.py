@@ -7,16 +7,16 @@ import time
 from world import WORLD
 
 class SIMULATION:
-    def __init__(self, directOrGUI):
-        if directOrGUI=="GUI":
-            self.directOrGUI = directOrGUI
+    def __init__(self, directOrGUI, solutionID):
+        self.directOrGUI = directOrGUI
+        if self.directOrGUI=="GUI":
             self.physicsClient = p.connect(p.GUI)
         else:
             self.physicsClient = p.connect(p.DIRECT)
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
         p.setGravity(0, 0, -9.8)
         self.world = WORLD()
-        self.robot = ROBOT()
+        self.robot = ROBOT(solutionID)
 
     def __del__(self):
         """
@@ -27,8 +27,8 @@ class SIMULATION:
         """
         p.disconnect()
 
-    def Get_Fitness(self):
-        self.robot.Get_Fitness()
+    def Get_Fitness(self, solutionID):
+        self.robot.Get_Fitness(solutionID)
 
     def Run(self):
         for t in range(c.SIM_STEPS):
