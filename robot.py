@@ -52,17 +52,18 @@ class ROBOT:
             curr_sensor.Get_Value(timestep)
             """
             if directOrGUI == "GUI":
-                self.Step_Audio(timestep, curr_sensor)"""
+                self.Step_Audio(timestep, curr_sensor)
+            """
 
     def Step_Audio(self, timestep, curr_sensor):
         old_value = curr_sensor.values[timestep - 1]
         new_value = curr_sensor.values[timestep]
-        if (new_value == 1 and curr_sensor.linkName != "Torso" and new_value != old_value):
+        if new_value == 1 and curr_sensor.name != 0 and new_value != old_value:
             print("playing sound")
             print(curr_sensor.name)
             print(old_value)
             print(new_value)
-            playsound('sounds/light_step.mp3', False)
+            playsound('sounds/squish.mp3', False)
 
     def Act(self, timestep):
         for neuronName in self.nn.Get_Neuron_Names():
