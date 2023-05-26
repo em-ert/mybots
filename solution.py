@@ -1,3 +1,4 @@
+import constants as c
 import numpy
 import os
 import pyrosim.pyrosim as pyrosim
@@ -22,10 +23,11 @@ class SOLUTION:
         pyrosim.Start_URDF("body.urdf")
 
         pyrosim.Send_Cube(name="Torso", pos=[start_x, start_y, start_z], size=[1, 1, 1])
-        pyrosim.Send_Joint(name="Torso_BackLeg", parent="Torso", child="BackLeg", type="revolute", position=[start_x-0.5, start_y, start_z-0.5])
-        pyrosim.Send_Cube(name="BackLeg", pos=[-0.5, 0, -0.5], size=[1, 1, 1])
-        pyrosim.Send_Joint(name="Torso_FrontLeg", parent="Torso", child="FrontLeg", type="revolute", position=[start_x+0.5, start_y, start_z-0.5])
-        pyrosim.Send_Cube(name="FrontLeg", pos=[0.5, 0, -0.5], size=[1, 1, 1])
+        pyrosim.Send_Joint(name="Torso_FrontLeg", parent="Torso", child="FrontLeg", type="revolute", position=[start_x, start_y-0.5, start_z], jointAxis="0 1 0")
+        pyrosim.Send_Cube(name="FrontLeg", pos=[0, 0.5, 0], size=[0.2, 1, 0.2])
+
+        pyrosim.Send_Joint(name="Torso_BackLeg", parent="Torso", child="BackLeg", type="revolute", position=[start_x, start_y+0.5, start_z], jointAxis="0 1 0")
+        pyrosim.Send_Cube(name="BackLeg", pos=[0, -0.5, 0], size=[0.2, 1, 0.2])
 
         pyrosim.End()
 
@@ -41,19 +43,19 @@ class SOLUTION:
         pyrosim.Send_Motor_Neuron(name=3, jointName="Torso_BackLeg")
         pyrosim.Send_Motor_Neuron(name=4, jointName="Torso_FrontLeg")
 
-        for currentRow in range(3):
-            for currentColumn in range(2):
+        for currentRow in range(c.NUM_SENSOR_NEURONS):
+            for currentColumn in range(c.NUM_MOTOR_NEURONS):
                 pyrosim.Send_Synapse(
                     sourceNeuronName=currentRow, 
-                    targetNeuronName=currentColumn+3, 
+                    targetNeuronName=currentColumn + c.NUM_SENSOR_NEURONS, 
                     weight=self.weights[currentRow][currentColumn]
                     )
 
         pyrosim.End()
 
     def Mutate(self):
-        randomRow = random.randint(0, 2)
-        randomColumn = random.randint(0, 1)
+        randomRow = random.randint(0, c.NUM_SENSOR_NEURONS - 1)
+        randomColumn = random.randint(0, c.NUM_MOTOR_NEURONS - 1)
         self.weights[randomRow,randomColumn] = (random.random() * 2) - 1
 
     def Set_ID(self, ID):
@@ -65,12 +67,12 @@ class SOLUTION:
             os.system("python3 simulate.py " + 
                     directOrGUI + " " +
                     str(self.myID) +
-                    " False &")
+                    " False 2&>1 &")
         else:
             os.system("python3 simulate.py " + 
                     directOrGUI + " " +
                     str(self.myID) +
-                    " True &")
+                    " True 2&>1 &")
 
     def Wait_For_Simulation_To_End(self):
         fitnessFileName = "fitness" + str(self.myID) + ".txt"

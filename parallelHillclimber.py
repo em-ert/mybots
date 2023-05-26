@@ -8,8 +8,8 @@ class PARALLEL_HILLCLIMBER:
     def __init__(self):
         os.system("rm brain*.nndf")
         os.system("rm fitness*.txt")
-        SOLUTION.Create_World
-        SOLUTION.Create_Body
+        SOLUTION.Create_World()
+        SOLUTION.Create_Body(0, 0, 1)
         self.nextAvailableID = 0
         self.parents = {}
         for p in range(0, c.POPULATION_SIZE):
