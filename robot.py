@@ -1,3 +1,4 @@
+import constants as c
 import os
 from playsound import playsound
 import pybullet as p
@@ -59,17 +60,19 @@ class ROBOT:
         old_value = curr_sensor.values[timestep - 1]
         new_value = curr_sensor.values[timestep]
         if new_value == 1 and curr_sensor.name != 0 and new_value != old_value:
+            """
             print("playing sound")
             print(curr_sensor.name)
             print(old_value)
             print(new_value)
-            playsound('sounds/squish.mp3', False)
+            """
+            playsound("sounds/light_step.mp3", block=False)
 
     def Act(self, timestep):
         for neuronName in self.nn.Get_Neuron_Names():
             if self.nn.Is_Motor_Neuron(neuronName):
                 jointName = self.nn.Get_Motor_Neurons_Joint(neuronName)
-                desiredAngle = self.nn.Get_Value_Of(neuronName)
+                desiredAngle = self.nn.Get_Value_Of(neuronName) * c.MOTOR_JOINT_RANGE
                 self.motors[bytes(jointName, 'UTF-8')].Set_Value(self, desiredAngle)
                 # print("Name=" + neuronName + ", Joint=" + jointName  + ", Angle=" + str(desiredAngle))
 
