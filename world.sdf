@@ -15,16 +15,16 @@
             </inertial>
             <collision>
                 <geometry>
-                   <box>
-                      <size>1 1 1</size>
-                   </box>
+                 <box>
+                 <size>1 1 1</size>
+                 </box>
                 </geometry>
             </collision>
             <visual>
                 <geometry>
-                   <box>
-                      <size>1 1 1</size>
-                   </box>
+                 <box>
+                 <size>1 1 1</size>
+                 </box>
                 </geometry>
             </visual>
         </link>

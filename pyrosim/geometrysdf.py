@@ -2,19 +2,23 @@ from pyrosim.commonFunctions import Save_Whitespace
 
 class GEOMETRY_SDF: 
 
-    def __init__(self,size):
+    def __init__(self,size,objectType):
 
         self.depth   = 4
 
         self.string1 = '<geometry>'
 
-        sizeString = str(size[0]) + " " + str(size[1]) + " " + str(size[2])
-
-        self.string2 = '   <box>'
-
-        self.string3 = '      <size>' + sizeString + '</size>'
-
-        self.string4 = '   </box>'
+        if objectType == 'box':
+            sizeString = str(size[0]) + " " + str(size[1]) + " " + str(size[2])
+            self.string2 = ' <box>'
+            self.string3 = ' <size>' + sizeString + '</size>'
+            self.string4 = ' </box>'
+        
+        else:
+            sizeString = str(size[0])
+            self.string2 = ' <sphere>'
+            self.string3 = ' <radius>' + sizeString + '</radius>'
+            self.string4 = ' </sphere>'
 
         self.string5 = '</geometry>'
 
