@@ -13,11 +13,14 @@ height = 2
 
 class SIMULATION:
     def __init__(self, directOrGUI, solutionID):
+        # Setup display mode
         self.directOrGUI = directOrGUI
         if self.directOrGUI=="GUI":
             self.physicsClient = p.connect(p.GUI)
         else:
             self.physicsClient = p.connect(p.DIRECT)
+
+        # Set up the rest of the sim's features
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
         p.setGravity(0, 0, -9.8)
         self.world = WORLD()

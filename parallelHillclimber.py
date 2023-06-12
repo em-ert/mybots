@@ -59,9 +59,13 @@ class PARALLEL_HILLCLIMBER:
                   " ch:" + str(self.children[parent].fitness))
         print()
 
+    def Save_Best(self, bestParent):
+        os.system("mv brain_" + str(bestParent.myID) + ".nndf best_brain.nndf")
+
     def Show_Best(self):
         bestParent = self.parents[0]
         for parent in self.parents:
             if self.parents[parent].fitness < bestParent.fitness:
                 bestParent = self.parents[parent]
         bestParent.Start_Simulation("GUI", True)
+        self.Save_Best(bestParent)

@@ -11,6 +11,9 @@ class SOLUTION:
         self.weights = numpy.random.rand(c.NUM_SENSOR_NEURONS, c.NUM_MOTOR_NEURONS)
         self.weights = (self.weights * 2) - 1
         self.myID = ID
+        self.age = 1
+        self.wasSimulated = False
+        # self.fitness (set in self.Wait_For_Simulation_To_End())
 
     @staticmethod
     def Create_World():
@@ -163,6 +166,9 @@ class SOLUTION:
         randomColumn = random.randint(0, c.NUM_MOTOR_NEURONS - 1)
         self.weights[randomRow,randomColumn] = (random.random() * 2) - 1
 
+    def Reset_Simulation_State(self):
+        self.wasSimulated = False
+
     def Set_ID(self, ID):
         self.myID = ID
 
@@ -173,11 +179,13 @@ class SOLUTION:
                     directOrGUI + " " +
                     str(self.myID) +
                     " False 2&>1 &")
+            
+        # Note: Without "&" best runs are shown serially
         else:
             os.system("python3 simulate.py " + 
                     directOrGUI + " " +
                     str(self.myID) +
-                    " True 2&>1 &")
+                    " True 2&>1")
 
     def Wait_For_Simulation_To_End(self):
         fitnessFileName = "fitness" + str(self.myID) + ".txt"
@@ -187,3 +195,4 @@ class SOLUTION:
         self.fitness = float(fitnessFile.read())
         fitnessFile.close()
         os.system("rm " + fitnessFileName)
+        self.wasSimulated = True

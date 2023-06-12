@@ -1,6 +1,5 @@
-from parallelHillclimber import PARALLEL_HILLCLIMBER
+from afpo import AFPO
+import constants as c
 
-
-phc = PARALLEL_HILLCLIMBER()
-phc.Evolve()
-phc.Show_Best()
+afpo = AFPO(c.NUMBER_OF_GENERATIONS, c.POPULATION_SIZE)
+afpo.Evolve()
