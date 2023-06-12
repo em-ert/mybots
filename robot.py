@@ -19,7 +19,6 @@ class ROBOT:
         pyrosim.Prepare_To_Simulate(self.robotId)
         self.Prepare_To_Act()
         self.Prepare_To_Sense()
-        self.old_values = [1,1,1]
         os.system("rm brain" + str(solutionID) + ".nndf")
 
     def Get_Fitness(self, solutionID):
