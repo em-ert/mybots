@@ -1,0 +1,344 @@
+<sdf>
+    <model name="Torso">
+        <pose>0 0 1 0 0 0 </pose>
+        <link name="Torso">
+            <inertial>
+                <mass>1.0</mass>
+                <inertia>
+                    <ixx>0.083</ixx>
+                    <ixy>0.0</ixy>
+                    <ixz>0.0</ixz>
+                    <iyy>0.083</iyy>
+                    <iyz>0.0</iyz>
+                    <izz>0.083</izz>
+                </inertia>
+            </inertial>
+            <collision>
+                <geometry>
+                 <box>
+                 <size>1 1 1</size>
+                 </box>
+                </geometry>
+            </collision>
+            <visual>
+                <geometry>
+                 <box>
+                 <size>1 1 1</size>
+                 </box>
+                </geometry>
+            </visual>
+        </link>
+    </model>
+    <joint name="Torso_FrontLeg" type="revolute">
+       <parent link="Torso"/>
+       <child  link="FrontLeg"/>
+       <origin rpy="0 0 0" xyz="0 0.5 1" />
+     <axis xyz="1 0 1"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <model name="FrontLeg">
+        <pose>0 0.5 0 0 0 0 </pose>
+        <link name="FrontLeg">
+            <inertial>
+                <mass>1.0</mass>
+                <inertia>
+                    <ixx>0.083</ixx>
+                    <ixy>0.0</ixy>
+                    <ixz>0.0</ixz>
+                    <iyy>0.083</iyy>
+                    <iyz>0.0</iyz>
+                    <izz>0.083</izz>
+                </inertia>
+            </inertial>
+            <collision>
+                <geometry>
+                 <capsule>
+                 <radius>0.2</radius>
+ <length>1</length>
+                 </capsule>
+                </geometry>
+            </collision>
+            <visual>
+                <geometry>
+                 <capsule>
+                 <radius>0.2</radius>
+ <length>1</length>
+                 </capsule>
+                </geometry>
+            </visual>
+        </link>
+    </model>
+    <joint name="FrontLeg_FrontLower" type="revolute">
+       <parent link="FrontLeg"/>
+       <child  link="FrontLower"/>
+       <origin rpy="0 0 0" xyz="0 1 0" />
+     <axis xyz="1 0 1"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <model name="FrontLower">
+        <pose>0 0 -0.5 0 0 0 </pose>
+        <link name="FrontLower">
+            <inertial>
+                <mass>1.0</mass>
+                <inertia>
+                    <ixx>0.083</ixx>
+                    <ixy>0.0</ixy>
+                    <ixz>0.0</ixz>
+                    <iyy>0.083</iyy>
+                    <iyz>0.0</iyz>
+                    <izz>0.083</izz>
+                </inertia>
+            </inertial>
+            <collision>
+                <geometry>
+                 <capsule>
+                 <radius>0.2</radius>
+ <length>1</length>
+                 </capsule>
+                </geometry>
+            </collision>
+            <visual>
+                <geometry>
+                 <capsule>
+                 <radius>0.2</radius>
+ <length>1</length>
+                 </capsule>
+                </geometry>
+            </visual>
+        </link>
+    </model>
+    <joint name="Torso_BackLeg" type="revolute">
+       <parent link="Torso"/>
+       <child  link="BackLeg"/>
+       <origin rpy="0 0 0" xyz="0 -0.5 1" />
+     <axis xyz="1 0 1"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <model name="BackLeg">
+        <pose>0 -0.5 0 0 0 0 </pose>
+        <link name="BackLeg">
+            <inertial>
+                <mass>1.0</mass>
+                <inertia>
+                    <ixx>0.083</ixx>
+                    <ixy>0.0</ixy>
+                    <ixz>0.0</ixz>
+                    <iyy>0.083</iyy>
+                    <iyz>0.0</iyz>
+                    <izz>0.083</izz>
+                </inertia>
+            </inertial>
+            <collision>
+                <geometry>
+                 <capsule>
+                 <radius>0.2</radius>
+ <length>1</length>
+                 </capsule>
+                </geometry>
+            </collision>
+            <visual>
+                <geometry>
+                 <capsule>
+                 <radius>0.2</radius>
+ <length>1</length>
+                 </capsule>
+                </geometry>
+            </visual>
+        </link>
+    </model>
+    <joint name="BackLeg_BackLower" type="revolute">
+       <parent link="BackLeg"/>
+       <child  link="BackLower"/>
+       <origin rpy="0 0 0" xyz="0 -1 0" />
+     <axis xyz="1 0 1"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <model name="BackLower">
+        <pose>0 0 -0.5 0 0 0 </pose>
+        <link name="BackLower">
+            <inertial>
+                <mass>1.0</mass>
+                <inertia>
+                    <ixx>0.083</ixx>
+                    <ixy>0.0</ixy>
+                    <ixz>0.0</ixz>
+                    <iyy>0.083</iyy>
+                    <iyz>0.0</iyz>
+                    <izz>0.083</izz>
+                </inertia>
+            </inertial>
+            <collision>
+                <geometry>
+                 <capsule>
+                 <radius>0.2</radius>
+ <length>1</length>
+                 </capsule>
+                </geometry>
+            </collision>
+            <visual>
+                <geometry>
+                 <capsule>
+                 <radius>0.2</radius>
+ <length>1</length>
+                 </capsule>
+                </geometry>
+            </visual>
+        </link>
+    </model>
+    <joint name="Torso_LeftLeg" type="revolute">
+       <parent link="Torso"/>
+       <child  link="LeftLeg"/>
+       <origin rpy="0 0 0" xyz="-0.5 0 1" />
+     <axis xyz="0 1 1"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <model name="LeftLeg">
+        <pose>-0.5 0 0 0 0 0 </pose>
+        <link name="LeftLeg">
+            <inertial>
+                <mass>1.0</mass>
+                <inertia>
+                    <ixx>0.083</ixx>
+                    <ixy>0.0</ixy>
+                    <ixz>0.0</ixz>
+                    <iyy>0.083</iyy>
+                    <iyz>0.0</iyz>
+                    <izz>0.083</izz>
+                </inertia>
+            </inertial>
+            <collision>
+                <geometry>
+                 <capsule>
+                 <radius>0.2</radius>
+ <length>1</length>
+                 </capsule>
+                </geometry>
+            </collision>
+            <visual>
+                <geometry>
+                 <capsule>
+                 <radius>0.2</radius>
+ <length>1</length>
+                 </capsule>
+                </geometry>
+            </visual>
+        </link>
+    </model>
+    <joint name="LeftLeg_LeftLower" type="revolute">
+       <parent link="LeftLeg"/>
+       <child  link="LeftLower"/>
+       <origin rpy="0 0 0" xyz="-1 0 0" />
+     <axis xyz="0 1 1"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <model name="LeftLower">
+        <pose>0 0 -0.5 0 0 0 </pose>
+        <link name="LeftLower">
+            <inertial>
+                <mass>1.0</mass>
+                <inertia>
+                    <ixx>0.083</ixx>
+                    <ixy>0.0</ixy>
+                    <ixz>0.0</ixz>
+                    <iyy>0.083</iyy>
+                    <iyz>0.0</iyz>
+                    <izz>0.083</izz>
+                </inertia>
+            </inertial>
+            <collision>
+                <geometry>
+                 <capsule>
+                 <radius>0.2</radius>
+ <length>1</length>
+                 </capsule>
+                </geometry>
+            </collision>
+            <visual>
+                <geometry>
+                 <capsule>
+                 <radius>0.2</radius>
+ <length>1</length>
+                 </capsule>
+                </geometry>
+            </visual>
+        </link>
+    </model>
+    <joint name="Torso_RightLeg" type="revolute">
+       <parent link="Torso"/>
+       <child  link="RightLeg"/>
+       <origin rpy="0 0 0" xyz="0.5 0 1" />
+     <axis xyz="0 1 1"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <model name="RightLeg">
+        <pose>0.5 0 0 0 0 0 </pose>
+        <link name="RightLeg">
+            <inertial>
+                <mass>1.0</mass>
+                <inertia>
+                    <ixx>0.083</ixx>
+                    <ixy>0.0</ixy>
+                    <ixz>0.0</ixz>
+                    <iyy>0.083</iyy>
+                    <iyz>0.0</iyz>
+                    <izz>0.083</izz>
+                </inertia>
+            </inertial>
+            <collision>
+                <geometry>
+                 <capsule>
+                 <radius>0.2</radius>
+ <length>1</length>
+                 </capsule>
+                </geometry>
+            </collision>
+            <visual>
+                <geometry>
+                 <capsule>
+                 <radius>0.2</radius>
+ <length>1</length>
+                 </capsule>
+                </geometry>
+            </visual>
+        </link>
+    </model>
+    <joint name="RightLeg_RightLower" type="revolute">
+       <parent link="RightLeg"/>
+       <child  link="RightLower"/>
+       <origin rpy="0 0 0" xyz="1 0 0" />
+     <axis xyz="0 1 1"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <model name="RightLower">
+        <pose>0 0 -0.5 0 0 0 </pose>
+        <link name="RightLower">
+            <inertial>
+                <mass>1.0</mass>
+                <inertia>
+                    <ixx>0.083</ixx>
+                    <ixy>0.0</ixy>
+                    <ixz>0.0</ixz>
+                    <iyy>0.083</iyy>
+                    <iyz>0.0</iyz>
+                    <izz>0.083</izz>
+                </inertia>
+            </inertial>
+            <collision>
+                <geometry>
+                 <capsule>
+                 <radius>0.2</radius>
+ <length>1</length>
+                 </capsule>
+                </geometry>
+            </collision>
+            <visual>
+                <geometry>
+                 <capsule>
+                 <radius>0.2</radius>
+ <length>1</length>
+                 </capsule>
+                </geometry>
+            </visual>
+        </link>
+    </model>
+</sdf>

@@ -12,7 +12,7 @@ class AFPO:
 
         # Create the world and body files for the simulation
         SOLUTION.Create_World()
-        SOLUTION.Create_Body(0, 0, 1)
+        SOLUTION.Create_Body(0, 0, 1.2)
 
         # Set initial values for AFPO
         self.genSize = genSize

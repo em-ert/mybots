@@ -14,11 +14,18 @@ class GEOMETRY_SDF:
             self.string3 = ' <size>' + sizeString + '</size>'
             self.string4 = ' </box>'
         
-        else:
+        elif objectType == 'sphere':
             sizeString = str(size[0])
             self.string2 = ' <sphere>'
             self.string3 = ' <radius>' + sizeString + '</radius>'
             self.string4 = ' </sphere>'
+
+        elif objectType == 'capsule':
+            radString = str(size[0])
+            lenString = str(size[1])
+            self.string2 = ' <capsule>'
+            self.string3 = ' <radius>' + radString + '</radius>' + '\n' + ' <length>' + lenString + '</length>'
+            self.string4 = ' </capsule>'
 
         self.string5 = '</geometry>'
 

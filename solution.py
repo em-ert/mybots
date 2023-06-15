@@ -1,4 +1,5 @@
 import constants as c
+import math
 import numpy
 import os
 import pyrosim.pyrosim as pyrosim
@@ -19,13 +20,14 @@ class SOLUTION:
     def Create_World():
         pyrosim.Start_SDF("world.sdf")
         pyrosim.Send_Cube(name="Box", pos=[-4, 4, 0.5], size=[1, 1, 1])
+        # pyrosim.Send_Capsule(name="Capsule", pos=[-2, 4, 2], size=[.2,1])
         pyrosim.End()
 
     @staticmethod
     def Create_Body(start_x, start_y, start_z):
         pyrosim.Start_URDF("body.urdf")
 
-        pyrosim.Send_Cube(name="Torso", pos=[start_x, start_y, start_z], size=[1, 1, 1])
+        pyrosim.Send_Cube(name="Torso", pos=[start_x, start_y, start_z], size=[1,1,1])
 
         # Front leg
         pyrosim.Send_Joint(
@@ -35,10 +37,11 @@ class SOLUTION:
             type="revolute", 
             position=[start_x, start_y+0.5, start_z], 
             jointAxis="1 0 1")
-        pyrosim.Send_Cube(
+        pyrosim.Send_Capsule(
             name="FrontLeg", 
             pos=[0, 0.5, 0], 
-            size=[0.2, 1, 0.2])
+            size=[0.2, 1],
+            rpy=[0,(math.pi/2),(math.pi/2)])
         pyrosim.Send_Joint(
             name="FrontLeg_FrontLower", 
             parent="FrontLeg", 
@@ -46,10 +49,10 @@ class SOLUTION:
             type="revolute", 
             position=[0, 1, 0], 
             jointAxis="1 0 1")
-        pyrosim.Send_Cube(
+        pyrosim.Send_Capsule(
             name="FrontLower", 
             pos=[0, 0, -0.5], 
-            size=[0.2, 0.2, 1])
+            size=[0.2, 1])
 
         # Back leg
         pyrosim.Send_Joint(
@@ -59,10 +62,11 @@ class SOLUTION:
             type="revolute", 
             position=[start_x, start_y-0.5, start_z], 
             jointAxis="1 0 1")
-        pyrosim.Send_Cube(
+        pyrosim.Send_Capsule(
             name="BackLeg", 
             pos=[0, -0.5, 0],
-            size=[0.2, 1, 0.2])
+            size=[0.2, 1],
+            rpy=[0,(math.pi/2),(math.pi/2)])
         pyrosim.Send_Joint(
             name="BackLeg_BackLower", 
             parent="BackLeg", 
@@ -70,10 +74,10 @@ class SOLUTION:
             type="revolute", 
             position=[0, -1, 0], 
             jointAxis="1 0 1")
-        pyrosim.Send_Cube(
+        pyrosim.Send_Capsule(
             name="BackLower", 
             pos=[0, 0, -0.5], 
-            size=[0.2, 0.2, 1])
+            size=[0.2, 1])
 
         # Left leg
         pyrosim.Send_Joint(
@@ -83,10 +87,11 @@ class SOLUTION:
             type="revolute",
             position=[start_x-0.5, start_y, start_z], 
             jointAxis="0 1 1")
-        pyrosim.Send_Cube(
+        pyrosim.Send_Capsule(
             name="LeftLeg", 
             pos=[-0.5, 0, 0], 
-            size=[1, 0.2, 0.2])
+            size=[0.2, 1],
+            rpy=[0,(math.pi/2),0])
         pyrosim.Send_Joint(
             name="LeftLeg_LeftLower", 
             parent="LeftLeg", 
@@ -94,10 +99,10 @@ class SOLUTION:
             type="revolute", 
             position=[-1, 0, 0], 
             jointAxis="0 1 1")
-        pyrosim.Send_Cube(
+        pyrosim.Send_Capsule(
             name="LeftLower", 
             pos=[0, 0, -0.5], 
-            size=[0.2, 0.2, 1])
+            size=[0.2, 1])
 
         # Right leg
         pyrosim.Send_Joint(
@@ -107,10 +112,11 @@ class SOLUTION:
             type="revolute", 
             position=[start_x+0.5, start_y, start_z], 
             jointAxis="0 1 1")
-        pyrosim.Send_Cube(
+        pyrosim.Send_Capsule(
             name="RightLeg", 
             pos=[0.5, 0, 0], 
-            size=[1, 0.2, 0.2])
+            size=[0.2, 1],
+            rpy=[0,(math.pi/2),0])
         pyrosim.Send_Joint(
             name="RightLeg_RightLower", 
             parent="RightLeg", 
@@ -118,10 +124,10 @@ class SOLUTION:
             type="revolute", 
             position=[1, 0, 0], 
             jointAxis="0 1 1")
-        pyrosim.Send_Cube(
+        pyrosim.Send_Capsule(
             name="RightLower", 
             pos=[0, 0, -0.5], 
-            size=[0.2, 0.2, 1])
+            size=[0.2, 1])
 
         pyrosim.End()
 

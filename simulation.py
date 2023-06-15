@@ -39,15 +39,24 @@ class SIMULATION:
         self.robot.Get_Fitness(solutionID)
 
     def Run(self):
-        for t in range(c.SIM_STEPS):
-            p.stepSimulation()
-            self.robot.Sense(t, self.directOrGUI)
-            self.robot.Think()
-            self.robot.Act(t)
+        if self.directOrGUI != "GUI":
+            for t in range(c.SIM_STEPS):
+                p.stepSimulation()
+                self.robot.Sense(t)
+                self.robot.Think()
+                self.robot.Act(t)
+        else:
+            for t in range(c.SIM_STEPS):
+                p.stepSimulation()
+                self.robot.Sense_And_Sound(t)
+                self.robot.Think()
+                self.robot.Act(t)
+            """
             if self.directOrGUI == "GUI":
                 if t % 20 == 0:
                     playsound("sounds/metronome.mp3", block=False)
                 time.sleep(c.SLEEP_TIME)
+            """
 
             """
             for object in range(self.world.numObjects):

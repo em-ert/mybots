@@ -46,14 +46,19 @@ class ROBOT:
         for jointName in pyrosim.jointNamesToIndices:
             self.motors[jointName] = MOTOR(jointName)
 
-    def Sense(self, timestep, directOrGUI):
+    def Sense(self, timestep):
         for sensor in self.sensors:
             curr_sensor = self.sensors[sensor]
             curr_sensor.Get_Value(timestep)
-            """
-            if directOrGUI == "GUI":
-                self.Step_Audio(timestep, curr_sensor)
-            """
+
+    def Sense_And_Sound(self, timestep):
+        for sensor in self.sensors:
+            curr_sensor = self.sensors[sensor]
+            oldValue = curr_sensor.currValue
+            curr_sensor.Get_Value(timestep)
+            if oldValue < curr_sensor.currValue and timestep != 0 and curr_sensor != 0:
+                playsound("sounds/simple_step.mp3", block=False)
+            
 
     def Step_Audio(self, timestep, curr_sensor):
         old_value = curr_sensor.values[timestep - 1]
@@ -65,7 +70,7 @@ class ROBOT:
             print(old_value)
             print(new_value)
             """
-            playsound("sounds/light_step.mp3", block=False)
+            playsound("sounds/simple_step.mp3", block=False)
 
     def Act(self, timestep):
         for neuronName in self.nn.Get_Neuron_Names():
