@@ -18,3 +18,19 @@ destroy semaphore
 semaphore destroyed
 destroy main semaphore
 main semaphore destroyed
+Traceback (most recent call last):
+  File "/Users/eertle/repos/mybots/simulate.py", line 21, in <module>
+    simulation.Run()
+  File "/Users/eertle/repos/mybots/simulation.py", line 53, in Run
+    self.robot.Act(t)
+  File "/Users/eertle/repos/mybots/robot.py", line 102, in Act
+    self.motors[jointName].Set_Value(self, desiredAngle)
+  File "/Users/eertle/repos/mybots/motor.py", line 11, in Set_Value
+    pyrosim.Set_Motor_For_Joint(
+  File "/Users/eertle/repos/mybots/pyrosim/pyrosim.py", line 174, in Set_Motor_For_Joint
+    p.setJointMotorControl2(
+pybullet.error: Not connected to physics server.
+Exception ignored in: <function SIMULATION.__del__ at 0x7ff2f0e5e550>
+Traceback (most recent call last):
+  File "/Users/eertle/repos/mybots/simulation.py", line 36, in __del__
+pybullet.error: Not connected to physics server.

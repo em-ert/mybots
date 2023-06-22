@@ -8,7 +8,7 @@ class SENSOR:
         self.linkName = linkName
         self.name = name
         self.Prepare_To_Sense()
-        self.currValue = 0
+        self.currValue = 1
 
     def Get_Value(self, timestep):
         self.values[timestep] = pyrosim.Get_Touch_Sensor_Value_For_Link(self.linkName)

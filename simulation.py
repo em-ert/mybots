@@ -46,24 +46,28 @@ class SIMULATION:
                 self.robot.Think()
                 self.robot.Act(t)
         else:
-            for t in range(c.SIM_STEPS):
-                p.stepSimulation()
-                self.robot.Sense_And_Sound(t)
+            p.stepSimulation()
+            self.robot.Sense(0)
+            for t in range(c.SIM_STEPS - 1):
                 self.robot.Think()
                 self.robot.Act(t)
+                self.robot.Sense_And_Sound(t+1)
+                p.stepSimulation()
+            print(time.time())
+            
             """
             if self.directOrGUI == "GUI":
                 if t % 20 == 0:
                     playsound("sounds/metronome.mp3", block=False)
-                time.sleep(c.SLEEP_TIME)
+            # time.sleep(c.SLEEP_TIME)
             """
 
-            """
-            for object in range(self.world.numObjects):
-                position = self.world.Get_Link_Position(object)
-                print(position)
-                xPosition = position[x]
-                yPosition = position[y]
-                height = position[height]
-            """
-            # print(t)
+        """
+        for object in range(self.world.numObjects):
+            position = self.world.Get_Link_Position(object)
+            print(position)
+            xPosition = position[x]
+            yPosition = position[y]
+            height = position[height]
+        """
+        # print(t)

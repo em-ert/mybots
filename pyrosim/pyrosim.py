@@ -60,6 +60,10 @@ def Get_Touch_Sensor_Value_For_Link(linkName):
 
     return touchValue
 
+def Get_Link_ID_From_Joint_Name(jointName):
+
+    return jointNamesToIndices[jointName]
+
 def Prepare_Link_Dictionary(bodyID):
 
     global linkNamesToIndices
