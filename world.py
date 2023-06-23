@@ -3,7 +3,7 @@ import pybullet as p
 
 class WORLD:
     def __init__(self):
-        self.planeId = p.loadURDF("plane_with_collision_audio.urdf")
+        self.planeId = p.loadURDF("plane.urdf")
         self.objects = p.loadSDF("world.sdf")
         self.numObjects = len(self.objects)
 

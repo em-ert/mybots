@@ -4,7 +4,7 @@ import pybullet as p
 import pybullet_data
 import pyrosim.pyrosim as pyrosim
 from robot import ROBOT
-import time
+from time import time
 from world import WORLD
 
 x = 0
@@ -25,6 +25,7 @@ class SIMULATION:
         p.setGravity(0, 0, -9.8)
         self.world = WORLD()
         self.robot = ROBOT(solutionID)
+        self.nextStrike = 0
 
     def __del__(self):
         """
@@ -48,12 +49,19 @@ class SIMULATION:
         else:
             p.stepSimulation()
             self.robot.Sense(0)
+
+            stepEnd = time() + c.FRAME_RATE
+
             for t in range(c.SIM_STEPS - 1):
                 self.robot.Think()
                 self.robot.Act(t)
-                self.robot.Sense_And_Sound(t+1)
+                self.robot.Sense(t+1)
+                
+                remaining = stepEnd - time()
+                if remaining < 0:
+                    raise Exception("Time error, ended with " + str(remaining) + " seconds")
+                stepEnd = time() + c.FRAME_RATE
                 p.stepSimulation()
-            print(time.time())
             
             """
             if self.directOrGUI == "GUI":
