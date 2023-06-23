@@ -8,8 +8,12 @@ class METRONOME_SENSOR:
         self.name = name
         self.Prepare_To_Sense()
 
-    def Get_Value(self, timestep):
-        self.values[timestep] = pyrosim.Get_Touch_Sensor_Value_For_Link(self.linkName)
+    def Get_Value(self, timestep, metronome):
+        if metronome:
+            click = 1
+        else:
+            click = 0
+        self.values[timestep] = click
         self.currValue = self.values[timestep]
 
     def Prepare_To_Sense(self):

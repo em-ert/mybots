@@ -52,6 +52,8 @@ class SIMULATION:
 
             stepEnd = time() + c.FRAME_RATE
 
+            # TODO: involve the auditory neuron in update (NN and Neuron) as well as figure out how to properly "gather" auditory information... time interval or pre-made array?
+
             for t in range(c.SIM_STEPS - 1):
                 self.robot.Think()
                 self.robot.Act(t)

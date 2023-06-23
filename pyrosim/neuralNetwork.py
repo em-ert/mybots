@@ -32,6 +32,8 @@ class NEURAL_NETWORK:
 
     def Print(self):
 
+        self.Print_Auditory_Neuron_Values()
+
         self.Print_Sensor_Neuron_Values()
 
         self.Print_Hidden_Neuron_Values()
@@ -44,6 +46,10 @@ class NEURAL_NETWORK:
         for neuronName in self.neurons:
             if self.neurons[neuronName].Is_Sensor_Neuron():
                 self.neurons[neuronName].Update_Sensor_Neuron()
+
+            elif self.neurons[neuronName].Is_Auditory_Neuron():
+                self.neurons[neuronName].Update_Auditory_Neuron()
+
             else:
                 self.neurons[neuronName].Update_Hidden_Or_Motor_Neuron(self.neurons, self.synapses)
 
@@ -82,6 +88,18 @@ class NEURAL_NETWORK:
     def Line_Contains_Synapse_Definition(self,line):
 
         return "synapse" in line
+    
+    def Print_Auditory_Neuron_Values(self):
+
+        print("auditory neuron values: " , end = "" )
+
+        for neuronName in sorted(self.neurons):
+
+            if self.neurons[neuronName].Is_Auditory_Neuron():
+
+                self.neurons[neuronName].Print()
+
+        print("")
 
     def Print_Sensor_Neuron_Values(self):
 
