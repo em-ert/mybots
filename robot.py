@@ -60,6 +60,8 @@ class ROBOT:
             curr_sensor = self.sensors[sensor]
             curr_sensor.Get_Value(timestep)
 
+    def Sense_Rhythm(self, timestep, click):
+        self.metronomeSensor.Get_Value(timestep, click)
 
     def Sense_And_Sound(self, timestep):
         for sensor in self.sensors:

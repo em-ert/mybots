@@ -47,22 +47,28 @@ class SIMULATION:
                 self.robot.Think()
                 self.robot.Act(t)
         else:
+
+            # TODO: involve the auditory neuron in update (NN and Neuron) as well as figure out how to properly "gather" auditory information... time interval or pre-made array? Also, they have to be connected to the hidden neurons still!
+
+            # Sensing of the metronome based on how far
+            stepEnd = time() + c.FRAME_RATE_S
             p.stepSimulation()
             self.robot.Sense(0)
-
-            stepEnd = time() + c.FRAME_RATE
-
-            # TODO: involve the auditory neuron in update (NN and Neuron) as well as figure out how to properly "gather" auditory information... time interval or pre-made array?
-
             for t in range(c.SIM_STEPS - 1):
+                if t % c.MET_FRAME_RATIO == 0:
+                    click = 1
+                    playsound("sounds/metronome.mp3", block=False)
+                else: 
+                    click = 0
                 self.robot.Think()
                 self.robot.Act(t)
                 self.robot.Sense(t+1)
-                
+                # self.robot.Sense_Rhythm(t+1, click)
+                    
                 remaining = stepEnd - time()
                 if remaining < 0:
                     raise Exception("Time error, ended with " + str(remaining) + " seconds")
-                stepEnd = time() + c.FRAME_RATE
+                stepEnd = time() + c.FRAME_RATE_S
                 p.stepSimulation()
             
             """

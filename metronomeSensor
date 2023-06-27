@@ -8,11 +8,7 @@ class METRONOME_SENSOR:
         self.name = name
         self.Prepare_To_Sense()
 
-    def Get_Value(self, timestep, metronome):
-        if metronome:
-            click = 1
-        else:
-            click = 0
+    def Get_Value(self, timestep, click):
         self.values[timestep] = click
         self.currValue = self.values[timestep]
 
