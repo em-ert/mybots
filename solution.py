@@ -15,6 +15,10 @@ class SOLUTION:
         self.s_h_Weights = numpy.random.rand(c.NUM_SENSOR_NEURONS, c.NUM_HIDDEN_NEURONS)
         self.s_h_Weights = (self.s_h_Weights * 2) - 1
 
+        # Auditory to hidden weights
+        self.a_h_Weights = numpy.random.rand(c.NUM_AUDITORY_NEURONS, c.NUM_HIDDEN_NEURONS)
+        self.a_h_Weights = (self.a_h_Weights * 2) - 1
+
         # Hidden to hidden weights
         self.h_h_Weights = numpy.random.rand(c.NUM_HIDDEN_NEURONS, c.NUM_HIDDEN_NEURONS)
         self.h_h_Weights = (self.h_h_Weights * 2) - 1
@@ -56,8 +60,14 @@ class SOLUTION:
         else:
             linkSensorStart = 0
     
+        # Sensor Neurons
         for sensor in range(c.NUM_SENSOR_NEURONS):
             pyrosim.Send_Sensor_Neuron(name=neuronCount, linkName=self.links[linkSensorStart + sensor])
+            neuronCount += 1
+
+        # Auditory Neurons
+        for auditory in range(c.NUM_AUDITORY_NEURONS):
+            pyrosim.Send_Auditory_Neuron(name=neuronCount)
             neuronCount += 1
         
         # Hidden Neurons
@@ -78,12 +88,20 @@ class SOLUTION:
                     targetNeuronName=currentColumn + c.NUM_SENSOR_NEURONS, 
                     weight=self.s_h_Weights[currentRow][currentColumn]
                     )
+        # Randomize auditory to hidden
+        for currentRow in range(c.NUM_AUDITORY_NEURONS):
+            for currentColumn in range(c.NUM_HIDDEN_NEURONS):
+                pyrosim.Send_Synapse(
+                    sourceNeuronName=currentRow + c.NUM_SENSOR_NEURONS, 
+                    targetNeuronName=currentColumn + c.NUM_SENSOR_NEURONS + c.NUM_AUDITORY_NEURONS, 
+                    weight=self.a_h_Weights[currentRow][currentColumn]
+                    )
         # Randomize hidden to hidden
         for currentRow in range(c.NUM_HIDDEN_NEURONS):
             for currentColumn in range(c.NUM_HIDDEN_NEURONS):
                 pyrosim.Send_Synapse(
-                    sourceNeuronName=currentRow + c.NUM_SENSOR_NEURONS, 
-                    targetNeuronName=currentColumn + c.NUM_SENSOR_NEURONS, 
+                    sourceNeuronName=currentRow + c.NUM_SENSOR_NEURONS + c.NUM_AUDITORY_NEURONS, 
+                    targetNeuronName=currentColumn + c.NUM_SENSOR_NEURONS + c.NUM_AUDITORY_NEURONS, 
                     weight=self.h_h_Weights[currentRow][currentColumn]
                     )
         
@@ -91,8 +109,8 @@ class SOLUTION:
         for currentRow in range(c.NUM_HIDDEN_NEURONS):
             for currentColumn in range(c.NUM_MOTOR_NEURONS):
                 pyrosim.Send_Synapse(
-                    sourceNeuronName=currentRow + c.NUM_SENSOR_NEURONS, 
-                    targetNeuronName=currentColumn + c.NUM_SENSOR_NEURONS + c.NUM_HIDDEN_NEURONS, 
+                    sourceNeuronName=currentRow + c.NUM_SENSOR_NEURONS + c.NUM_AUDITORY_NEURONS, 
+                    targetNeuronName=currentColumn + c.NUM_SENSOR_NEURONS + c.NUM_AUDITORY_NEURONS + c.NUM_HIDDEN_NEURONS, 
                     weight=self.h_m_Weights[currentRow][currentColumn]
                     )
                 
@@ -103,6 +121,12 @@ class SOLUTION:
         randomRow = random.randint(0, c.NUM_SENSOR_NEURONS - 1)
         randomColumn = random.randint(0, c.NUM_HIDDEN_NEURONS - 1)
         self.s_h_Weights[randomRow,randomColumn] = (random.random() * 2) - 1
+
+        # Mutate A - H
+        randomRow = random.randint(0, c.NUM_AUDITORY_NEURONS - 1)
+        randomColumn = random.randint(0, c.NUM_HIDDEN_NEURONS - 1)
+        self.a_h_Weights[randomRow,randomColumn] = (random.random() * 2) - 1
+
         # Mutate H - H
         randomRow = random.randint(0, c.NUM_HIDDEN_NEURONS - 1)
         randomColumn = random.randint(0, c.NUM_HIDDEN_NEURONS - 1)
@@ -136,7 +160,7 @@ class SOLUTION:
     def Wait_For_Simulation_To_End(self):
         fitnessFileName = "fitness" + str(self.myID) + ".txt"
         while not os.path.exists(fitnessFileName):
-            time.sleep(0.01)
+            time.sleep(0.001)
         fitnessFile = open(fitnessFileName, "r")
         self.fitness = float(fitnessFile.read())
         fitnessFile.close()

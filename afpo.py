@@ -219,4 +219,5 @@ class AFPO:
         os.system("mv brain" + str(bestSolution.myID) + ".nndf best/brain" + str(bestSolution.myID) + ".nndf")
 
     def Show_Best_Brain(self, bestSolution):
+        bestSolution.Start_Simulation("DIRECT", True)
         bestSolution.Start_Simulation("GUI", True)

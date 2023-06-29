@@ -10,7 +10,6 @@ class METRONOME_SENSOR:
 
     def Get_Value(self, timestep, click):
         self.values[timestep] = click
-        self.currValue = self.values[timestep]
 
     def Prepare_To_Sense(self):
         self.values = numpy.zeros(c.SIM_STEPS)

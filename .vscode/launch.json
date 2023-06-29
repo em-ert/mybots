@@ -5,6 +5,7 @@
     "version": "0.2.0",
     "configurations": [
 
+
         {
             "name": "Python: search",
             "type": "python",
@@ -13,6 +14,16 @@
             "console": "integratedTerminal",
             "justMyCode": false
         },
+
+        {
+            "name": "Python: simulate",
+            "type": "python",
+            "request": "launch",
+            "program": "simulate.py",
+            "args": ["GUI", "15", "True", "2&>1"],
+            "console": "integratedTerminal",
+            "justMyCode": false 
+        }
         
         {
             "name": "Python: Current File",

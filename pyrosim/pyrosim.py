@@ -156,6 +156,10 @@ def Send_Joint(name,parent,child,type,position,jointAxis):
 
     joint.Save(f,jointAxis)
 
+def Send_Auditory_Neuron(name):
+
+    f.write('    <neuron name = "' + str(name) + '" type = "auditory" />\n')
+
 def Send_Hidden_Neuron(name):
 
     f.write('    <neuron name = "' + str(name) + '" type = "hidden" />\n')

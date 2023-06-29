@@ -1,3 +1,5 @@
+import os
+
 from pyrosim.neuron  import NEURON
 
 from pyrosim.synapse import SYNAPSE
@@ -10,7 +12,12 @@ class NEURAL_NETWORK:
 
         self.synapses = {}
 
-        f = open(nndfFileName,"r")
+        if os.path.exists(nndfFileName):
+            f = open(nndfFileName,"r")
+        elif os.path.exists("best/" + nndfFileName):
+            f = open("best/" + nndfFileName,"r")
+        else:
+            raise Exception("Network file not found")
 
         for line in f.readlines():
 
@@ -20,6 +27,9 @@ class NEURAL_NETWORK:
 
     def Get_Motor_Neurons_Joint(self, neuronName):
         return self.neurons[neuronName].Get_Joint_Name()
+    
+    def Get_Sensor_Neurons_Link(self, neuronName):
+        return self.neurons[neuronName].Get_Link_Name()
 
     def Get_Neuron_Names(self):
         return self.neurons.keys()
@@ -29,6 +39,9 @@ class NEURAL_NETWORK:
 
     def Is_Motor_Neuron(self, neuronName):
         return self.neurons[neuronName].Is_Motor_Neuron()
+    
+    def Is_Sensor_Neuron(self, neuronName):
+        return self.neurons[neuronName].Is_Sensor_Neuron()
 
     def Print(self):
 
@@ -42,13 +55,13 @@ class NEURAL_NETWORK:
 
         print("")
 
-    def Update(self):
+    def Update(self, click):
         for neuronName in self.neurons:
             if self.neurons[neuronName].Is_Sensor_Neuron():
                 self.neurons[neuronName].Update_Sensor_Neuron()
 
             elif self.neurons[neuronName].Is_Auditory_Neuron():
-                self.neurons[neuronName].Update_Auditory_Neuron()
+                self.neurons[neuronName].Update_Auditory_Neuron(click)
 
             else:
                 self.neurons[neuronName].Update_Hidden_Or_Motor_Neuron(self.neurons, self.synapses)
