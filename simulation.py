@@ -22,9 +22,11 @@ class SIMULATION:
         if self.directOrGUI=="GUI":
             self.physicsClient = p.connect(p.GUI)
             self.robot = SAVED_ROBOT(solutionID)
+
         else:
             self.physicsClient = p.connect(p.DIRECT)
             self.robot = ROBOT(solutionID)
+            
         p.configureDebugVisualizer(p.COV_ENABLE_GUI,0)
         # Set up the rest of the sim's features
         p.setAdditionalSearchPath(pybullet_data.getDataPath())

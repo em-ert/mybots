@@ -2,6 +2,7 @@ import constants as c
 import copy
 import numpy as np
 import os
+from playsound import playsound
 from solution import SOLUTION
 
 class AFPO:
@@ -30,12 +31,21 @@ class AFPO:
     def Evolve(self):
         for currentGeneration in range(self.genSize):
             if currentGeneration == 0:
+                genCount = self.genSize
+                print("Start: " + str(genCount))
                 # Run simulation for first generation
                 self.Run_Simulations(self.population)
+                genCount -= 1
+                print("Remaining: " + str(genCount))
+                    
                 
             else:
                 # Evolve for one generation
                 self.Evolve_For_One_Generation()
+                genCount -= 1
+                print("Remaining: " + str(genCount))
+                if genCount == 0:
+                    playsound("sounds/toaster_ding.mp3", block=False)
             # Could save results at n-1 generation or at end?
         
         # self.Save_All_Pareto_Front_Brains()

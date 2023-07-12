@@ -2,7 +2,6 @@ from bots.capsuleBot import CAPSULE_BOT
 import constants as c
 import os
 import pickle
-from playsound import playsound
 import pybullet as p
 from pyrosim.neuralNetwork import NEURAL_NETWORK
 import pyrosim.pyrosim as pyrosim
@@ -62,7 +61,7 @@ class ROBOT:
     def Prepare_To_Act(self):
         self.motors = {}
         for jointName in pyrosim.jointNamesToIndices:
-            self.motors[jointName] = MOTOR(jointName)
+            self.motors[jointName] = MOTOR(jointName, hollow=False)
 
 
     def Sense(self, timestep):
@@ -81,16 +80,6 @@ class ROBOT:
             for velocity in linkVelocities:
                 totalChange += velocity
             self.fitness += totalChange * click
-
-
-    def Sense_And_Sound(self, timestep):
-        for sensor in self.sensors:
-            curr_sensor = self.sensors[sensor]
-            oldValue = curr_sensor.currValue
-            oldValue2 = curr_sensor.values[timestep - 2]
-            curr_sensor.Get_Value(timestep)
-            if oldValue < curr_sensor.currValue and oldValue2 < curr_sensor.currValue and timestep != 0:
-                playsound("sounds/simple_step.mp3", block=False)
             
 
     def Act(self):

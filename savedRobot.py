@@ -30,10 +30,11 @@ class SAVED_ROBOT:
             with open("sensorValues.bin", "rb") as f:
                 sensorValues = pickle.load(f)
             for jointName in pyrosim.jointNamesToIndices:
-                self.motors[jointName] = MOTOR(jointName)
+                self.motors[jointName] = MOTOR(jointName, hollow=True)
                 self.motors[jointName].Load_Value_Array(motorValues[jointName])
                 if jointName.decode("utf8") in sensorValues:
                     self.motors[jointName].Load_Sensor_Array(sensorValues[jointName.decode("utf8")])
+
             
 
     def Act(self, timestep):

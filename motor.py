@@ -5,11 +5,12 @@ from pyglet.resource import media
 import pyrosim.pyrosim as pyrosim
 
 class MOTOR:
-    def __init__(self, jointName):
+    def __init__(self, jointName, hollow):
         self.jointName = jointName
         self.storedValues = numpy.zeros(c.SIM_STEPS)
         self.sensorValues = numpy.zeros(c.SIM_STEPS)
-        self.stepSound = media("sounds/step.mp3", streaming=False)
+        if hollow:
+            self.stepSound = media("sounds/step.mp3", streaming=False)
 
 
     def Load_Value_Array(self, storedValues):
