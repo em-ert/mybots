@@ -2,7 +2,7 @@ import constants as c
 import copy
 import numpy as np
 import os
-from playsound import playsound
+from pyglet.resource import media
 from solution import SOLUTION
 
 class AFPO:
@@ -44,8 +44,10 @@ class AFPO:
                 self.Evolve_For_One_Generation()
                 genCount -= 1
                 print("Remaining: " + str(genCount))
-                if genCount == 0:
-                    playsound("sounds/toaster_ding.mp3", block=False)
+                if genCount == 1:
+                    toaster = media("sounds/toaster_ding.mp3", streaming=False)
+                    toaster.play()
+                    
             # Could save results at n-1 generation or at end?
         
         # self.Save_All_Pareto_Front_Brains()
@@ -225,9 +227,8 @@ class AFPO:
         return best
     
     def Save_Best_Brain(self, bestSolution):
-        bestSolution.Create_Brain()          
-        os.system("mv brain" + str(bestSolution.myID) + ".nndf best/brain" + str(bestSolution.myID) + ".nndf")
-
+        bestSolution.Create_Brain()         
+        os.system("mv brain" + str(bestSolution.myID) + ".nndf best/brain" + str(bestSolution.myID)+ ".nndf")
     def Show_Best_Brain(self, bestSolution):
         bestSolution.Start_Simulation("DIRECT", True)
         bestSolution.Start_Simulation("GUI", True)
