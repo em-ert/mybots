@@ -10,6 +10,7 @@
             "type": "python",
             "request": "launch",
             "program": "search.py",
+            "args": ["2&>1"],
             "console": "integratedTerminal",
             "justMyCode": false
         },

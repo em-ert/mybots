@@ -1,6 +1,5 @@
 import constants as c
 import pickle
-from playsound import playsound
 import pybullet as p
 import pybullet_data
 from pyglet.resource import media
