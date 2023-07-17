@@ -1,5 +1,6 @@
 import constants as c
 import copy
+import datetime
 import numpy as np
 import os
 from pyglet.resource import media
@@ -229,6 +230,10 @@ class AFPO:
     def Save_Best_Brain(self, bestSolution):
         bestSolution.Create_Brain()         
         os.system("mv brain" + str(bestSolution.myID) + ".nndf best/brain" + str(bestSolution.myID)+ ".nndf")
+        brain_tracker = open("best/brain_tracker.txt", "a")
+        brain_tracker.write("Brain " + str(bestSolution.myID) + ": " + str(datetime.datetime.now()))
+        brain_tracker.close()
+
     def Show_Best_Brain(self, bestSolution):
         bestSolution.Start_Simulation("DIRECT", True)
         bestSolution.Start_Simulation("GUI", True)
