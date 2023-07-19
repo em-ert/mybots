@@ -1,6 +1,7 @@
 import constants as c
 import copy
 import datetime
+import logging
 import numpy as np
 import os
 from pyglet.resource import media
@@ -33,7 +34,6 @@ class AFPO:
         for currentGeneration in range(self.genSize):
             if currentGeneration == 0:
                 genCount = self.genSize
-                print("Start: " + str(genCount))
                 # Run simulation for first generation
                 self.Run_Simulations(self.population)
                 genCount -= 1

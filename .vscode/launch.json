@@ -21,7 +21,7 @@
             "type": "python",
             "request": "launch",
             "program": "simulate.py",
-            "args": ["GUI", "312", "True", "2&>1"],
+            "args": ["GUI", "312", "True", "> out 2>error"],
             "console": "integratedTerminal",
             "justMyCode": false 
         },

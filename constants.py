@@ -1,9 +1,9 @@
-SIM_STEPS = 500
+SIM_STEPS = 1000
 MAX_FORCE = 40
 
-NUMBER_OF_GENERATIONS = 50
+NUMBER_OF_GENERATIONS = 80
 
-POPULATION_SIZE = 30
+POPULATION_SIZE = 20
 
 INCLUDE_UPPER_LINKS = False
 NUM_SENSOR_NEURONS = 4
@@ -11,7 +11,7 @@ NUM_AUDITORY_NEURONS = 1
 NUM_HIDDEN_NEURONS = 3
 NUM_MOTOR_NEURONS = 8
 
-BPM = 120  # Modify this value to auto-set the rest
+BPM = 90  # Modify this value to auto-set the rest
 QUARTER = 60 / BPM              # 0.5
 EIGHTH = QUARTER / 2            # 0.25
 SIXTEENTH = EIGHTH / 2          # 0.125
