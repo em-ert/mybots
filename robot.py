@@ -109,7 +109,7 @@ class ROBOT:
                 jointName = self.nn.Get_Motor_Neurons_Joint(neuronName)
                 jointName = bytes(jointName, 'UTF-8')
                 motorValues[jointName] = self.motors[jointName].storedValues
-        with open("motorValues.bin", "wb") as f:
+        with open("motorValues.pickle", "wb") as f:
             pickle.dump(motorValues, f)
 
     def Save_Sensor_Values(self):
@@ -121,7 +121,7 @@ class ROBOT:
                 if joint.child == linkName:
                     joint_for_sensor = joint.name
                     sensorValues[joint_for_sensor] = self.sensors[linkName].values
-        with open("sensorValues.bin", "wb") as f:
+        with open("sensorValues.pickle", "wb") as f:
             pickle.dump(sensorValues, f)
 
 

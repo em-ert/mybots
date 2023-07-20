@@ -1,14 +1,15 @@
 import constants as c
 import copy
 import datetime
-import logging
 import numpy as np
 import os
+import operator
+import pickle
 from pyglet.resource import media
 from solution import SOLUTION
 
 class AFPO:
-    def __init__(self, genSize, popSize):
+    def __init__(self, nextAvailableID=0, currentGeneration=0, population={}, paretoFront = [], fitnessData=None):
         # Clear brain and fitness files
         os.system("rm brain*.nndf")
         os.system("rm fitness*.txt")
@@ -18,34 +19,52 @@ class AFPO:
         SOLUTION.Create_Body(0, 0, 1.2)
 
         # Set initial values for AFPO
-        self.genSize = genSize
-        self.popSize = popSize
-        self.nextAvailableID = 0
-        self.currentGeneration = 0
-        self.population = {}
-        self.paretoFront = []
+        self.genSize = c.NUMBER_OF_GENERATIONS
+        self.popSize = c.POPULATION_SIZE
+        self.checkpointEvery = c.CHECKPOINT_EVERY
+
+        self.nextAvailableID = nextAvailableID
+        self.currentGeneration = currentGeneration
+        self.population = population
+        self.paretoFront = paretoFront
+        if fitnessData == None:
+            self.fitnessData = np.zeros(shape=(self.genSize+1, self.popSize, 2))
 
         # Create initial population
         for i in range(self.popSize):
             self.population[i] = SOLUTION(self.nextAvailableID)
             self.nextAvailableID += 1
 
-    def Evolve(self):
-        for currentGeneration in range(self.genSize):
+
+    def Evolve(self, fromCheckpoint=0):
+        remainingGens = self.genSize - fromCheckpoint
+        # XXX: Eventually remove this after testing
+        if (fromCheckpoint != self.currentGeneration):
+            raise Exception("Mismatched genCount")
+        
+        for currentGeneration in range(remainingGens):
             if currentGeneration == 0:
-                genCount = self.genSize
                 # Run simulation for first generation
                 self.Run_Simulations(self.population)
-                genCount -= 1
-                print("Remaining: " + str(genCount))
+                self.Save_Stats()
+                self.currentGeneration += 1
+                print("Remaining: " + str(self.genSize - self.currentGeneration))
                     
                 
             else:
                 # Evolve for one generation
                 self.Evolve_For_One_Generation()
-                genCount -= 1
-                print("Remaining: " + str(genCount))
-                if genCount == 1:
+                self.Save_Stats()
+                self.currentGeneration += 1
+                print("Remaining: " + str(self.genSize - self.currentGeneration))
+                
+                # Check for checkpoint
+                if self.currentGeneration % self.checkpointEvery == 0:
+                    self.Save_Checkpoint()
+                    continue
+
+                # Ding if necessary
+                if self.genSize - self.currentGeneration == 1:
                     toaster = media("sounds/toaster_ding.mp3", streaming=False)
                     toaster.play()
                     
@@ -56,8 +75,21 @@ class AFPO:
         best = self.Get_Best_Brain()
         self.Save_Best_Brain(best)
         self.Show_Best_Brain(best)
-        
-            
+    
+    def Save_Stats(self):
+        for index, solID in enumerate(self.population):
+            self.fitnessData[self.currentGeneration, index, 0] = self.population[solID].fitness
+            self.fitnessData[self.currentGeneration, index, 1] = self.population[solID].age
+        # XXX: Eventually remove this after testing
+        print(self.currentGeneration)
+        print(self.fitnessData)
+
+    def Save_Checkpoint(self):
+        filename = "checkpoints/{}gens.pickle".format(self.currentGeneration)
+
+        print("Checkpoint reached at gen " + str(self.currentGeneration) + "! Saving population in file: ", filename)
+        with open(filename, 'wb') as f:
+            pickle.dump(self, f, pickle.HIGHEST_PROTOCOL)
 
     def Evolve_For_One_Generation(self):
         # Age individuals in the population
@@ -69,11 +101,9 @@ class AFPO:
 
         # Run Simulations on children to get their respective fitnesses
         self.Run_Simulations(children)
-        print(len(self.population))
 
         # Update the population dictionary to include the children
         self.population.update(children)
-        print(len(self.population))
 
         self.Select()
 
@@ -220,12 +250,17 @@ class AFPO:
             self.population[individual].Start_Simulation("GUI", True)
 
     def Get_Best_Brain(self):
+        popList = list(self.population.values())
+        return sorted(popList, key=operator.attrgetter('fitness'), reverse=True)[0]
+
+        """
         best = self.population[self.paretoFront[0]]
         for individual in self.paretoFront:
             if self.population[individual].fitness > best.fitness:
                 best = self.population[individual]
 
         return best
+        """
     
     def Save_Best_Brain(self, bestSolution):
         bestSolution.Create_Brain()         

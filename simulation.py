@@ -109,7 +109,7 @@ class SIMULATION:
                 p.stepSimulation()
             
     def Saved_Run(self):
-        with open("motorValues.bin", "rb") as f:
+        with open("motorValues.pickle", "rb") as f:
             motorValues = pickle.load(f)
         return motorValues
         

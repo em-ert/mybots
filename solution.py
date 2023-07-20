@@ -148,7 +148,7 @@ class SOLUTION:
             os.system("python3 simulate.py " + 
                     directOrGUI + " " +
                     str(self.myID) +
-                    " False 2>&1 &")
+                    " False 2&>1 &")
             
         # Note: Without "&" best runs are shown serially
         else:
