@@ -1,7 +1,7 @@
 from bots.capsuleBot import CAPSULE_BOT
 import constants as c
 import math
-import numpy
+import numpy as np
 import os
 import pybullet as p
 import pyrosim.pyrosim as pyrosim
@@ -12,19 +12,19 @@ import time
 class SOLUTION:
     def __init__(self, ID):
         # Sensor to hidden weights
-        self.s_h_Weights = numpy.random.rand(c.NUM_SENSOR_NEURONS, c.NUM_HIDDEN_NEURONS)
+        self.s_h_Weights = np.random.rand(c.NUM_SENSOR_NEURONS, c.NUM_HIDDEN_NEURONS)
         self.s_h_Weights = (self.s_h_Weights * 2) - 1
 
         # Auditory to hidden weights
-        self.a_h_Weights = numpy.random.rand(c.NUM_AUDITORY_NEURONS, c.NUM_HIDDEN_NEURONS)
+        self.a_h_Weights = np.random.rand(c.NUM_AUDITORY_NEURONS, c.NUM_HIDDEN_NEURONS)
         self.a_h_Weights = (self.a_h_Weights * 2) - 1
 
         # Hidden to hidden weights
-        self.h_h_Weights = numpy.random.rand(c.NUM_HIDDEN_NEURONS, c.NUM_HIDDEN_NEURONS)
+        self.h_h_Weights = np.random.rand(c.NUM_HIDDEN_NEURONS, c.NUM_HIDDEN_NEURONS)
         self.h_h_Weights = (self.h_h_Weights * 2) - 1
 
         # Hidden to motor weights
-        self.h_m_Weights = numpy.random.rand(c.NUM_HIDDEN_NEURONS, c.NUM_MOTOR_NEURONS)
+        self.h_m_Weights = np.random.rand(c.NUM_HIDDEN_NEURONS, c.NUM_MOTOR_NEURONS)
         self.h_m_Weights = (self.h_m_Weights * 2) - 1
 
         self.myID = ID

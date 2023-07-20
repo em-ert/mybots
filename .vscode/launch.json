@@ -5,6 +5,7 @@
     "version": "0.2.0",
     "configurations": [
 
+
         {
             "name": "Python: search pickled",
             "type": "python",
@@ -21,6 +22,15 @@
             "request": "launch",
             "program": "search.py",
             "args": ["0", "2&>1"],
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+        
+        {
+            "name": "Python: analyze",
+            "type": "python",
+            "request": "launch",
+            "program": "analyze.py",
             "console": "integratedTerminal",
             "justMyCode": false
         },

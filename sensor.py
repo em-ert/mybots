@@ -1,5 +1,5 @@
 import constants as c
-import numpy
+import numpy as np
 import pyrosim.pyrosim as pyrosim
 
 
@@ -13,8 +13,8 @@ class SENSOR:
         self.values[timestep] = pyrosim.Get_Touch_Sensor_Value_For_Link(self.linkName)
 
     def Prepare_To_Sense(self):
-        self.values = numpy.zeros(c.SIM_STEPS)
+        self.values = np.zeros(c.SIM_STEPS)
 
     def Save_Values(self):
-        numpy.save("data/" + self.linkName + "_sensor_values.npy", self.values)
+        np.save("data/" + self.linkName + "_sensor_values.npy", self.values)
         print("Data saved to /data/" + self.linkName + "_sensor_values.npy")

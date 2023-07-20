@@ -1,5 +1,5 @@
 import constants as c
-import numpy
+import numpy as np
 import pyrosim.pyrosim as pyrosim
 
 
@@ -12,8 +12,8 @@ class METRONOME_SENSOR:
         self.values[timestep] = click
 
     def Prepare_To_Sense(self):
-        self.values = numpy.zeros(c.SIM_STEPS)
+        self.values = np.zeros(c.SIM_STEPS)
 
     def Save_Values(self):
-        numpy.save("data/" + self.linkName + "_sensor_values.npy", self.values)
-        print("Data saved to /data/" + self.linkName + "_sensor_values.npy")
+        np.save("data/metronome_sensor_values.npy", self.values)
+        print("Data saved to /data/metronome_sensor_values.npy")

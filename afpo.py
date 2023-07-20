@@ -2,6 +2,7 @@ import constants as c
 import copy
 import datetime
 import numpy as np
+import matplotlib.pyplot as plt
 import os
 import operator
 import pickle
@@ -28,7 +29,7 @@ class AFPO:
         self.population = population
         self.paretoFront = paretoFront
         if fitnessData == None:
-            self.fitnessData = np.zeros(shape=(self.genSize+1, self.popSize, 2))
+            self.fitnessData = np.zeros(shape=(self.genSize, self.popSize, 2))
 
         # Create initial population
         for i in range(self.popSize):
@@ -74,6 +75,7 @@ class AFPO:
         # self.Show_All_Pareto_Front_Brains()
         best = self.Get_Best_Brain()
         self.Save_Best_Brain(best)
+        self.Save_Data_For_Analysis()
         self.Show_Best_Brain(best)
     
     def Save_Stats(self):
@@ -262,12 +264,20 @@ class AFPO:
         return best
         """
     
+    def Save_Data_For_Analysis(self):
+        np.save("data/age_fitness_values.npy", self.fitnessData)
+        print("Data saved to /data/age_fitness_values.npy")
+    
     def Save_Best_Brain(self, bestSolution):
         bestSolution.Create_Brain()         
         os.system("mv brain" + str(bestSolution.myID) + ".nndf best/brain" + str(bestSolution.myID)+ ".nndf")
         brain_tracker = open("best/brain_tracker.txt", "a")
         brain_tracker.write("Brain " + str(bestSolution.myID) + ": " + str(datetime.datetime.now()))
         brain_tracker.close()
+
+    # TODO: add graphing functionality
+    def Graph_Results(self):
+        pass
 
     def Show_Best_Brain(self, bestSolution):
         bestSolution.Start_Simulation("DIRECT", True)

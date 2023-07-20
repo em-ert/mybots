@@ -54,8 +54,8 @@ class SIMULATION:
                     click = -1
                 self.robot.Think(click)
                 self.robot.Act()
+                self.robot.Sense_Rhythm(t, click)
                 self.robot.Sense(t+1)
-                self.robot.Sense_Rhythm(t+1, click)
                     
                 remaining = stepEnd - time.time()
                 if remaining < 0:
@@ -78,8 +78,8 @@ class SIMULATION:
                     click = -1
                 self.robot.Think(click)
                 self.robot.Act_And_Save(t)
+                self.robot.Sense_Rhythm(t, click)
                 self.robot.Sense(t+1)
-                self.robot.Sense_Rhythm(t+1, click)
                     
                 remaining = stepEnd - time.time()
                 if remaining < 0:
@@ -89,6 +89,7 @@ class SIMULATION:
                 p.stepSimulation()
             self.robot.Save_Motor_Values()
             self.robot.Save_Sensor_Values()
+            self.robot.Save_Metronome_Sensor_Values()
         
         else:
             metronome = media("sounds/metronome.mp3", streaming=False)
@@ -109,7 +110,7 @@ class SIMULATION:
                 p.stepSimulation()
             
     def Saved_Run(self):
-        with open("motorValues.pickle", "rb") as f:
+        with open("pickles/motorValues.pickle", "rb") as f:
             motorValues = pickle.load(f)
         return motorValues
         

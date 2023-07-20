@@ -20,9 +20,9 @@ parser.add_argument("show_best", help="Whether or not the simulation is showing 
 
 args = parser.parse_args()
 
-# numpy.save("data/sinusoidalValues", targetAngles)
+# np.save("data/sinusoidalValues", targetAngles)
 # exit()
-numpy.save("data/backLegSensorValues", backLegSensorValues)
-numpy.save("data/frontLegSensorValues", frontLegSensorValues)
-numpy.save("data/sinusoidalValues", c.targetAngles)
+np.save("data/backLegSensorValues", backLegSensorValues)
+np.save("data/frontLegSensorValues", frontLegSensorValues)
+np.save("data/sinusoidalValues", c.targetAngles)
 """

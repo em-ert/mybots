@@ -24,10 +24,10 @@ class SAVED_ROBOT:
 
     def Prepare_To_Act(self):
         self.motors = {}
-        if os.path.exists("motorValues.pickle") and os.path.exists("sensorValues.pickle"):
-            with open("motorValues.pickle", "rb") as f:
+        if os.path.exists("pickles/motorValues.pickle") and os.path.exists("pickles/sensorValues.pickle"):
+            with open("pickles/motorValues.pickle", "rb") as f:
                 motorValues = pickle.load(f)
-            with open("sensorValues.pickle", "rb") as f:
+            with open("pickles/sensorValues.pickle", "rb") as f:
                 sensorValues = pickle.load(f)
             for jointName in pyrosim.jointNamesToIndices:
                 self.motors[jointName] = MOTOR(jointName, hollow=True)

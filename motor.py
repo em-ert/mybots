@@ -1,5 +1,5 @@
 import constants as c
-import numpy
+import numpy as np
 import pybullet as p
 from pyglet.resource import media
 import pyrosim.pyrosim as pyrosim
@@ -7,8 +7,8 @@ import pyrosim.pyrosim as pyrosim
 class MOTOR:
     def __init__(self, jointName, hollow):
         self.jointName = jointName
-        self.storedValues = numpy.zeros(c.SIM_STEPS)
-        self.sensorValues = numpy.zeros(c.SIM_STEPS)
+        self.storedValues = np.zeros(c.SIM_STEPS)
+        self.sensorValues = np.zeros(c.SIM_STEPS)
         if hollow:
             self.stepSound = media("sounds/step.mp3", streaming=False)
 
@@ -54,6 +54,6 @@ class MOTOR:
 
     """
     def Save_Values(self):
-        numpy.save("data/" + str(self.jointName, 'UTF-8') + "_motor_values.npy", self.motorValues)
+        np.save("data/" + str(self.jointName, 'UTF-8') + "_motor_values.npy", self.motorValues)
         print("Data saved to /data/" + str(self.jointName, 'UTF-8') + "_motor_values.npy")
     """
