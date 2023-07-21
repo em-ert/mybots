@@ -8,10 +8,17 @@ import os
 import operator
 import pickle
 from pyglet.resource import media
+import random
 from solution import SOLUTION
 
 class AFPO:
-    def __init__(self, nextAvailableID=0, currentGeneration=0, population={}, paretoFront = [], fitnessData=None):
+    def __init__(self, random_seed=0, nextAvailableID=0, currentGeneration=0, population={}, paretoFront = [], fitnessData=None):
+        self.seed = random_seed
+
+        # Seed rng 
+        np.random.seed(self.seed)
+        random.seed(self.seed)
+
         # Clear brain and fitness files
         os.system("rm brain*.nndf")
         os.system("rm fitness*.txt")
@@ -74,8 +81,8 @@ class AFPO:
         best = self.Get_Best_Brain()
         self.Save_Best_Brain(best)
         self.Save_Data_For_Analysis()
-        self.Graph_Results()
         self.Show_Best_Brain(best)
+        self.Graph_Results()
     
     def Save_Stats(self):
         for index, solID in enumerate(self.population):
@@ -88,9 +95,12 @@ class AFPO:
     def Save_Checkpoint(self):
         filename = "checkpoints/{}gens.pickle".format(self.currentGeneration)
 
+        rng_state = random.getstate()
+        np_rng_state = np.random.get_state()
+
         print("Checkpoint reached at gen " + str(self.currentGeneration) + "! Saving population in file: ", filename)
         with open(filename, 'wb') as f:
-            pickle.dump(self, f, pickle.HIGHEST_PROTOCOL)
+            pickle.dump([self, rng_state, np_rng_state], f, pickle.HIGHEST_PROTOCOL)
 
     def Evolve_For_One_Generation(self):
         # Age individuals in the population

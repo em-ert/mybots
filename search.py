@@ -16,11 +16,10 @@ else:
     pickleFile = "checkpoints/" + checkpoint + "gens.pickle"
     try:
         with open(pickleFile, "rb") as f:
-            afpo = pickle.load(f)
+            afpo = pickle.load(f)[0]
     except:
         raise Exception("Pickled checkpoint file not found: " + pickleFile)
     else:
-        # afpo = AFPO(nextAvailableID=old.nextAvailableID, currentGeneration=old.currentGeneration, population=old.population, paretoFront=old.paretoFront, fitnessData=old.fitnessData)
         afpo.Evolve(int(checkpoint))
 
 # python3 simulate.py GUI 1 False

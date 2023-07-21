@@ -8,6 +8,7 @@ import pyrosim.pyrosim as pyrosim
 from sensor import SENSOR
 from metronomeSensor import METRONOME_SENSOR
 from motor import MOTOR
+import numpy as np
 
 
 class ROBOT:
@@ -65,13 +66,19 @@ class ROBOT:
 
 
     def Sense(self, timestep):
+        stepValue = 0
         for sensor in self.sensors:
             curr_sensor = self.sensors[sensor]
             curr_sensor.Get_Value(timestep)
-
-
+            step = curr_sensor.Get_Step(timestep)
+            stepValue += step
+        self.fitness += stepValue * np.sin((2*np.pi)/c.MET_FRAME_RATIO)
+        
+            
     def Sense_Rhythm(self, timestep, click):
         self.metronomeSensor.Get_Value(timestep, click)
+        
+        """
         for link in ["FrontLower", "BackLower", "LeftLower", "RightLower"]:
             linkIndex = pyrosim.linkNamesToIndices[link]
             linkState = p.getLinkState(self.robotId, linkIndex, 1)
@@ -80,7 +87,7 @@ class ROBOT:
             for velocity in linkVelocities:
                 totalChange += velocity
             self.fitness += totalChange * click
-            
+        """    
 
     def Act(self):
         for neuronName in self.nn.Get_Neuron_Names():
