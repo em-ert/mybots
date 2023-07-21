@@ -1,3 +1,4 @@
+from analyze import ANALYZE
 import constants as c
 import copy
 import datetime
@@ -50,7 +51,6 @@ class AFPO:
                 self.Save_Stats()
                 self.currentGeneration += 1
                 print("Remaining: " + str(self.genSize - self.currentGeneration))
-                    
                 
             else:
                 # Evolve for one generation
@@ -68,14 +68,13 @@ class AFPO:
                 if self.genSize - self.currentGeneration == 1:
                     toaster = media("sounds/toaster_ding.mp3", streaming=False)
                     toaster.play()
-                    
-            # Could save results at n-1 generation or at end?
-        
+                            
         # self.Save_All_Pareto_Front_Brains()
         # self.Show_All_Pareto_Front_Brains()
         best = self.Get_Best_Brain()
         self.Save_Best_Brain(best)
         self.Save_Data_For_Analysis()
+        self.Graph_Results()
         self.Show_Best_Brain(best)
     
     def Save_Stats(self):
@@ -272,12 +271,12 @@ class AFPO:
         bestSolution.Create_Brain()         
         os.system("mv brain" + str(bestSolution.myID) + ".nndf best/brain" + str(bestSolution.myID)+ ".nndf")
         brain_tracker = open("best/brain_tracker.txt", "a")
-        brain_tracker.write("Brain " + str(bestSolution.myID) + ": " + str(datetime.datetime.now()))
+        brain_tracker.write("Brain " + str(bestSolution.myID) + ": " + str(datetime.datetime.now()) + "\n")
         brain_tracker.close()
 
     # TODO: add graphing functionality
     def Graph_Results(self):
-        pass
+        ANALYZE.Run_Analysis()
 
     def Show_Best_Brain(self, bestSolution):
         bestSolution.Start_Simulation("DIRECT", True)

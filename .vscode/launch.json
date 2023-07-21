@@ -11,7 +11,7 @@
             "type": "python",
             "request": "launch",
             "program": "search.py",
-            "args": ["2", "2&>1"],
+            "args": "100 2&>1.txt",
             "console": "integratedTerminal",
             "justMyCode": false
         },
@@ -21,7 +21,7 @@
             "type": "python",
             "request": "launch",
             "program": "search.py",
-            "args": ["0", "2&>1"],
+            "args": "0 2&>1.txt",
             "console": "integratedTerminal",
             "justMyCode": false
         },
@@ -40,7 +40,7 @@
             "type": "python",
             "request": "launch",
             "program": "simulate.py",
-            "args": ["GUI", "312", "True", "2>&1"],
+            "args": ["GUI", "3009", "True", "2&>1"],
             "console": "integratedTerminal",
             "justMyCode": false 
         },
