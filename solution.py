@@ -10,13 +10,7 @@ import time
 
 
 class SOLUTION:
-    def __init__(self, random_seed, ID):
-        self.seed = random_seed
-
-        # Seed rng 
-        np.random.seed(self.seed)
-        random.seed(self.seed)
-
+    def __init__(self, ID):
         # Sensor to hidden weights
         self.s_h_Weights = np.random.rand(c.NUM_SENSOR_NEURONS, c.NUM_HIDDEN_NEURONS)
         self.s_h_Weights = (self.s_h_Weights * 2) - 1

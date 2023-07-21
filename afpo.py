@@ -12,13 +12,7 @@ import random
 from solution import SOLUTION
 
 class AFPO:
-    def __init__(self, random_seed=0, nextAvailableID=0, currentGeneration=0, population={}, paretoFront = [], fitnessData=None):
-        self.seed = random_seed
-
-        # Seed rng 
-        np.random.seed(self.seed)
-        random.seed(self.seed)
-
+    def __init__(self, nextAvailableID=0, currentGeneration=0, population={}, paretoFront = [], fitnessData=None):
         # Clear brain and fitness files
         os.system("rm brain*.nndf")
         os.system("rm fitness*.txt")
@@ -95,7 +89,7 @@ class AFPO:
     def Save_Checkpoint(self):
         filename = "checkpoints/{}gens.pickle".format(self.currentGeneration)
 
-        rng_state = random.getstate()
+        rng_state = random.get_state()
         np_rng_state = np.random.get_state()
 
         print("Checkpoint reached at gen " + str(self.currentGeneration) + "! Saving population in file: ", filename)
