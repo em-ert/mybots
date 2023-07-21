@@ -22,12 +22,13 @@ else:
     pickleFile = "checkpoints/" + checkpoint + "gens.pickle"
     try:
         with open(pickleFile, "rb") as f:
-            afpo = pickle.load(f)[0]
-            np.random.set_state(pickle.load(f)[1])
-            random.set_state(pickle.load(f)[2])
+            pickleObject = pickle.load(f)
     except:
         raise Exception("Pickled checkpoint file not found: " + pickleFile)
     else:
+        afpo = pickleObject[0]
+        np.random.set_state(pickleObject[1])
+        random.setstate(pickleObject[2])
         afpo.Evolve(int(checkpoint))
 
 # python3 simulate.py GUI 1 False

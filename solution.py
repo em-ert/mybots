@@ -117,24 +117,33 @@ class SOLUTION:
         pyrosim.End()
 
     def Mutate(self):
-        # Mutate S - H
-        randomRow = random.randint(0, c.NUM_SENSOR_NEURONS - 1)
-        randomColumn = random.randint(0, c.NUM_HIDDEN_NEURONS - 1)
-        self.s_h_Weights[randomRow,randomColumn] = (random.random() * 2) - 1
-
-        # Mutate A - H
-        randomRow = random.randint(0, c.NUM_AUDITORY_NEURONS - 1)
-        randomColumn = random.randint(0, c.NUM_HIDDEN_NEURONS - 1)
-        self.a_h_Weights[randomRow,randomColumn] = (random.random() * 2) - 1
-
-        # Mutate H - H
-        randomRow = random.randint(0, c.NUM_HIDDEN_NEURONS - 1)
-        randomColumn = random.randint(0, c.NUM_HIDDEN_NEURONS - 1)
-        self.h_h_Weights[randomRow,randomColumn] = (random.random() * 2) - 1
-        # Mutate H - H
-        randomRow = random.randint(0, c.NUM_HIDDEN_NEURONS - 1)
-        randomColumn = random.randint(0, c.NUM_MOTOR_NEURONS - 1)
-        self.h_m_Weights[randomRow,randomColumn] = (random.random() * 2) - 1
+        randomLayer = random.randint(0, 3)
+        if randomLayer == 0:
+            # Mutate S - H
+            randomRow = random.randint(0, c.NUM_SENSOR_NEURONS - 1)
+            randomColumn = random.randint(0, c.NUM_HIDDEN_NEURONS - 1)
+            self.s_h_Weights[randomRow,randomColumn] = (random.random() * 2) - 1
+        
+        elif randomLayer == 1:
+            # Mutate A - H
+            randomRow = random.randint(0, c.NUM_AUDITORY_NEURONS - 1)
+            randomColumn = random.randint(0, c.NUM_HIDDEN_NEURONS - 1)
+            self.a_h_Weights[randomRow,randomColumn] = (random.random() * 2) - 1
+        
+        elif randomLayer == 2:
+            # Mutate H - H
+            randomRow = random.randint(0, c.NUM_HIDDEN_NEURONS - 1)
+            randomColumn = random.randint(0, c.NUM_HIDDEN_NEURONS - 1)
+            self.h_h_Weights[randomRow,randomColumn] = (random.random() * 2) - 1
+        
+        elif randomLayer == 3:
+            # Mutate H - H
+            randomRow = random.randint(0, c.NUM_HIDDEN_NEURONS - 1)
+            randomColumn = random.randint(0, c.NUM_MOTOR_NEURONS - 1)
+            self.h_m_Weights[randomRow,randomColumn] = (random.random() * 2) - 1
+        
+        else:
+            raise Exception("Random choice error!")
 
     def Reset_Simulation_State(self):
         self.wasSimulated = False

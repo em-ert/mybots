@@ -40,7 +40,7 @@ class AFPO:
 
 
     def Evolve(self, fromCheckpoint=0):
-        remainingGens = self.genSize - fromCheckpoint
+        remainingGens = c.NUMBER_OF_GENERATIONS - fromCheckpoint
         # XXX: Eventually remove this after testing
         if (fromCheckpoint != self.currentGeneration):
             raise Exception("Mismatched genCount")
@@ -83,18 +83,18 @@ class AFPO:
             self.fitnessData[self.currentGeneration, index, 0] = self.population[solID].fitness
             self.fitnessData[self.currentGeneration, index, 1] = self.population[solID].age
         # XXX: Eventually remove this after testing
-        print(self.currentGeneration)
-        print(self.fitnessData)
+        print("\n")
+        print(np.amax(self.fitnessData[self.currentGeneration, :, :], axis=0)[0])
 
     def Save_Checkpoint(self):
         filename = "checkpoints/{}gens.pickle".format(self.currentGeneration)
 
-        rng_state = random.get_state()
         np_rng_state = np.random.get_state()
+        rng_state = random.getstate()
 
         print("Checkpoint reached at gen " + str(self.currentGeneration) + "! Saving population in file: ", filename)
         with open(filename, 'wb') as f:
-            pickle.dump([self, rng_state, np_rng_state], f, pickle.HIGHEST_PROTOCOL)
+            pickle.dump([self, np_rng_state, rng_state], f, pickle.HIGHEST_PROTOCOL)
 
     def Evolve_For_One_Generation(self):
         # Age individuals in the population

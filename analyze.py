@@ -74,7 +74,7 @@ class ANALYZE:
         fig, ax2 = plt.subplots()
         y = maxFitnesses
         x = np.arange(len(y))
-        ax2.xaxis.set_major_locator(ticker.MultipleLocator(base=1))
+        ax2.xaxis.set_major_locator(ticker.MultipleLocator(base=10))
         ax2.plot(x, y)
         ax2.set_xlim(0, len(y)-1)
         ax2.set_ylabel("Fitness")
