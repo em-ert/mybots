@@ -1,71 +1,333 @@
 pybullet build time: Jul 14 2023 15:41:31
-Data saved to /data/age_fitness_values.npy
+rm: cannot remove 'brain*.nndf': No such file or directory
 pybullet build time: Jul 14 2023 15:41:31
 pybullet build time: Jul 14 2023 15:41:31
-startThreads creating 1 threads.
-starting thread 0
-started thread 0 
-argc=2
-argv[0] = --unused
-argv[1] = --start_demo_name=Physics Server
-ExampleBrowserThreadFunc started
-X11 functions dynamically loaded using dlopen/dlsym OK!
-X11 functions dynamically loaded using dlopen/dlsym OK!
-Creating context
-Created GL 3.3 context
-Direct GLX rendering context obtained
-Making context current
-GL_VENDOR=Mesa/X.org
-GL_RENDERER=llvmpipe (LLVM 15.0.7, 256 bits)
-GL_VERSION=4.5 (Core Profile) Mesa 22.2.5-0ubuntu0.1~22.04.3
-GL_SHADING_LANGUAGE_VERSION=4.50
-pthread_getconcurrency()=0
-Version = 4.5 (Core Profile) Mesa 22.2.5-0ubuntu0.1~22.04.3
-Vendor = Mesa/X.org
-Renderer = llvmpipe (LLVM 15.0.7, 256 bits)
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
 b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
-expected a world element, continuing without it.b3Printf: Selected demo: Physics Server
-startThreads creating 1 threads.
-starting thread 0
-started thread 0 
-MotionThreadFunc thread started
-ven = Mesa/X.org
-ven = Mesa/X.org
-rm: cannot remove 'brain1476.nndf': No such file or directory
-b3Printf: b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.
 
-b3Printf: expected a world element, continuing without it.
-Data saved to /data/FrontLower_sensor_values.npy
-Data saved to /data/BackLower_sensor_values.npy
-Data saved to /data/LeftLower_sensor_values.npy
-Data saved to /data/RightLower_sensor_values.npy
-Data saved to /data/RightLower_sensor_values.npy
-Data saved to /data/RightLower_sensor_values.npy
-Data saved to /data/RightLower_sensor_values.npy
-Data saved to /data/RightLower_sensor_values.npy
-Data saved to /data/RightLower_sensor_values.npy
-Data saved to /data/RightLower_sensor_values.npy
-Data saved to /data/RightLower_sensor_values.npy
-Data saved to /data/RightLower_sensor_values.npy
-Data saved to /data/RightLower_sensor_values.npy
-Data saved to /data/RightLower_sensor_values.npy
-Data saved to /data/RightLower_sensor_values.npy
-Data saved to /data/RightLower_sensor_values.npy
-Data saved to /data/metronome_sensor_values.npy
-numActiveThreads = 0
-stopping threads
-Thread with taskId 0 exiting
-Thread TERMINATED
-destroy semaphore
-semaphore destroyed
-destroy main semaphore
-main semaphore destroyed
-finished
-numActiveThreads = 0
-btShutDownExampleBrowser stopping threads
-Thread with taskId 0 exiting
-Thread TERMINATED
-destroy semaphore
-semaphore destroyed
-destroy main semaphore
-main semaphore destroyed
+65.49845849551917
+Remaining: 49
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.
+
+65.49845849551917
+Remaining: 48
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.
+
+65.49845849551917
+Remaining: 47
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.
+
+65.49845849551917
+Remaining: 46
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+pybullet build time: Jul 14 2023 15:41:31
+b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.Traceback (most recent call last):
+  File "/home/eertle/repos/mybots/simulate.py", line 9, in <module>
+    simulation.Run(solutionID)
+  File "/home/eertle/repos/mybots/simulation.py", line 62, in Run
+    raise Exception("Time error, ended with " + str(remaining) + " seconds")
+Exception: Time error, ended with -0.003253936767578125 seconds
+b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.
