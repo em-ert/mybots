@@ -16,9 +16,11 @@ class SAVED_ROBOT:
         self.robotId = p.loadURDF("body.urdf")
         self.motors = {}
 
-        brains = glob(self.root + "brain?.nndf")
+        brains = glob(self.root + "brain*.nndf")
         if len(brains) == 1:
             self.nn = NEURAL_NETWORK(brains[0])
+        else:
+            raise Exception("Incorrect number of brain files in root")
 
         pyrosim.Prepare_To_Simulate(self.robotId)
         self.Prepare_To_Act()

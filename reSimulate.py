@@ -4,4 +4,4 @@ import sys
 
 uniqueID = sys.argv[1]
 simulation = SIMULATION("GUI", uniqueID, "True")
-simulation.Replay_Run(uniqueID)
+simulation.Replay_Run()

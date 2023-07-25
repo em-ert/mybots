@@ -7,7 +7,17 @@
 
 
         {
-            "name": "Python: search pickled",
+            "name": "Python: search",
+            "type": "python",
+            "request": "launch",
+            "program": "search.py",
+            "args": "0 2&>1.txt",
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+
+        {
+            "name": "Python: checkpoint",
             "type": "python",
             "request": "launch",
             "program": "search.py",
@@ -17,13 +27,13 @@
         },
 
         {
-            "name": "Python: search",
+            "name": "Python: re-simulate",
             "type": "python",
             "request": "launch",
-            "program": "search.py",
-            "args": "0 2&>1.txt",
+            "program": "reSimulate.py",
+            "args": ["3", "2&>1"],
             "console": "integratedTerminal",
-            "justMyCode": false
+            "justMyCode": false 
         },
         
         {
@@ -33,16 +43,6 @@
             "program": "analyze.py",
             "console": "integratedTerminal",
             "justMyCode": false
-        },
-
-        {
-            "name": "Python: re-simulate",
-            "type": "python",
-            "request": "launch",
-            "program": "reSimulate.py",
-            "args": ["1", "2&>1"],
-            "console": "integratedTerminal",
-            "justMyCode": false 
         },
 
         {

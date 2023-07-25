@@ -15,7 +15,7 @@ import os
 class HISTORIAN:
     def __init__(self):
         # Get a unique ID to associate with the run
-        self.uniqueID = self.Get_Unique_Run_ID()
+        self.uniqueID = self.Get_And_Set_Unique_Run_ID()
 
         # Create folders to store run data
         path = "bestRuns/{}sols_{}gens/run{}".format(c.POPULATION_SIZE, c.NUMBER_OF_GENERATIONS, self.uniqueID)
@@ -28,7 +28,7 @@ class HISTORIAN:
         os.makedirs(self.path + "plots", exist_ok=False)
     
     # This method collects all of the necessary information related to the run and stores it in a folder
-    def Archive_Run_Info(self, solutionID, robot):
+    def Archive_Run_Info(self, solutionID, bestFitness):
         # Create the info file and write in the study details
         with open(self.path + "/info.txt", "w") as f:
             # Record time of run
@@ -36,36 +36,36 @@ class HISTORIAN:
             f.write(now.strftime("Time of run: %H:%M %p on %m/%d/%Y"))
             f.write("Random Seed: {}".format(c.SEED))
             f.write("Additional Details: {}".format(c.ADDITIONAL_DETAILS))
-            f.write()
+            f.write("")
 
             f.write("-----REVIEW COMMAND-----")
             f.write("python3 reSimulate.py GUI " + str(self.uniqueID) + " True 2&>1")
-            f.write()
+            f.write("")
 
             f.write("-----GENERAL DETAILS-----")
             f.write("Morphology: {}".format(c.BODY))
             f.write("Pop. Size: {}".format(c.POPULATION_SIZE))
             f.write("Num. Gens: {}".format(c.NUMBER_OF_GENERATIONS))
             f.write("Steps per sim.: {}".format(c.SIM_STEPS))
-            f.write()
+            f.write("")
 
             f.write("-----RHYTHMIC DETAILS-----")
             f.write("BPM: {}".format(c.BPM))
             f.write("Frame Rate: {}".format(c.FRAME_RATE))
             f.write("Metronome-frame ratio: {}".format(c.MET_FRAME_RATIO))
-            f.write()
+            f.write("")
 
             f.write("-----NETWORK DETAILS-----")
             f.write("Sensor: {}".format(c.NUM_SENSOR_NEURONS))
             f.write("Auditory: {}".format(c.NUM_AUDITORY_NEURONS))
             f.write("Hidden: {}".format(c.NUM_HIDDEN_NEURONS))
             f.write("Motor: {}".format(c.NUM_MOTOR_NEURONS))
-            f.write()
+            f.write("")
 
             f.write("-----BEST SOLUTION-----")
             f.write("Soln. ID: {}".format(solutionID))
-            f.write("Fitness: {}".format(robot.fitness))
-            f.write()
+            f.write("Fitness: {}".format(bestFitness))
+            f.write("")
 
     
     # Reads in the previous run ID from the last experiment, increments it, then writes it back to the file for the next run

@@ -59,17 +59,18 @@ class AFPO:
                 # Evolve for one generation
                 self.Evolve_For_One_Generation()
                 self.Save_Stats()
-                self.currentGeneration += 1
-                print("Remaining: " + str(self.genSize - self.currentGeneration))
                 
                 # Check for checkpoint
                 if self.currentGeneration % self.checkpointEvery == 0:
                     self.Save_Checkpoint()
 
                 # Ding if necessary
-                if self.genSize - self.currentGeneration == 1:
+                if self.genSize - self.currentGeneration == 0:
                     toaster = media("sounds/toaster_ding.mp3", streaming=False)
                     toaster.play()
+                
+                self.currentGeneration += 1
+                print("Remaining: " + str(self.genSize - self.currentGeneration))
                             
         # self.Save_All_Pareto_Front_Brains()
         # self.Show_All_Pareto_Front_Brains()
@@ -77,7 +78,8 @@ class AFPO:
         self.Save_Best_Brain(best, self.historian.path)
         self.Show_Best_Brain(best)
         self.Save_Fitness_Data_For_Analysis(self.historian.path)
-        self.Preserve_Record()
+        bestFitness = (np.amax(self.fitnessData[self.genSize-1, :, :], axis=0)[0])
+        self.Preserve_Record(best.myID, bestFitness)
     
     def Save_Stats(self):
         for index, solID in enumerate(self.population):
@@ -282,6 +284,6 @@ class AFPO:
         print("Data saved to " + fullPath)
 
     
-    def Preserve_Record(self):
-        self.historian.Archive_Run_Info()
+    def Preserve_Record(self, bestID, bestFitness):
+        self.historian.Archive_Run_Info(bestID, bestFitness)
         self.historian.Run_Analysis()
