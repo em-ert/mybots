@@ -46,6 +46,7 @@ class SOLUTION:
         bot = CAPSULE_BOT()
         bot.Create_Body(start_x, start_y, start_z)
 
+    # Produces an nndf file given the weights of the solution
     def Create_Brain(self):
         bot = CAPSULE_BOT()
         self.joints = bot.joints

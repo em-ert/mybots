@@ -1,5 +1,6 @@
 from bots.capsuleBot import CAPSULE_BOT
 import constants as c
+from historian import HISTORIAN
 import os
 import pickle
 import pybullet as p
@@ -28,6 +29,7 @@ class ROBOT:
         self.Prepare_To_Act()
         self.Prepare_To_Sense()
         self.Prepare_To_Sense_Audio()
+
         os.system("rm brain" + str(solutionID) + ".nndf")
 
     
@@ -109,6 +111,11 @@ class ROBOT:
                 # print("Name=" + neuronName + ", Joint=" + jointName  + ", Angle=" + str(desiredAngle))
 
 
+    def Set_Unique_ID_And_Path(self, uniqueID):
+        self.uniqueID = uniqueID
+        self.path = "bestRuns/{}sols_{}gens/run{}".format(c.POPULATION_SIZE, c.NUMBER_OF_GENERATIONS, self.uniqueID) + "/"
+
+
     def Save_Motor_Values(self):
         motorValues = {}
         for neuronName in self.nn.Get_Neuron_Names():
@@ -116,11 +123,14 @@ class ROBOT:
                 jointName = self.nn.Get_Motor_Neurons_Joint(neuronName)
                 jointName = bytes(jointName, 'UTF-8')
                 motorValues[jointName] = self.motors[jointName].storedValues
-        with open("pickles/motorValues.pickle", "wb") as f:
+        # Pickled values
+        with open(self.path + "pickles/motorValues.pickle", "wb") as f:
             pickle.dump(motorValues, f)
+
 
     def Save_Sensor_Values(self):
         sensorValues = {}
+        # Data values
         for neuronName in self.nn.Get_Neuron_Names():
             if self.nn.Is_Sensor_Neuron(neuronName):
                 linkName = self.nn.Get_Sensor_Neurons_Link(neuronName)
@@ -128,12 +138,15 @@ class ROBOT:
                 if joint.child == linkName:
                     joint_for_sensor = joint.name
                     sensorValues[joint_for_sensor] = self.sensors[linkName].values
-                    self.sensors[linkName].Save_Values()
-        with open("pickles/sensorValues.pickle", "wb") as f:
+                    self.sensors[linkName].Save_Values(self.path)
+        # Pickle Values
+        with open(self.path + "pickles/sensorValues.pickle", "wb") as f:
             pickle.dump(sensorValues, f)
 
+
+    # Data values
     def Save_Metronome_Sensor_Values(self):
-        self.metronomeSensor.Save_Values()
+        self.metronomeSensor.Save_Values(self.path)
 
 
     def Think(self, click):

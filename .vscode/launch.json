@@ -36,6 +36,16 @@
         },
 
         {
+            "name": "Python: re-simulate",
+            "type": "python",
+            "request": "launch",
+            "program": "reSimulate.py",
+            "args": ["1", "2&>1"],
+            "console": "integratedTerminal",
+            "justMyCode": false 
+        },
+
+        {
             "name": "Python: simulate",
             "type": "python",
             "request": "launch",

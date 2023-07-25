@@ -9,14 +9,14 @@ class ANALYZE:
         pass
 
     @staticmethod  
-    def Run_Analysis():
+    def Run_Analysis(path):
         now = datetime.datetime.now()
 
-        backLegSensor = np.load("data/BackLower_sensor_values.npy")
-        frontLegSensor = np.load("data/FrontLower_sensor_values.npy")
-        leftLegSensor = np.load("data/LeftLower_sensor_values.npy")
-        rightLegSensor = np.load("data/RightLower_sensor_values.npy")
-        metronomeSensor = np.load("data/metronome_sensor_values.npy")
+        backLegSensor = np.load(path + "data/BackLower_sensor_values.npy")
+        frontLegSensor = np.load(path + "data/FrontLower_sensor_values.npy")
+        leftLegSensor = np.load(path + "data/LeftLower_sensor_values.npy")
+        rightLegSensor = np.load(path + "data/RightLower_sensor_values.npy")
+        metronomeSensor = np.load(path + "data/metronome_sensor_values.npy")
 
         backLegTouch = []
         frontLegTouch = []
@@ -42,7 +42,7 @@ class ANALYZE:
         np.trim_zeros(metronomeClick)
 
 
-        ageFitnessArray = np.load("data/age_fitness_values.npy")
+        ageFitnessArray = np.load(path + "data/age_fitness_values.npy")
 
         # Create new empty list for best fitnesses
         maxFitnesses = np.zeros(c.NUMBER_OF_GENERATIONS)
@@ -69,7 +69,7 @@ class ANALYZE:
         ax1.set_xlabel("Timesteps")
         ax1.set_xmargin(2)
 
-        plt.savefig("plots/Stp_" + str(c.POPULATION_SIZE) + "s_" + str(c.NUMBER_OF_GENERATIONS) + "g_" + now.strftime("%H:%M_%m-%d-%Y") + ".png")
+        plt.savefig(path + "plots/Steps")
 
         fig, ax2 = plt.subplots()
         y = maxFitnesses
@@ -80,4 +80,4 @@ class ANALYZE:
         ax2.set_ylabel("Fitness")
         ax2.set_xlabel("Generation")
 
-        plt.savefig("plots/Fit_" + str(c.POPULATION_SIZE) + "s_" + str(c.NUMBER_OF_GENERATIONS) + "g_" + now.strftime("%H:%M_%m-%d-%Y") + ".png")
+        plt.savefig(path + "plots/Fitness.png")

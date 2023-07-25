@@ -1,4 +1,6 @@
 import constants as c
+from historian import HISTORIAN
+import os
 import pickle
 import pybullet as p
 import pybullet_data
@@ -19,9 +21,10 @@ class SIMULATION:
         self.directOrGUI = directOrGUI
         self.showBest = showBest
         if self.directOrGUI=="GUI":
+            # If GUI, number fed into solution ID is the uniqueID
+            uniqueID = solutionID
             self.physicsClient = p.connect(p.GUI)
-            self.robot = SAVED_ROBOT(solutionID)
-
+            self.robot = SAVED_ROBOT(uniqueID)
         else:
             self.physicsClient = p.connect(p.DIRECT)
             self.robot = ROBOT(solutionID)
@@ -32,13 +35,8 @@ class SIMULATION:
         p.setGravity(0, 0, -9.8)
         self.world = WORLD()
 
+
     def __del__(self):
-        """
-        for sensor in self.robot.sensors:
-            self.robot.sensors[sensor].Save_Values()
-        for motor in self.robot.motors:
-            self.robot.motors[motor].Save_Values()
-        """
         p.disconnect()
 
     def Run(self, solutionID):
@@ -61,13 +59,14 @@ class SIMULATION:
                 if remaining < 0:
                     raise Exception("Time error, ended with " + str(remaining) + " seconds")
                 else: time.sleep(remaining)
-                stepEnd = time.time() + (c.FRAME_RATE)
+                stepEnd = time.time() + c.FRAME_RATE
                 p.stepSimulation()
             self.robot.Get_Fitness(solutionID)
 
+
         # Runs that save data in preparation for hollow runs
+        # These runs additionally prep for data storage
         elif self.directOrGUI != "GUI" and self.showBest == "True":
-            # Sensing of the metronome based on how far
             stepEnd = time.time() + c.FRAME_RATE
             p.stepSimulation()
             self.robot.Sense(0)
@@ -87,35 +86,38 @@ class SIMULATION:
                 else: time.sleep(remaining)
                 stepEnd = time.time() + c.FRAME_RATE
                 p.stepSimulation()
+
+            # Get the unique ID from the historian and set in robot
+            uniqueID = HISTORIAN.Get_Unique_Run_ID()
+            self.robot.Set_Unique_ID_And_Path(uniqueID)
+            # Save sensor and motor values for the future
             self.robot.Save_Motor_Values()
             self.robot.Save_Sensor_Values()
             self.robot.Save_Metronome_Sensor_Values()
-        
+
         else:
-            metronome = media("sounds/metronome.mp3", streaming=False)
+            self.Replay_Run()
+
+    
+    def Replay_Run(self):
+        metronome = media("sounds/metronome.mp3", streaming=False)
+        stepEnd = time.time() + c.FRAME_RATE
+        p.stepSimulation()
+        for t in range(c.SIM_STEPS):
+            if t % c.MET_FRAME_RATIO == 0:
+                click = 1
+                metronome.play()
+            else: 
+                click = -1
+            self.robot.Act(t)
+            remaining = stepEnd - time.time()
+            if remaining < 0:
+                raise Exception("Time error, ended with " + str(remaining) + " seconds")
+            else: time.sleep(remaining)
             stepEnd = time.time() + c.FRAME_RATE
             p.stepSimulation()
-            for t in range(c.SIM_STEPS):
-                if t % c.MET_FRAME_RATIO == 0:
-                    click = 1
-                    metronome.play()
-                else: 
-                    click = -1
-                self.robot.Act(t)
-                remaining = stepEnd - time.time()
-                if remaining < 0:
-                    raise Exception("Time error, ended with " + str(remaining) + " seconds")
-                else: time.sleep(remaining)
-                stepEnd = time.time() + c.FRAME_RATE
-                p.stepSimulation()
-            
-    def Saved_Run(self):
-        with open("pickles/motorValues.pickle", "rb") as f:
-            motorValues = pickle.load(f)
-        return motorValues
         
-            
-            
+                   
     """
     if self.directOrGUI == "GUI":
         if t % 20 == 0:

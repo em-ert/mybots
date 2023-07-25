@@ -16,8 +16,10 @@ class MOTOR:
     def Load_Value_Array(self, storedValues):
         self.storedValues = storedValues
 
+
     def Load_Sensor_Array(self, sensorValues):
         self.sensorValues = sensorValues
+
 
     # For standard direct run
     def Set_Value(self, robot, desiredAngle):

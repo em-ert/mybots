@@ -1,33 +1,36 @@
 import constants as c
+from glob import glob
 import os
 import pickle
 import pybullet as p
 from pyrosim.neuralNetwork import NEURAL_NETWORK
 import pyrosim.pyrosim as pyrosim
 from sensor import SENSOR
-from metronomeSensor import METRONOME_SENSOR
 from motor import MOTOR
 
 
 class SAVED_ROBOT:
-    def __init__(self, solutionID):
+    def __init__(self, uniqueID):
+        self.root = "bestRuns/{}sols_{}gens/run{}".format(c.POPULATION_SIZE, c.NUMBER_OF_GENERATIONS, uniqueID) + "/"
+
         self.robotId = p.loadURDF("body.urdf")
         self.motors = {}
 
-        self.nn = NEURAL_NETWORK("brain" + str(solutionID) + ".nndf")
+        brains = glob(self.root + "brain?.nndf")
+        if len(brains) == 1:
+            self.nn = NEURAL_NETWORK(brains[0])
 
         pyrosim.Prepare_To_Simulate(self.robotId)
         self.Prepare_To_Act()
 
-        os.system("rm brain" + str(solutionID) + ".nndf")
 
 
     def Prepare_To_Act(self):
         self.motors = {}
-        if os.path.exists("pickles/motorValues.pickle") and os.path.exists("pickles/sensorValues.pickle"):
-            with open("pickles/motorValues.pickle", "rb") as f:
+        if os.path.exists(self.root + "pickles/motorValues.pickle") and os.path.exists(self.root + "pickles/sensorValues.pickle"):
+            with open(self.root + "pickles/motorValues.pickle", "rb") as f:
                 motorValues = pickle.load(f)
-            with open("pickles/sensorValues.pickle", "rb") as f:
+            with open(self.root + "pickles/sensorValues.pickle", "rb") as f:
                 sensorValues = pickle.load(f)
             for jointName in pyrosim.jointNamesToIndices:
                 self.motors[jointName] = MOTOR(jointName, hollow=True)

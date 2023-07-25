@@ -1,7 +1,7 @@
-from analyze import ANALYZE
 import constants as c
 import copy
 import datetime
+from historian import HISTORIAN
 import numpy as np
 import matplotlib.pyplot as plt
 import os
@@ -37,6 +37,8 @@ class AFPO:
         for i in range(self.popSize):
             self.population[i] = SOLUTION(self.nextAvailableID)
             self.nextAvailableID += 1
+        
+        self.historian = HISTORIAN()
 
 
     def Evolve(self, fromCheckpoint=0):
@@ -63,7 +65,6 @@ class AFPO:
                 # Check for checkpoint
                 if self.currentGeneration % self.checkpointEvery == 0:
                     self.Save_Checkpoint()
-                    continue
 
                 # Ding if necessary
                 if self.genSize - self.currentGeneration == 1:
@@ -73,10 +74,10 @@ class AFPO:
         # self.Save_All_Pareto_Front_Brains()
         # self.Show_All_Pareto_Front_Brains()
         best = self.Get_Best_Brain()
-        self.Save_Best_Brain(best)
-        self.Save_Data_For_Analysis()
+        self.Save_Best_Brain(best, self.historian.path)
         self.Show_Best_Brain(best)
-        self.Graph_Results()
+        self.Save_Fitness_Data_For_Analysis(self.historian.path)
+        self.Preserve_Record()
     
     def Save_Stats(self):
         for index, solID in enumerate(self.population):
@@ -95,6 +96,7 @@ class AFPO:
         print("Checkpoint reached at gen " + str(self.currentGeneration) + "! Saving population in file: ", filename)
         with open(filename, 'wb') as f:
             pickle.dump([self, np_rng_state, rng_state], f, pickle.HIGHEST_PROTOCOL)
+
 
     def Evolve_For_One_Generation(self):
         # Age individuals in the population
@@ -236,52 +238,50 @@ class AFPO:
             if not solutions[solution].wasSimulated:
                 solutions[solution].Wait_For_Simulation_To_End()
 
-    """
-    def Print(self):
-        print()
-        for parent in self.parents:
-            print("p:" + str(self.parents[parent].fitness) +
-                  " ch:" + str(self.children[parent].fitness))
-        print()
-    """
-    def Save_All_Pareto_Front_Brains(self):
-        for individual in self.paretoFront: 
-            best = self.population[individual]
-            best.Create_Brain()          
-            os.system("mv brain" + str(best.myID) + ".nndf best/brain" + str(best.myID) + ".nndf")
-
-    def Show_All_Pareto_Front_Brains(self):
-        for individual in self.paretoFront:
-            self.population[individual].Start_Simulation("GUI", True)
 
     def Get_Best_Brain(self):
         popList = list(self.population.values())
         return sorted(popList, key=operator.attrgetter('fitness'), reverse=True)[0]
-
-        """
-        best = self.population[self.paretoFront[0]]
-        for individual in self.paretoFront:
-            if self.population[individual].fitness > best.fitness:
-                best = self.population[individual]
-
-        return best
-        """
     
-    def Save_Data_For_Analysis(self):
-        np.save("data/age_fitness_values.npy", self.fitnessData)
-        print("Data saved to /data/age_fitness_values.npy")
-    
-    def Save_Best_Brain(self, bestSolution):
-        bestSolution.Create_Brain()         
-        os.system("mv brain" + str(bestSolution.myID) + ".nndf best/brain" + str(bestSolution.myID)+ ".nndf")
-        brain_tracker = open("best/brain_tracker.txt", "a")
-        brain_tracker.write("Brain " + str(bestSolution.myID) + ": " + str(datetime.datetime.now()) + "\n")
-        brain_tracker.close()
 
-    # TODO: add graphing functionality
-    def Graph_Results(self):
-        ANALYZE.Run_Analysis()
+    def Save_Best_Brain(self, bestSolution, path):
+        bestSolution.Create_Brain()
+        fullPath =  path + "brain" + str(bestSolution.myID) + ".nndf"
+        os.system("mv brain" + str(bestSolution.myID) + ".nndf " + fullPath)
+        print("Data saved to " + fullPath)
+
 
     def Show_Best_Brain(self, bestSolution):
         bestSolution.Start_Simulation("DIRECT", True)
-        bestSolution.Start_Simulation("GUI", True)
+        # Instead of running from solution, send the unique ID from the historian and run manually
+        os.system("python3 simulate.py GUI "
+                    + str(self.historian.uniqueID) +
+                    " True 2&>1")
+
+
+    """
+    def Show_All_Pareto_Front_Brains(self):
+        for individual in self.paretoFront:
+            self.population[individual].Start_Simulation("GUI", True)
+
+    """
+        
+    
+    def Save_All_Pareto_Front_Brains(self, path):
+        for individual in self.paretoFront: 
+            best = self.population[individual]
+            best.Create_Brain()       
+            fullPath =  path + "brain" + str(best.myID) + ".nndf"
+            os.system("mv brain" + str(best.myID) + ".nndf " + fullPath)
+            print("Data saved to " + fullPath)
+
+
+    def Save_Fitness_Data_For_Analysis(self, path):
+        fullPath = path + "data/age_fitness_values.npy"
+        np.save(fullPath, self.fitnessData)
+        print("Data saved to " + fullPath)
+
+    
+    def Preserve_Record(self):
+        self.historian.Archive_Run_Info()
+        self.historian.Run_Analysis()
