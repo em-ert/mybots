@@ -23,6 +23,7 @@ class ROBOT:
         self.nn = NEURAL_NETWORK("brain" + str(solutionID) + ".nndf")
 
         self.fitness = 0
+        self.movement = 0
 
         pyrosim.Prepare_To_Simulate(self.robotId)
         self.Prepare_To_Act()
@@ -46,6 +47,21 @@ class ROBOT:
         tmpFitnessFile.write(str(self.fitness))
         tmpFitnessFile.close()
         os.system("mv " + tmpFitnessFileName + " " + fitnessFileName)
+
+    def Get_Movement(self, solutionID):
+        stateOfLinkZero = p.getLinkState(self.robotId, 0)
+        positionOfLinkZero = stateOfLinkZero[0]
+        xCoordinateOfLinkZero = positionOfLinkZero[0]
+        self.movement = xCoordinateOfLinkZero
+
+        # Define tmp and true movement file names
+        tmpMovementFileName = "tmp" + str(solutionID) + ".txt"
+        movementFileName = "movement" + str(solutionID) + ".txt"
+        # Write to temp file so reading doesn't occur before writing concludes
+        tmpMovementFile = open(tmpMovementFileName, "w")
+        tmpMovementFile.write(str(self.movement))
+        tmpMovementFile.close()
+        os.system("mv " + tmpMovementFileName + " " + movementFileName)
 
 
     def Prepare_To_Sense(self):

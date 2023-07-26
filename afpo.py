@@ -16,6 +16,7 @@ class AFPO:
         # Clear brain and fitness files
         os.system("rm brain*.nndf")
         os.system("rm fitness*.txt")
+        os.system("rm movement*.txt")
 
         # Create the world and body files for the simulation
         SOLUTION.Create_World()
@@ -79,13 +80,14 @@ class AFPO:
         self.Prep_Best_Brain(best)
         self.Save_Fitness_Data_For_Analysis(self.historian.path)
         bestFitness = (np.amax(self.fitnessData[self.genSize-1, :, :], axis=0)[0])
-        self.Preserve_Record(best.myID, bestFitness)
+        bestMovement = best.movement
+        self.Preserve_Record(best.myID, bestFitness, bestMovement)
         self.Show_Best_Brain()
     
     def Save_Stats(self):
         for index, solID in enumerate(self.population):
             self.fitnessData[self.currentGeneration, index, 0] = self.population[solID].fitness
-            self.fitnessData[self.currentGeneration, index, 1] = self.population[solID].age
+            self.fitnessData[self.currentGeneration, index, 1] = self.population[solID].movement
         # XXX: Eventually remove this after testing
         print("\n")
         print(np.amax(self.fitnessData[self.currentGeneration, :, :], axis=0)[0])
@@ -224,11 +226,11 @@ class AFPO:
     """
     def Dominates(self, i1, i2):
         # If indivuduals have same stats, return newer one (i1 dom. if newer)
-        if self.population[i1].age == self.population[i2].age and self.population[i1].fitness == self.population[i2].fitness:
+        if self.population[i1].movement == self.population[i2].movement and self.population[i1].fitness == self.population[i2].fitness:
             return self.population[i1].myID > self.population[i2].myID
         
         # If i1 dominates (has lower age AND higher fitness) return true, return false otherwise
-        elif self.population[i1].age <= self.population[i2].age and self.population[i1].fitness >= self.population[i2].fitness:
+        elif self.population[i1].movement <= self.population[i2].movement and self.population[i1].fitness >= self.population[i2].fitness:
             return True
         else:
             return False
@@ -279,13 +281,13 @@ class AFPO:
 
 
     def Save_Fitness_Data_For_Analysis(self, path):
-        fullPath = path + "data/age_fitness_values.npy"
+        fullPath = path + "data/movement_fitness_values.npy"
         np.save(fullPath, self.fitnessData)
         print("Data saved to " + fullPath)
 
     
-    def Preserve_Record(self, bestID, bestFitness):
-        self.historian.Archive_Run_Info(bestID, bestFitness)
+    def Preserve_Record(self, bestID, bestFitness, bestMovement):
+        self.historian.Archive_Run_Info(bestID, bestFitness, bestMovement)
         self.historian.Run_Analysis(fitness=True, steps=True)
 
     

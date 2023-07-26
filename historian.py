@@ -28,7 +28,7 @@ class HISTORIAN:
         os.makedirs(self.path + "plots", exist_ok=False)
     
     # This method collects all of the necessary information related to the run and stores it in a folder
-    def Archive_Run_Info(self, solutionID, bestFitness):
+    def Archive_Run_Info(self, solutionID, bestFitness, bestMovement):
         # Create the info file and write in the study details
         with open(self.path + "/info.txt", "w") as f:
             # Record time of run
@@ -65,6 +65,7 @@ class HISTORIAN:
             f.write("-----BEST SOLUTION-----\n")
             f.write("Soln. ID: {}\n".format(solutionID))
             f.write("Fitness: {}\n".format(bestFitness))
+            f.write("Movement: {}\n".format(bestMovement))
             f.write("\n")
 
     

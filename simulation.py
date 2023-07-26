@@ -63,6 +63,7 @@ class SIMULATION:
                 stepEnd = time.time() + c.FRAME_RATE
                 p.stepSimulation()
             self.robot.Get_Fitness(solutionID)
+            self.robot.Get_Movement(solutionID)
 
 
         # Runs that save data in preparation for hollow runs

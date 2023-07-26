@@ -200,4 +200,13 @@ class SOLUTION:
         self.fitness = float(fitnessFile.read())
         fitnessFile.close()
         os.system("rm " + fitnessFileName)
+
+        movementFileName = "movement" + str(self.myID) + ".txt"
+        while not os.path.exists(movementFileName):
+            time.sleep(0.001)
+        movementFile = open(movementFileName, "r")
+        self.movement = float(movementFile.read())
+        movementFile.close()
+        os.system("rm " + movementFileName)
+        
         self.wasSimulated = True
