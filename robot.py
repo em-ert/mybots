@@ -125,23 +125,27 @@ class ROBOT:
                 motorValues[jointName] = self.motors[jointName].storedValues
         # Pickled values
         with open(self.path + "pickles/motorValues.pickle", "wb") as f:
-            pickle.dump(motorValues, f)
+            pickle.dump(motorValues, f, pickle.HIGHEST_PROTOCOL)
 
 
     def Save_Sensor_Values(self):
         sensorValues = {}
         # Data values
         for neuronName in self.nn.Get_Neuron_Names():
+            if len(sensorValues) == c.NUM_SENSOR_NEURONS:
+                break
+            linkName = None
             if self.nn.Is_Sensor_Neuron(neuronName):
                 linkName = self.nn.Get_Sensor_Neurons_Link(neuronName)
-            for joint in self.joints:
-                if joint.child == linkName:
-                    joint_for_sensor = joint.name
-                    sensorValues[joint_for_sensor] = self.sensors[linkName].values
-                    self.sensors[linkName].Save_Values(self.path)
+                for joint in self.joints:
+                    if joint.child == linkName:
+                        joint_for_sensor = joint.name
+                        sensorValues[joint_for_sensor] = self.sensors[linkName].values
+                        self.sensors[linkName].Save_Values(self.path)
+                        break
         # Pickle Values
         with open(self.path + "pickles/sensorValues.pickle", "wb") as f:
-            pickle.dump(sensorValues, f)
+            pickle.dump(sensorValues, f, pickle.HIGHEST_PROTOCOL)
 
 
     # Data values

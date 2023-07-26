@@ -70,7 +70,7 @@ class SIMULATION:
             stepEnd = time.time() + c.FRAME_RATE
             p.stepSimulation()
             self.robot.Sense(0)
-            for t in range(c.SIM_STEPS - 1):
+            for t in range(c.SIM_STEPS):
                 if t % c.MET_FRAME_RATIO == 0:
                     click = 1
                 else: 
@@ -78,7 +78,8 @@ class SIMULATION:
                 self.robot.Think(click)
                 self.robot.Act_And_Save(t)
                 self.robot.Sense_Rhythm(t, click)
-                self.robot.Sense(t+1)
+                if t != c.SIM_STEPS - 1:
+                    self.robot.Sense(t+1)
                     
                 remaining = stepEnd - time.time()
                 if remaining < 0:

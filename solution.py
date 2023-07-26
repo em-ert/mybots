@@ -155,17 +155,11 @@ class SOLUTION:
     def Start_Simulation(self, directOrGUI, showBest):
         self.Create_Brain()
         if not showBest:
-            os.system("python3 simulate.py " + 
-                    directOrGUI + " " +
-                    str(self.myID) +
-                    " False 2&>1 &")
+            os.system("python3 simulate.py " + directOrGUI + " " + str(self.myID) + " False 2&>1 &")
             
         # Note: Without "&" best runs are shown serially
         else:
-            os.system("python3 simulate.py " + 
-                    directOrGUI + " " +
-                    str(self.myID) +
-                    " True 2&>1")
+            os.system("python3 simulate.py " + directOrGUI + " " + str(self.myID) + " True 2&>1")
 
     def Wait_For_Simulation_To_End(self):
         fitnessFileName = "fitness" + str(self.myID) + ".txt"

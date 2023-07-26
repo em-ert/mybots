@@ -1,6 +1,2 @@
 pybullet build time: Jan 17 2023 12:06:10
 pybullet build time: Jan 17 2023 12:06:10
-rm: brain*.nndf: No such file or directory
-rm: brain*.nndf: No such file or directory
-rm: fitness*.txt: No such file or directory
-rm: fitness*.txt: No such file or directory

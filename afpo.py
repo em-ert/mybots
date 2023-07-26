@@ -65,7 +65,7 @@ class AFPO:
                     self.Save_Checkpoint()
 
                 # Ding if necessary
-                if self.genSize - self.currentGeneration == 0:
+                if self.genSize - self.currentGeneration == 1:
                     toaster = media("sounds/toaster_ding.mp3", streaming=False)
                     toaster.play()
                 
@@ -76,10 +76,11 @@ class AFPO:
         # self.Show_All_Pareto_Front_Brains()
         best = self.Get_Best_Brain()
         self.Save_Best_Brain(best, self.historian.path)
-        self.Show_Best_Brain(best)
+        self.Prep_Best_Brain(best)
         self.Save_Fitness_Data_For_Analysis(self.historian.path)
         bestFitness = (np.amax(self.fitnessData[self.genSize-1, :, :], axis=0)[0])
         self.Preserve_Record(best.myID, bestFitness)
+        self.Show_Best_Brain()
     
     def Save_Stats(self):
         for index, solID in enumerate(self.population):
@@ -253,12 +254,8 @@ class AFPO:
         print("Data saved to " + fullPath)
 
 
-    def Show_Best_Brain(self, bestSolution):
+    def Prep_Best_Brain(self, bestSolution):
         bestSolution.Start_Simulation("DIRECT", True)
-        # Instead of running from solution, send the unique ID from the historian and run manually
-        os.system("python3 simulate.py GUI "
-                    + str(self.historian.uniqueID) +
-                    " True 2&>1")
 
 
     """
@@ -287,3 +284,7 @@ class AFPO:
     def Preserve_Record(self, bestID, bestFitness):
         self.historian.Archive_Run_Info(bestID, bestFitness)
         self.historian.Run_Analysis()
+
+    
+    def Show_Best_Brain(self):
+        os.system("python3 simulate.py GUI " + str(self.historian.uniqueID) + " True 2&>1")

@@ -1,3 +1,5 @@
+from glob import glob
+
 import os
 
 from pyrosim.neuron  import NEURON
@@ -12,11 +14,23 @@ class NEURAL_NETWORK:
 
         self.synapses = {}
 
+        fromBest = glob("bestRuns/*sols_*gens/run*/" + nndfFileName)
+
         if os.path.exists(nndfFileName):
+
             f = open(nndfFileName,"r")
-        elif os.path.exists("best/" + nndfFileName):
-            f = open("best/" + nndfFileName,"r")
+
+        elif len(fromBest) == 1:
+
+            f = open(fromBest[0], "r")
+
+        elif len(fromBest) > 1:
+
+            print("Multiple network files found. Opening the first file found recursively")
+            f = open(fromBest[0], "r")
+
         else:
+
             raise Exception("Network file not found")
 
         for line in f.readlines():
