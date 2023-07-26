@@ -1,7 +1,9 @@
+from colour import Color
 import constants as c
 import datetime
 import matplotlib.pyplot as plt
 from matplotlib import ticker
+from matplotlib import cm
 import numpy as np
 import os
 import time
@@ -11,7 +13,7 @@ class ANALYZE:
         pass
 
     @staticmethod  
-    def Run_Analysis(path, fitness=True, steps=True):
+    def Run_Analysis(path, fitness=True, steps=True, bar=True):
         now = datetime.datetime.now()
 
         while not os.path.exists(path + "data/BackLower_sensor_values.npy"):
@@ -86,3 +88,46 @@ class ANALYZE:
             ax1.set_xmargin(2)
 
             plt.savefig(path + "plots/Steps")
+
+        if bar == True:
+            fig, ax1 = plt.subplots()
+            
+            bars = np.zeros(int(c.MET_FRAME_RATIO), int)
+            for i in range(len(backLegTouch)):
+                subDiv = backLegTouch[i] % c.MET_FRAME_RATIO
+                bars[subDiv] += 1
+            for i in range(len(frontLegTouch)):
+                subDiv = frontLegTouch[i] % c.MET_FRAME_RATIO
+                bars[subDiv] += 1
+            for i in range(len(leftLegTouch)):
+                subDiv = leftLegTouch[i] % c.MET_FRAME_RATIO
+                bars[subDiv] += 1
+            for i in range(len(rightLegTouch)):
+                subDiv = rightLegTouch[i] % c.MET_FRAME_RATIO
+                bars[subDiv] += 1
+
+            bar_labels = []
+            for i in range(c.MET_FRAME_RATIO):
+                bar_labels.append(str((c.MET_FRAME_RATIO/2)-i))
+            legend_labels = []
+            for i in range(c.MET_FRAME_RATIO):
+                roundedFit = round(np.cos(((2*np.pi)/c.MET_FRAME_RATIO)*i)+0.5, 3)
+                legend_labels.append(str(roundedFit))
+            print(bars)
+            print(bar_labels)
+            print(legend_labels)
+
+            blue = Color("blue")
+            colors = list(blue.range_to(Color("yellow"),c.MET_FRAME_RATIO))
+            colors = [color.rgb for color in colors]
+
+            ax1.bar(bar_labels, bars, label=legend_labels, color=colors)
+            ax1.set_ylabel('Number of Steps')
+            ax1.set_xlabel('Simulation steps distance from metronome strike')
+            ax1.set_title('Distribution of solution steps across musical bar')
+            ax1.legend(title='Valuation')
+
+            plt.savefig(path + "plots/Bar")
+
+
+ANALYZE.Run_Analysis("bestRuns/30sols_100gens/run1/")
