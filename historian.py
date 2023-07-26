@@ -101,5 +101,5 @@ class HISTORIAN:
         
     
     # Generates graphs for the run and any additional analysis
-    def Run_Analysis(self):
-        ANALYZE.Run_Analysis(self.path)
+    def Run_Analysis(self, fitness=True, steps=True):
+        ANALYZE.Run_Analysis(self.path, fitness, steps)

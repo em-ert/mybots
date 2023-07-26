@@ -29,9 +29,13 @@ class SOLUTION:
         self.h_m_Weights = np.random.rand(c.NUM_HIDDEN_NEURONS, c.NUM_MOTOR_NEURONS)
         self.h_m_Weights = (self.h_m_Weights * 2) - 1
 
-        # Auditory to motor weights
+        """# Auditory to motor weights
         self.a_m_Weights = np.random.rand(c.NUM_AUDITORY_NEURONS, c.NUM_MOTOR_NEURONS)
-        self.a_m_Weights = (self.a_m_Weights * 2) - 1
+        self.a_m_Weights = (self.a_m_Weights * 2) - 1"""
+
+        # Auditory to motor weights
+        self.a_m_Weights = np.ones((c.NUM_AUDITORY_NEURONS, c.NUM_MOTOR_NEURONS), float)
+        # self.a_m_Weights = (self.a_m_Weights * 2) - 1
 
         self.myID = ID
         self.age = 1
@@ -142,7 +146,7 @@ class SOLUTION:
         pyrosim.End()
 
     def Mutate(self):
-        randomLayer = random.randint(0, 3)
+        randomLayer = random.randint(0, 2)
         if randomLayer == 0:
             # Mutate S - H
             randomRow = random.randint(0, c.NUM_SENSOR_NEURONS - 1)
@@ -162,11 +166,13 @@ class SOLUTION:
             randomColumn = random.randint(0, c.NUM_MOTOR_NEURONS - 1)
             self.h_m_Weights[randomRow,randomColumn] = (random.random() * 2) - 1
 
+            """
         elif randomLayer == 3:
             # Mutate A - M
             randomRow = random.randint(0, c.NUM_AUDITORY_NEURONS - 1)
             randomColumn = random.randint(0, c.NUM_MOTOR_NEURONS - 1)
             self.a_m_Weights[randomRow,randomColumn] = (random.random() * 2) - 1
+            """
         
         else:
             raise Exception("Random choice error!")

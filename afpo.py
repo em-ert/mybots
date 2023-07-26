@@ -181,7 +181,10 @@ class AFPO:
         self.Update_Pareto_Front()
         # Validate pareto front size to prevent infinite loop
         if len(self.paretoFront) > self.popSize:
+            newLayer = np.zeros((self.genSize, len(self.paretoFront)-self.popSize , 2), float)
+            self.fitnessData = np.append(self.fitnessData, newLayer, axis=1)
             self.popSize = len(self.paretoFront)
+
 
         while len(self.population) > self.popSize:
             # Pick two random ints in range of pop.size
@@ -283,7 +286,7 @@ class AFPO:
     
     def Preserve_Record(self, bestID, bestFitness):
         self.historian.Archive_Run_Info(bestID, bestFitness)
-        self.historian.Run_Analysis()
+        self.historian.Run_Analysis(fitness=True, steps=True)
 
     
     def Show_Best_Brain(self):

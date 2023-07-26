@@ -6,7 +6,7 @@ NUMBER_OF_GENERATIONS = 10
 POPULATION_SIZE = 5
 CHECKPOINT_EVERY = 5
 BODY = "Capsule Bot"
-ADDITIONAL_DETAILS = "Test run with auditory neuron connected directly to motor neurons"
+ADDITIONAL_DETAILS = "Test run with auditory neuron connected directly to motor neurons and auditory neurons maximized, 8th notes"
 
 INCLUDE_UPPER_LINKS = False
 NUM_SENSOR_NEURONS = 4
@@ -23,7 +23,7 @@ SIXTY_FOURTH = THIRTY_SECOND / 2    # 0.03125
 ONE_TWENTY_EIGHTH = SIXTY_FOURTH / 2
 
 FRAME_RATE = SIXTY_FOURTH
-METRONOME_RATE = QUARTER
+METRONOME_RATE = EIGHTH
 MET_FRAME_RATIO = QUARTER / FRAME_RATE
 
 MOTOR_JOINT_RANGE = 0.4

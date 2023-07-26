@@ -1,5 +1,6 @@
 from bots.capsuleBot import CAPSULE_BOT
 import constants as c
+from glob import glob
 import os
 import pickle
 import pybullet as p
@@ -11,16 +12,27 @@ from motor import MOTOR
 import numpy as np
 
 
-class ROBOT:
-    def __init__(self, solutionID):
+class MOD_ROBOT:
+    def __init__(self, origID):
         self.robotId = p.loadURDF("body.urdf")
         self.motors = {}
         self.sensors = {}
 
+        self.root = "bestRuns/{}sols_{}gens/run{}".format(c.POPULATION_SIZE, c.NUMBER_OF_GENERATIONS, origID) + "/"
+
         bot = CAPSULE_BOT()
         self.joints = bot.joints
 
-        self.nn = NEURAL_NETWORK("brain" + str(solutionID) + ".nndf")
+        brains = glob(self.root + "brain*.nndf")
+        if len(brains) == 1:
+            self.nn = NEURAL_NETWORK(brains[0])
+        else:
+            raise Exception("Incorrect number of brain files in root")
+        
+        nnFile = os.path.basename(os.path.normpath(brains[0]))
+        self.solutionID = nnFile[5:]
+        
+        print(self.solutionID)
 
         self.fitness = 0
 
@@ -29,18 +41,16 @@ class ROBOT:
         self.Prepare_To_Sense()
         self.Prepare_To_Sense_Audio()
 
-        os.system("rm brain" + str(solutionID) + ".nndf")
-
     
-    def Get_Fitness(self, solutionID):
+    def Get_Fitness(self):
         """
         stateOfLinkZero = p.getLinkState(self.robotId, 0)
         positionOfLinkZero = stateOfLinkZero[0]
         xCoordinateOfLinkZero = positionOfLinkZero[0]
         """
         # Define tmp and true fitness file names
-        tmpFitnessFileName = "tmp" + str(solutionID) + ".txt"
-        fitnessFileName = "fitness" + str(solutionID) + ".txt"
+        tmpFitnessFileName = "tmp" + str(self.solutionID) + ".txt"
+        fitnessFileName = "fitness" + str(self.solutionID) + ".txt"
         # Write to temp file so reading doesn't occur before writing concludes
         tmpFitnessFile = open(tmpFitnessFileName, "w")
         tmpFitnessFile.write(str(self.fitness))

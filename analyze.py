@@ -11,7 +11,7 @@ class ANALYZE:
         pass
 
     @staticmethod  
-    def Run_Analysis(path):
+    def Run_Analysis(path, fitness=True, steps=True):
         now = datetime.datetime.now()
 
         while not os.path.exists(path + "data/BackLower_sensor_values.npy"):
@@ -45,43 +45,44 @@ class ANALYZE:
         np.trim_zeros(rightLegTouch)
         np.trim_zeros(metronomeClick)
 
+        if fitness == True:
+            ageFitnessArray = np.load(path + "data/age_fitness_values.npy")
 
-        ageFitnessArray = np.load(path + "data/age_fitness_values.npy")
+            # Create new empty list for best fitnesses
+            maxFitnesses = np.zeros(c.NUMBER_OF_GENERATIONS)
 
-        # Create new empty list for best fitnesses
-        maxFitnesses = np.zeros(c.NUMBER_OF_GENERATIONS)
+            for i in range(c.NUMBER_OF_GENERATIONS):
+                gen = ageFitnessArray[i, :, :]
+                maxFitnesses[i] = np.amax(gen, axis=0)[0]
+                # print(gen)
+            # print(maxFitnesses)
 
-        for i in range(c.NUMBER_OF_GENERATIONS):
-            gen = ageFitnessArray[i, :, :]
-            maxFitnesses[i] = np.amax(gen, axis=0)[0]
-            # print(gen)
-        # print(maxFitnesses)
+            fig, ax2 = plt.subplots()
+            y = maxFitnesses
+            x = np.arange(len(y))
+            ax2.xaxis.set_major_locator(ticker.MultipleLocator(base=10))
+            ax2.plot(x, y)
+            ax2.set_xlim(0, len(y)-1)
+            ax2.set_ylabel("Fitness")
+            ax2.set_xlabel("Generation")
 
-        fig, ax1 = plt.subplots(figsize=(10, 4))
-        metronome, = ax1.eventplot(metronomeClick, label='Metronome', color='gray', linelengths=4)
+            plt.savefig(path + "plots/Fitness.png")
 
-        backLeg, = ax1.eventplot(backLegTouch, label='Back Leg', color='red', lineoffsets=2.5, linewidths=2)
-        frontLeg, = ax1.eventplot(frontLegTouch, label='Front Leg', color='green', lineoffsets=1.5, linewidths=2)
-        leftLeg, = ax1.eventplot(leftLegTouch, label='Left Leg', color='orange', lineoffsets=0.5, linewidths=2)
-        rightLeg, = ax1.eventplot(rightLegTouch, label='Right Leg', color='blue', lineoffsets=-0.5, linewidths=2)
-        ax1.legend(handles=[metronome, backLeg, frontLeg, leftLeg, rightLeg])
-        ax1.set_xlim(-5, c.SIM_STEPS+5)
-        ax1.xaxis.set_major_locator(ticker.MultipleLocator(base=50))
-        ax1.set_ylim(-1, 3)
-        ax1.set_yticks([], [])
-        ax1.set_ylabel(None)
-        ax1.set_xlabel("Timesteps")
-        ax1.set_xmargin(2)
+        if steps == True:
+            fig, ax1 = plt.subplots(figsize=(10, 4))
+            metronome, = ax1.eventplot(metronomeClick, label='Metronome', color='gray', linelengths=4)
 
-        plt.savefig(path + "plots/Steps")
+            backLeg, = ax1.eventplot(backLegTouch, label='Back Leg', color='red', lineoffsets=2.5, linewidths=2)
+            frontLeg, = ax1.eventplot(frontLegTouch, label='Front Leg', color='green', lineoffsets=1.5, linewidths=2)
+            leftLeg, = ax1.eventplot(leftLegTouch, label='Left Leg', color='orange', lineoffsets=0.5, linewidths=2)
+            rightLeg, = ax1.eventplot(rightLegTouch, label='Right Leg', color='blue', lineoffsets=-0.5, linewidths=2)
+            ax1.legend(handles=[metronome, backLeg, frontLeg, leftLeg, rightLeg])
+            ax1.set_xlim(-5, c.SIM_STEPS+5)
+            ax1.xaxis.set_major_locator(ticker.MultipleLocator(base=50))
+            ax1.set_ylim(-1, 3)
+            ax1.set_yticks([], [])
+            ax1.set_ylabel(None)
+            ax1.set_xlabel("Timesteps")
+            ax1.set_xmargin(2)
 
-        fig, ax2 = plt.subplots()
-        y = maxFitnesses
-        x = np.arange(len(y))
-        ax2.xaxis.set_major_locator(ticker.MultipleLocator(base=10))
-        ax2.plot(x, y)
-        ax2.set_xlim(0, len(y)-1)
-        ax2.set_ylabel("Fitness")
-        ax2.set_xlabel("Generation")
-
-        plt.savefig(path + "plots/Fitness.png")
+            plt.savefig(path + "plots/Steps")

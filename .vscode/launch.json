@@ -21,7 +21,7 @@
             "type": "python",
             "request": "launch",
             "program": "search.py",
-            "args": "2 2&>1.txt",
+            "args": "3 2&>1.txt",
             "console": "integratedTerminal",
             "justMyCode": false
         },
