@@ -31,7 +31,17 @@
             "type": "python",
             "request": "launch",
             "program": "reSimulate.py",
-            "args": ["2", "2&>1"],
+            "args": ["10", "2&>1"],
+            "console": "integratedTerminal",
+            "justMyCode": false 
+        },
+
+        {
+            "name": "Python: mod-simulate",
+            "type": "python",
+            "request": "launch",
+            "program": "modSimulate.py",
+            "args": ["3", "2&>1"],
             "console": "integratedTerminal",
             "justMyCode": false 
         },

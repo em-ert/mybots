@@ -24,14 +24,15 @@ class MOD_ROBOT:
         self.joints = bot.joints
 
         brains = glob(self.root + "brain*.nndf")
+
         if len(brains) == 1:
             self.nn = NEURAL_NETWORK(brains[0])
         else:
             raise Exception("Incorrect number of brain files in root")
         
         nnFile = os.path.basename(os.path.normpath(brains[0]))
-        self.solutionID = nnFile[5:]
-        
+        self.solutionID = nnFile[5:-5]
+
         print(self.solutionID)
 
         self.fitness = 0
