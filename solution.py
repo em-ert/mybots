@@ -15,9 +15,11 @@ class SOLUTION:
         self.s_h_Weights = np.random.rand(c.NUM_SENSOR_NEURONS, c.NUM_HIDDEN_NEURONS)
         self.s_h_Weights = (self.s_h_Weights * 2) - 1
 
+        """
         # Auditory to hidden weights
         self.a_h_Weights = np.random.rand(c.NUM_AUDITORY_NEURONS, c.NUM_HIDDEN_NEURONS)
         self.a_h_Weights = (self.a_h_Weights * 2) - 1
+        """
 
         # Hidden to hidden weights
         self.h_h_Weights = np.random.rand(c.NUM_HIDDEN_NEURONS, c.NUM_HIDDEN_NEURONS)
@@ -26,6 +28,10 @@ class SOLUTION:
         # Hidden to motor weights
         self.h_m_Weights = np.random.rand(c.NUM_HIDDEN_NEURONS, c.NUM_MOTOR_NEURONS)
         self.h_m_Weights = (self.h_m_Weights * 2) - 1
+
+        # Auditory to motor weights
+        self.a_m_Weights = np.random.rand(c.NUM_AUDITORY_NEURONS, c.NUM_MOTOR_NEURONS)
+        self.a_m_Weights = (self.a_m_Weights * 2) - 1
 
         self.myID = ID
         self.age = 1
@@ -66,14 +72,21 @@ class SOLUTION:
             pyrosim.Send_Sensor_Neuron(name=neuronCount, linkName=self.links[linkSensorStart + sensor])
             neuronCount += 1
 
+        """
         # Auditory Neurons
         for auditory in range(c.NUM_AUDITORY_NEURONS):
             pyrosim.Send_Auditory_Neuron(name=neuronCount)
             neuronCount += 1
+        """
         
         # Hidden Neurons
         for hidden in range(c.NUM_HIDDEN_NEURONS):
             pyrosim.Send_Hidden_Neuron(name=neuronCount)
+            neuronCount += 1
+
+        # Auditory Neurons
+        for auditory in range(c.NUM_AUDITORY_NEURONS):
+            pyrosim.Send_Auditory_Neuron(name=neuronCount)
             neuronCount += 1
 
         # Motor Neurons
@@ -89,6 +102,7 @@ class SOLUTION:
                     targetNeuronName=currentColumn + c.NUM_SENSOR_NEURONS, 
                     weight=self.s_h_Weights[currentRow][currentColumn]
                     )
+        """
         # Randomize auditory to hidden
         for currentRow in range(c.NUM_AUDITORY_NEURONS):
             for currentColumn in range(c.NUM_HIDDEN_NEURONS):
@@ -97,12 +111,13 @@ class SOLUTION:
                     targetNeuronName=currentColumn + c.NUM_SENSOR_NEURONS + c.NUM_AUDITORY_NEURONS, 
                     weight=self.a_h_Weights[currentRow][currentColumn]
                     )
+        """
         # Randomize hidden to hidden
         for currentRow in range(c.NUM_HIDDEN_NEURONS):
             for currentColumn in range(c.NUM_HIDDEN_NEURONS):
                 pyrosim.Send_Synapse(
-                    sourceNeuronName=currentRow + c.NUM_SENSOR_NEURONS + c.NUM_AUDITORY_NEURONS, 
-                    targetNeuronName=currentColumn + c.NUM_SENSOR_NEURONS + c.NUM_AUDITORY_NEURONS, 
+                    sourceNeuronName=currentRow + c.NUM_SENSOR_NEURONS, 
+                    targetNeuronName=currentColumn + c.NUM_SENSOR_NEURONS, 
                     weight=self.h_h_Weights[currentRow][currentColumn]
                     )
         
@@ -110,9 +125,18 @@ class SOLUTION:
         for currentRow in range(c.NUM_HIDDEN_NEURONS):
             for currentColumn in range(c.NUM_MOTOR_NEURONS):
                 pyrosim.Send_Synapse(
-                    sourceNeuronName=currentRow + c.NUM_SENSOR_NEURONS + c.NUM_AUDITORY_NEURONS, 
-                    targetNeuronName=currentColumn + c.NUM_SENSOR_NEURONS + c.NUM_AUDITORY_NEURONS + c.NUM_HIDDEN_NEURONS, 
+                    sourceNeuronName=currentRow + c.NUM_SENSOR_NEURONS, 
+                    targetNeuronName=currentColumn + c.NUM_SENSOR_NEURONS + c.NUM_HIDDEN_NEURONS + c.NUM_AUDITORY_NEURONS,
                     weight=self.h_m_Weights[currentRow][currentColumn]
+                    )
+                
+        # Randomize auditory to motor
+        for currentRow in range(c.NUM_AUDITORY_NEURONS):
+            for currentColumn in range(c.NUM_MOTOR_NEURONS):
+                pyrosim.Send_Synapse(
+                    sourceNeuronName=currentRow + c.NUM_SENSOR_NEURONS + c.NUM_HIDDEN_NEURONS, 
+                    targetNeuronName=currentColumn + c.NUM_SENSOR_NEURONS + c.NUM_HIDDEN_NEURONS + c.NUM_AUDITORY_NEURONS, 
+                    weight=self.a_m_Weights[currentRow][currentColumn]
                     )
                 
         pyrosim.End()
@@ -125,23 +149,24 @@ class SOLUTION:
             randomColumn = random.randint(0, c.NUM_HIDDEN_NEURONS - 1)
             self.s_h_Weights[randomRow,randomColumn] = (random.random() * 2) - 1
         
-        elif randomLayer == 1:
-            # Mutate A - H
-            randomRow = random.randint(0, c.NUM_AUDITORY_NEURONS - 1)
-            randomColumn = random.randint(0, c.NUM_HIDDEN_NEURONS - 1)
-            self.a_h_Weights[randomRow,randomColumn] = (random.random() * 2) - 1
         
-        elif randomLayer == 2:
+        elif randomLayer == 1:
             # Mutate H - H
             randomRow = random.randint(0, c.NUM_HIDDEN_NEURONS - 1)
             randomColumn = random.randint(0, c.NUM_HIDDEN_NEURONS - 1)
             self.h_h_Weights[randomRow,randomColumn] = (random.random() * 2) - 1
         
-        elif randomLayer == 3:
-            # Mutate H - H
+        elif randomLayer == 2:
+            # Mutate H - M
             randomRow = random.randint(0, c.NUM_HIDDEN_NEURONS - 1)
             randomColumn = random.randint(0, c.NUM_MOTOR_NEURONS - 1)
             self.h_m_Weights[randomRow,randomColumn] = (random.random() * 2) - 1
+
+        elif randomLayer == 3:
+            # Mutate A - M
+            randomRow = random.randint(0, c.NUM_AUDITORY_NEURONS - 1)
+            randomColumn = random.randint(0, c.NUM_MOTOR_NEURONS - 1)
+            self.a_m_Weights[randomRow,randomColumn] = (random.random() * 2) - 1
         
         else:
             raise Exception("Random choice error!")

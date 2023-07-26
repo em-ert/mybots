@@ -2,11 +2,11 @@ SIM_STEPS = 800
 MAX_FORCE = 40
 
 SEED = 0
-NUMBER_OF_GENERATIONS = 100
-POPULATION_SIZE = 30
-CHECKPOINT_EVERY = 20
+NUMBER_OF_GENERATIONS = 10
+POPULATION_SIZE = 5
+CHECKPOINT_EVERY = 5
 BODY = "Capsule Bot"
-ADDITIONAL_DETAILS = "Initial runs to test out cos(x) maximization function."
+ADDITIONAL_DETAILS = "Test run with auditory neuron connected directly to motor neurons"
 
 INCLUDE_UPPER_LINKS = False
 NUM_SENSOR_NEURONS = 4
