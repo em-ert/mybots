@@ -62,8 +62,8 @@ class ANALYZE:
 
         backLeg, = ax1.eventplot(backLegTouch, label='Back Leg', color='red', lineoffsets=2.5, linewidths=2)
         frontLeg, = ax1.eventplot(frontLegTouch, label='Front Leg', color='green', lineoffsets=1.5, linewidths=2)
-        leftLeg, = ax1.eventplot(leftLegTouch, label='Front Leg', color='orange', lineoffsets=0.5, linewidths=2)
-        rightLeg, = ax1.eventplot(rightLegTouch, label='Front Leg', color='blue', lineoffsets=-0.5, linewidths=2)
+        leftLeg, = ax1.eventplot(leftLegTouch, label='Left Leg', color='orange', lineoffsets=0.5, linewidths=2)
+        rightLeg, = ax1.eventplot(rightLegTouch, label='Right Leg', color='blue', lineoffsets=-0.5, linewidths=2)
         ax1.legend(handles=[metronome, backLeg, frontLeg, leftLeg, rightLeg])
         ax1.set_xlim(-5, c.SIM_STEPS+5)
         ax1.xaxis.set_major_locator(ticker.MultipleLocator(base=50))
