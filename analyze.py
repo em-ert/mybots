@@ -3,6 +3,8 @@ import datetime
 import matplotlib.pyplot as plt
 from matplotlib import ticker
 import numpy as np
+import os
+import time
 
 class ANALYZE:
     def __init__():
@@ -12,6 +14,8 @@ class ANALYZE:
     def Run_Analysis(path):
         now = datetime.datetime.now()
 
+        while not os.path.exists(path + "data/BackLower_sensor_values.npy"):
+            time.sleep(c.SLEEP_TIME)
         backLegSensor = np.load(path + "data/BackLower_sensor_values.npy")
         frontLegSensor = np.load(path + "data/FrontLower_sensor_values.npy")
         leftLegSensor = np.load(path + "data/LeftLower_sensor_values.npy")

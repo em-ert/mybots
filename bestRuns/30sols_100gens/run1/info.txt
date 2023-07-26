@@ -1,0 +1,28 @@
+Time of run: 10:54 AM on 07/26/2023
+Random Seed: 0
+Additional Details: Initial runs to test out cos(x) maximization function.
+
+-----REVIEW COMMAND-----
+python3 reSimulate.py GUI 1 True 2&>1
+
+-----GENERAL DETAILS-----
+Morphology: Capsule Bot
+Pop. Size: 30
+Num. Gens: 100
+Steps per sim.: 800
+
+-----RHYTHMIC DETAILS-----
+BPM: 120
+Frame Rate: 0.03125
+Metronome-frame ratio: 16.0
+
+-----NETWORK DETAILS-----
+Sensor: 4
+Auditory: 1
+Hidden: 3
+Motor: 8
+
+-----BEST SOLUTION-----
+Soln. ID: 3037
+Fitness: 92.55216961323374
+
