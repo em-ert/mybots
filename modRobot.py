@@ -84,7 +84,7 @@ class MOD_ROBOT:
             curr_sensor.Get_Value(timestep)
             step = curr_sensor.Get_Step(timestep)
             stepValue += step
-        self.fitness += stepValue * (np.cos((timestep)((2*np.pi)/c.MET_FRAME_RATIO))+0.5)
+        self.fitness += stepValue * (np.cos(((2*np.pi)/c.MET_FRAME_RATIO)*timestep)+0.5)
         
             
     def Sense_Rhythm(self, timestep, click):

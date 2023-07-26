@@ -2,11 +2,11 @@ SIM_STEPS = 800
 MAX_FORCE = 40
 
 SEED = 0
-NUMBER_OF_GENERATIONS = 10
-POPULATION_SIZE = 5
-CHECKPOINT_EVERY = 5
+NUMBER_OF_GENERATIONS = 100
+POPULATION_SIZE = 30
+CHECKPOINT_EVERY = 10
 BODY = "Capsule Bot"
-ADDITIONAL_DETAILS = "Test run with auditory neuron connected directly to motor neurons and auditory neurons maximized"
+ADDITIONAL_DETAILS = "Run with auditory neuron connected directly to motor neurons and auditory neurons maximized"
 
 INCLUDE_UPPER_LINKS = False
 NUM_SENSOR_NEURONS = 4

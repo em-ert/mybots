@@ -128,6 +128,3 @@ class ANALYZE:
             ax1.legend(title='Valuation')
 
             plt.savefig(path + "plots/Bar")
-
-
-ANALYZE.Run_Analysis("bestRuns/30sols_100gens/run1/")
