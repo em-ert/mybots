@@ -6,7 +6,7 @@ NUMBER_OF_GENERATIONS = 100
 POPULATION_SIZE = 30
 CHECKPOINT_EVERY = 10
 BODY = "Capsule Bot"
-ADDITIONAL_DETAILS = "Run with auditory neuron connected directly to motor neurons and auditory neurons maximized"
+ADDITIONAL_DETAILS = "Run with auditory neuron connected directly to motor neurons, audio weight are not maximized"
 
 INCLUDE_UPPER_LINKS = False
 NUM_SENSOR_NEURONS = 4
