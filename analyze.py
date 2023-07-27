@@ -13,7 +13,7 @@ class ANALYZE:
         pass
 
     @staticmethod  
-    def Run_Analysis(path, fitness=True, steps=True, bar=True):
+    def Run_Analysis(path, fitness=True, steps=True, bar=True, rand=True):
         now = datetime.datetime.now()
 
         while not os.path.exists(path + "data/BackLower_sensor_values.npy"):
@@ -67,6 +67,7 @@ class ANALYZE:
             ax2.set_xlim(0, len(y)-1)
             ax2.set_ylabel("Fitness")
             ax2.set_xlabel("Generation")
+            ax2.set_title("Best solution step timing against metronome strikes")
 
             plt.savefig(path + "plots/Fitness.png")
 
@@ -78,7 +79,7 @@ class ANALYZE:
             frontLeg, = ax1.eventplot(frontLegTouch, label='Front Leg', color='green', lineoffsets=1.5, linewidths=2)
             leftLeg, = ax1.eventplot(leftLegTouch, label='Left Leg', color='orange', lineoffsets=0.5, linewidths=2)
             rightLeg, = ax1.eventplot(rightLegTouch, label='Right Leg', color='blue', lineoffsets=-0.5, linewidths=2)
-            ax1.legend(handles=[metronome, backLeg, frontLeg, leftLeg, rightLeg])
+            ax1.legend(handles=[metronome, backLeg, frontLeg, leftLeg, rightLeg], bbox_to_anchor=(1.1, 1))
             ax1.set_xlim(-5, c.SIM_STEPS+5)
             ax1.xaxis.set_major_locator(ticker.MultipleLocator(base=50))
             ax1.set_ylim(-1, 3)
@@ -86,11 +87,12 @@ class ANALYZE:
             ax1.set_ylabel(None)
             ax1.set_xlabel("Timesteps")
             ax1.set_xmargin(2)
+            ax1.set_title("Fitness over generations")
 
-            plt.savefig(path + "plots/Steps")
+            plt.savefig(path + "plots/Steps.png")
 
         if bar == True:
-            fig, ax1 = plt.subplots()
+            fig, ax1 = plt.subplots(figsize=(7,7))
             
             bars = np.zeros(int(c.MET_FRAME_RATIO), int)
             for i in range(len(backLegTouch)):
@@ -113,18 +115,35 @@ class ANALYZE:
             for i in range(c.MET_FRAME_RATIO):
                 roundedFit = round(np.cos(((2*np.pi)/c.MET_FRAME_RATIO)*i)+0.5, 3)
                 legend_labels.append(str(roundedFit))
-            print(bars)
-            print(bar_labels)
-            print(legend_labels)
 
             blue = Color("blue")
-            colors = list(blue.range_to(Color("yellow"),c.MET_FRAME_RATIO))
+            colors = list(blue.range_to(Color("yellow"),int(c.MET_FRAME_RATIO/2)))
             colors = [color.rgb for color in colors]
+            colorsRev = colors[: : -1]
+            colors = np.concatenate((colors, colorsRev), axis=0)
 
             ax1.bar(bar_labels, bars, label=legend_labels, color=colors)
-            ax1.set_ylabel('Number of Steps')
-            ax1.set_xlabel('Simulation steps distance from metronome strike')
-            ax1.set_title('Distribution of solution steps across musical bar')
-            ax1.legend(title='Valuation')
+            fig.legend(title='Valuation', bbox_to_anchor=(1, 1))
+            ax1.set_ylabel('Total number of Steps')
+            ax1.set_xlabel('Number of sim. steps after or before metronome strike')
+            ax1.set_title("Distribution of solution's steps across musical bar")
 
-            plt.savefig(path + "plots/Bar")
+            plt.savefig(path + "plots/Bar.png")
+
+        if rand == True:
+            fig, ax3 = plt.subplots(figsize=(7,7))
+            ageFitnessArray = np.load(path + "data/age_fitness_values.npy")
+            
+            bestFitness = np.amax(ageFitnessArray[c.NUMBER_OF_GENERATIONS - 1, :, :], axis=0)[0]
+            ax3.hist(bestFitness, label="Best Solution", orientation="horizontal", color = "red", height=0.5)
+            randomPopulation = ageFitnessArray[0, :, :]
+            randSolutions = (randomPopulation[:, 0])
+            ax3.hist(randSolutions, label="Random Solutions", bins=30, orientation="horizontal", alpha=0.5)
+            fig.legend()
+            plt.gca().set(title='Frequency Histogram', xlabel='Fitnesses')
+            ax3.set_title("Distribution of random solution fitnesses")
+
+            plt.savefig(path + "plots/Rand.png")
+
+
+"""ANALYZE.Run_Analysis("bestRuns/30sols_50gens/run4/")"""
