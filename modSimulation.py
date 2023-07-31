@@ -34,6 +34,7 @@ class MOD_SIMULATION:
         # Set up the rest of the sim's features
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
         p.setGravity(0, 0, -9.8)
+        p.setTimeStep(c.FRAME_RATE)
         self.world = WORLD()
 
 
