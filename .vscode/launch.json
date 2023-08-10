@@ -60,7 +60,7 @@
             "type": "python",
             "request": "launch",
             "program": "simulate.py",
-            "args": ["DIRECT", "3037", "True", "2&>1"],
+            "args": ["GUI", "58", "False", "2&>1"],
             "console": "integratedTerminal",
             "justMyCode": false 
         },

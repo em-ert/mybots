@@ -1,5 +1,6 @@
 import constants as c
 from historian import HISTORIAN
+from metronome import METRONOME
 import os
 import pickle
 import pybullet as p
@@ -23,12 +24,12 @@ class SIMULATION:
         if self.directOrGUI=="GUI":
             # If GUI, number fed into solution ID is the uniqueID
             uniqueID = solutionID
-            self.physicsClient = p.connect(p.GUI)
-            self.robot = SAVED_ROBOT(uniqueID)
+            self.physicsClient = p.connect(p.DIRECT)
+            self.robot = ROBOT(solutionID)
+            # self.robot = SAVED_ROBOT(uniqueID)
         else:
             self.physicsClient = p.connect(p.DIRECT)
             self.robot = ROBOT(solutionID)
-            
         p.configureDebugVisualizer(p.COV_ENABLE_GUI,0)
         # Set up the rest of the sim's features
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
@@ -40,7 +41,20 @@ class SIMULATION:
     def __del__(self):
         p.disconnect()
 
+
     def Run(self, solutionID):
+        for i in range(len(c.METRONOME_RATES)):
+            self.metronome = METRONOME(self.Step_Simulation, tempo=c.METRONOME_RATES[i], timeSignature=[4,4], realtime=True)
+            self.metronome.Start(interval=c.FRAME_RATE, duration=c.SIM_STEPS)
+
+    def Step_Simulation(self, timestep, tick):
+        p.stepSimulation()
+        self.robot.Sense(timestep)
+        self.robot.Think(tick)
+        self.robot.Act()
+
+
+    def Run_OLD(self, solutionID):
         # For standard runs
         if self.directOrGUI != "GUI" and self.showBest == "False":
             stepEnd = time.time() + (c.FRAME_RATE)
