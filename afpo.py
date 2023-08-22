@@ -26,6 +26,8 @@ class AFPO:
         self.popSize = c.POPULATION_SIZE
         self.checkpointEvery = c.CHECKPOINT_EVERY
 
+        self.optimizeAge = c.OPTIMIZE_AGE
+
         self.nextAvailableID = nextAvailableID
         self.currentGeneration = currentGeneration
         self.population = population
@@ -85,7 +87,11 @@ class AFPO:
     def Save_Stats(self):
         for index, solID in enumerate(self.population):
             self.fitnessData[self.currentGeneration, index, 0] = self.population[solID].fitness
-            self.fitnessData[self.currentGeneration, index, 1] = self.population[solID].age
+            if self.optimizeAge == True:
+                self.fitnessData[self.currentGeneration, index, 1] = self.population[solID].age
+            else:
+                self.fitnessData[self.currentGeneration, index, 1] = self.population[solID].fitness2
+
         # XXX: Eventually remove this after testing
         print("\n")
         print(np.amax(self.fitnessData[self.currentGeneration, :, :], axis=0)[0])
@@ -223,15 +229,26 @@ class AFPO:
     Checks to see if an individual is dominant over the younger -- meaning it has the same stats but is newer or is BOTH younger AND more fit
     """
     def Dominates(self, i1, i2):
-        # If indivuduals have same stats, return newer one (i1 dom. if newer)
-        if self.population[i1].age == self.population[i2].age and self.population[i1].fitness == self.population[i2].fitness:
-            return self.population[i1].myID > self.population[i2].myID
-        
-        # If i1 dominates (has lower age AND higher fitness) return true, return false otherwise
-        elif self.population[i1].age <= self.population[i2].age and self.population[i1].fitness >= self.population[i2].fitness:
-            return True
+        if self.optimizeAge == True:
+            # If indivuduals have same stats, return newer one (i1 dom. if newer)
+            if self.population[i1].age == self.population[i2].age and self.population[i1].fitness == self.population[i2].fitness:
+                return self.population[i1].myID > self.population[i2].myID
+            
+            # If i1 dominates (has lower age AND higher fitness) return true, return false otherwise
+            elif self.population[i1].age <= self.population[i2].age and self.population[i1].fitness >= self.population[i2].fitness:
+                return True
+            else:
+                return False
         else:
-            return False
+            # If indivuduals have same stats, return newer one (i1 dom. if newer)
+            if self.population[i1].fitness2 == self.population[i2].fitness2 and self.population[i1].fitness == self.population[i2].fitness:
+                return self.population[i1].myID > self.population[i2].myID
+            
+            # If i1 dominates (has higher fitness AND higher fitness2) return true, return false otherwise
+            elif self.population[i1].fitness2 >= self.population[i2].fitness2 and self.population[i1].fitness >= self.population[i2].fitness:
+                return True
+            else:
+                return False    
 
     """
     Runs simulations for any solutions that have not been simulated

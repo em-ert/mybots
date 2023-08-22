@@ -11,6 +11,7 @@ import constants as c
 from datetime import datetime
 import os
 
+# TODO: Update the report to accurately represent constants
 
 class HISTORIAN:
     def __init__(self):
@@ -50,9 +51,8 @@ class HISTORIAN:
             f.write("\n")
 
             f.write("-----RHYTHMIC DETAILS-----\n")
-            f.write("BPM: {}\n".format(c.BPM))
+            f.write("TEMPOS: {}\n".format(c.TEMPOS))
             f.write("Frame Rate: {}\n".format(c.FRAME_RATE))
-            f.write("Metronome-frame ratio: {}\n".format(c.MET_FRAME_RATIO))
             f.write("\n")
 
             f.write("-----NETWORK DETAILS-----\n")
@@ -101,5 +101,5 @@ class HISTORIAN:
         
     
     # Generates graphs for the run and any additional analysis
-    def Run_Analysis(self, fitness=True, steps=True):
-        ANALYZE.Run_Analysis(self.path, fitness, steps)
+    def Run_Analysis(self, fitness=True, steps=True, bar=False):
+        ANALYZE.Run_Analysis(self.path, fitness, steps, bar)

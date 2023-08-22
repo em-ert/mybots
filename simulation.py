@@ -1,5 +1,6 @@
 import constants as c
 from historian import HISTORIAN
+from metronome import METRONOME
 import os
 import pickle
 import pybullet as p
@@ -25,10 +26,12 @@ class SIMULATION:
             uniqueID = solutionID
             self.physicsClient = p.connect(p.GUI)
             self.robot = SAVED_ROBOT(uniqueID)
+            self.metronome = METRONOME(sonify=True)
         else:
             self.physicsClient = p.connect(p.DIRECT)
             self.robot = ROBOT(solutionID)
-            
+            self.metronome = METRONOME(sonify=False)
+
         p.configureDebugVisualizer(p.COV_ENABLE_GUI,0)
         # Set up the rest of the sim's features
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
@@ -40,86 +43,67 @@ class SIMULATION:
     def __del__(self):
         p.disconnect()
 
+
     def Run(self, solutionID):
-        # For standard runs
-        if self.directOrGUI != "GUI" and self.showBest == "False":
-            stepEnd = time.time() + (c.FRAME_RATE)
-            p.stepSimulation()
-            self.robot.Sense(0)
+        if self.showBest == "False":
+            self.Standard(solutionID)
+        elif self.directOrGUI == "DIRECT":
+            self.Save()
+        else:
+            self.Load()
+
+
+    def Standard(self, solutionID):
+        p.stepSimulation()
+        for i in range(len(c.TEMPOS)):
+            self.metronome.Reset(tempo=c.TEMPOS[i])
             for t in range(c.SIM_STEPS):
-                if t % c.MET_FRAME_RATIO == 0:
-                    click = 1                    
-                else: 
-                    click = -1
-                self.robot.Think(click)
+                clickInfo = self.metronome.StepFunction()
+                self.robot.Sense(t + (c.SIM_STEPS * i), clickInfo[1])
+                self.robot.Sense_Rhythm(t + (c.SIM_STEPS * i), clickInfo[0])
+                self.robot.Think(clickInfo[0])
                 self.robot.Act()
-                self.robot.Sense_Rhythm(t, click)
-                if t != c.SIM_STEPS - 1:
-                    self.robot.Sense(t+1)
-                    
-                remaining = stepEnd - time.time()
-                if remaining < 0:
-                    raise Exception("Time error, ended with " + str(remaining) + " seconds")
-                else: time.sleep(remaining)
-                stepEnd = time.time() + c.FRAME_RATE
+                time.sleep(c.SLEEP_TIME)
                 p.stepSimulation()
             self.robot.Get_Fitness(solutionID)
 
 
-        # Runs that save data in preparation for hollow runs
-        # These runs additionally prep for data storage
-        elif self.directOrGUI != "GUI" and self.showBest == "True":
-            stepEnd = time.time() + c.FRAME_RATE
-            p.stepSimulation()
-            self.robot.Sense(0)
+    def Save(self):
+        p.stepSimulation()
+        for i in range(len(c.TEMPOS)):
+            self.metronome.Reset(tempo=c.TEMPOS[i])
             for t in range(c.SIM_STEPS):
-                if t % c.MET_FRAME_RATIO == 0:
-                    click = 1
-                else: 
-                    click = -1
-                self.robot.Think(click)
-                self.robot.Act_And_Save(t)
-                self.robot.Sense_Rhythm(t, click)
-                if t != c.SIM_STEPS - 1:
-                    self.robot.Sense(t+1)
-                    
+                clickInfo = self.metronome.StepFunction()
+                self.robot.Sense(t + (c.SIM_STEPS * i), clickInfo[1])       # Steps to click
+                self.robot.Sense_Rhythm(t + (c.SIM_STEPS * i), clickInfo[0])   # Click (1 or 0)
+                self.robot.Think(clickInfo[0])
+                self.robot.Act_And_Save(t + (c.SIM_STEPS * i))
+                time.sleep(c.SLEEP_TIME)
+                p.stepSimulation()
+
+        # Get the unique ID from the historian and set in robot
+        uniqueID = HISTORIAN.Get_Unique_Run_ID()
+        self.robot.Set_Unique_ID_And_Path(uniqueID)
+        # Save sensor and motor values for the future
+        self.robot.Save_Motor_Values()
+        self.robot.Save_Sensor_Values()
+        self.robot.Save_Metronome_Sensor_Values()
+
+
+    def Load(self):
+        p.stepSimulation()
+        for i in range(len(c.TEMPOS)):
+            self.metronome.Reset(tempo=c.TEMPOS[i])
+            for t in range(c.SIM_STEPS):
+                stepEnd = time.time() + (c.FRAME_RATE)
+                self.metronome.StepFunction()
+                self.robot.Act(t + (c.SIM_STEPS * i))
                 remaining = stepEnd - time.time()
                 if remaining < 0:
                     raise Exception("Time error, ended with " + str(remaining) + " seconds")
                 else: time.sleep(remaining)
-                stepEnd = time.time() + c.FRAME_RATE
-                p.stepSimulation()
+                p.stepSimulation()       
 
-            # Get the unique ID from the historian and set in robot
-            uniqueID = HISTORIAN.Get_Unique_Run_ID()
-            self.robot.Set_Unique_ID_And_Path(uniqueID)
-            # Save sensor and motor values for the future
-            self.robot.Save_Motor_Values()
-            self.robot.Save_Sensor_Values()
-            self.robot.Save_Metronome_Sensor_Values()
-
-        else:
-            self.Replay_Run()
-
-    
-    def Replay_Run(self):
-        metronome = media("sounds/metronome.mp3", streaming=False)
-        stepEnd = time.time() + c.FRAME_RATE
-        p.stepSimulation()
-        for t in range(c.SIM_STEPS):
-            if t % c.MET_FRAME_RATIO  == 0:
-                click = 1
-                metronome.play()
-            else: 
-                click = -1
-            self.robot.Act(t)
-            remaining = stepEnd - time.time()
-            if remaining < 0:
-                raise Exception("Time error, ended with " + str(remaining) + " seconds")
-            else: time.sleep(remaining)
-            stepEnd = time.time() + c.FRAME_RATE
-            p.stepSimulation()
-        
                    
     """
     if self.directOrGUI == "GUI":
@@ -136,4 +120,3 @@ for object in range(self.world.numObjects):
     yPosition = position[y]
     height = position[height]
 """
-# print(t)

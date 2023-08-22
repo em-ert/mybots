@@ -29,7 +29,7 @@ class ANALYZE:
         rightLegTouch = []
         leftLegTouch = []
         metronomeClick = []
-        for i in range(c.SIM_STEPS):
+        for i in range(c.SIM_STEPS * len(c.TEMPOS)):
             if backLegSensor[i] == 1 and backLegSensor[i-1] == -1:
                 backLegTouch.append(i+1)
             if frontLegSensor[i] == 1 and frontLegSensor[i-1] == -1:
@@ -72,7 +72,7 @@ class ANALYZE:
             plt.savefig(path + "plots/Fitness.png")
 
         if steps == True:
-            fig, ax1 = plt.subplots(figsize=(10, 4))
+            fig, ax1 = plt.subplots(figsize=(15, 4))
             metronome, = ax1.eventplot(metronomeClick, label='Metronome', color='gray', linelengths=4)
 
             backLeg, = ax1.eventplot(backLegTouch, label='Back Leg', color='red', lineoffsets=2.5, linewidths=2)
@@ -80,14 +80,14 @@ class ANALYZE:
             leftLeg, = ax1.eventplot(leftLegTouch, label='Left Leg', color='orange', lineoffsets=0.5, linewidths=2)
             rightLeg, = ax1.eventplot(rightLegTouch, label='Right Leg', color='blue', lineoffsets=-0.5, linewidths=2)
             ax1.legend(handles=[metronome, backLeg, frontLeg, leftLeg, rightLeg], bbox_to_anchor=(1.1, 1))
-            ax1.set_xlim(-5, c.SIM_STEPS+5)
+            ax1.set_xlim(-5, (c.SIM_STEPS * len(c.TEMPOS)) + 5)
             ax1.xaxis.set_major_locator(ticker.MultipleLocator(base=50))
             ax1.set_ylim(-1, 3)
             ax1.set_yticks([], [])
             ax1.set_ylabel(None)
             ax1.set_xlabel("Timesteps")
             ax1.set_xmargin(2)
-            ax1.set_title("Fitness over generations")
+            ax1.set_title("Steps vs Metronome Strikes")
 
             plt.savefig(path + "plots/Steps.png")
 

@@ -1,5 +1,9 @@
 {
     "dataworkspace.excludedProjects": [
         "myBots/myBots.sqlproj"
-    ]
+    ],
+    "lucid-ws.folder": "",
+    "files.exclude": {},
+    "files.watcherExclude": {},
+    "lucid-ws.filters": []
 }

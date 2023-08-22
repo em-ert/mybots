@@ -2,6 +2,7 @@ from bots.capsuleBot import CAPSULE_BOT
 import constants as c
 import os
 import pickle
+import math
 import pybullet as p
 from pyrosim.neuralNetwork import NEURAL_NETWORK
 import pyrosim.pyrosim as pyrosim
@@ -23,6 +24,7 @@ class ROBOT:
         self.nn = NEURAL_NETWORK("brain" + str(solutionID) + ".nndf")
 
         self.fitness = 0
+        self.fitness2 = 0
 
         pyrosim.Prepare_To_Simulate(self.robotId)
         self.Prepare_To_Act()
@@ -33,11 +35,7 @@ class ROBOT:
 
     
     def Get_Fitness(self, solutionID):
-        """
-        stateOfLinkZero = p.getLinkState(self.robotId, 0)
-        positionOfLinkZero = stateOfLinkZero[0]
-        xCoordinateOfLinkZero = positionOfLinkZero[0]
-        """
+
         # Define tmp and true fitness file names
         tmpFitnessFileName = "tmp" + str(solutionID) + ".txt"
         fitnessFileName = "fitness" + str(solutionID) + ".txt"
@@ -46,6 +44,21 @@ class ROBOT:
         tmpFitnessFile.write(str(self.fitness))
         tmpFitnessFile.close()
         os.system("mv " + tmpFitnessFileName + " " + fitnessFileName)
+        
+        if c.OPTIMIZE_AGE == False:
+            stateOfLinkZero = p.getLinkState(self.robotId, 0)
+            positionOfLinkZero = stateOfLinkZero[0]
+            xCoordinateOfLinkZero = positionOfLinkZero[0]
+            self.fitness2 = xCoordinateOfLinkZero
+
+            # Define tmp and true fitness2 file names
+            tmpFitnessFileName2 = "tmpb" + str(solutionID) + ".txt"
+            fitnessFileName2 = "fitnessb" + str(solutionID) + ".txt"
+            # Write to temp file so reading doesn't occur before writing concludes
+            tmpFitnessFile2 = open(tmpFitnessFileName2, "w")
+            tmpFitnessFile2.write(str(self.fitness2))
+            tmpFitnessFile2.close()
+            os.system("mv " + tmpFitnessFileName2 + " " + fitnessFileName2)
 
 
     def Prepare_To_Sense(self):
@@ -66,14 +79,17 @@ class ROBOT:
             self.motors[jointName] = MOTOR(jointName, hollow=False)
 
 
-    def Sense(self, timestep):
+    def Sense(self, timestep, stepsToClick):
         stepValue = 0
         for sensor in self.sensors:
             curr_sensor = self.sensors[sensor]
             curr_sensor.Get_Value(timestep)
             step = curr_sensor.Get_Step(timestep)
             stepValue += step
-        self.fitness += stepValue * (np.cos(((2*np.pi)/c.MET_FRAME_RATIO)*timestep)+0)
+        if stepsToClick >= 0:    
+            self.fitness += stepValue * (((2-stepsToClick)**2)+0.5)
+        else:
+            self.fitness -= stepValue * 0.5
         
             
     def Sense_Rhythm(self, timestep, click):

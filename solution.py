@@ -15,11 +15,9 @@ class SOLUTION:
         self.s_h_Weights = np.random.rand(c.NUM_SENSOR_NEURONS, c.NUM_HIDDEN_NEURONS)
         self.s_h_Weights = (self.s_h_Weights * 2) - 1
 
-        """
         # Auditory to hidden weights
         self.a_h_Weights = np.random.rand(c.NUM_AUDITORY_NEURONS, c.NUM_HIDDEN_NEURONS)
         self.a_h_Weights = (self.a_h_Weights * 2) - 1
-        """
 
         # Hidden to hidden weights
         self.h_h_Weights = np.random.rand(c.NUM_HIDDEN_NEURONS, c.NUM_HIDDEN_NEURONS)
@@ -29,9 +27,11 @@ class SOLUTION:
         self.h_m_Weights = np.random.rand(c.NUM_HIDDEN_NEURONS, c.NUM_MOTOR_NEURONS)
         self.h_m_Weights = (self.h_m_Weights * 2) - 1
 
+        """
         # Auditory to motor weights
         self.a_m_Weights = np.random.rand(c.NUM_AUDITORY_NEURONS, c.NUM_MOTOR_NEURONS)
         self.a_m_Weights = (self.a_m_Weights * 2) - 1
+        """
 
         """
         # Auditory to motor weights
@@ -77,23 +77,23 @@ class SOLUTION:
         for sensor in range(c.NUM_SENSOR_NEURONS):
             pyrosim.Send_Sensor_Neuron(name=neuronCount, linkName=self.links[linkSensorStart + sensor])
             neuronCount += 1
-
-        """
+        
         # Auditory Neurons
         for auditory in range(c.NUM_AUDITORY_NEURONS):
             pyrosim.Send_Auditory_Neuron(name=neuronCount)
             neuronCount += 1
-        """
         
         # Hidden Neurons
         for hidden in range(c.NUM_HIDDEN_NEURONS):
             pyrosim.Send_Hidden_Neuron(name=neuronCount)
             neuronCount += 1
 
+        """
         # Auditory Neurons
         for auditory in range(c.NUM_AUDITORY_NEURONS):
             pyrosim.Send_Auditory_Neuron(name=neuronCount)
             neuronCount += 1
+        """
 
         # Motor Neurons
         for motor in range(c.NUM_MOTOR_NEURONS):
@@ -108,7 +108,7 @@ class SOLUTION:
                     targetNeuronName=currentColumn + c.NUM_SENSOR_NEURONS, 
                     weight=self.s_h_Weights[currentRow][currentColumn]
                     )
-        """
+        
         # Randomize auditory to hidden
         for currentRow in range(c.NUM_AUDITORY_NEURONS):
             for currentColumn in range(c.NUM_HIDDEN_NEURONS):
@@ -117,7 +117,7 @@ class SOLUTION:
                     targetNeuronName=currentColumn + c.NUM_SENSOR_NEURONS + c.NUM_AUDITORY_NEURONS, 
                     weight=self.a_h_Weights[currentRow][currentColumn]
                     )
-        """
+        
         # Randomize hidden to hidden
         for currentRow in range(c.NUM_HIDDEN_NEURONS):
             for currentColumn in range(c.NUM_HIDDEN_NEURONS):
@@ -135,7 +135,7 @@ class SOLUTION:
                     targetNeuronName=currentColumn + c.NUM_SENSOR_NEURONS + c.NUM_HIDDEN_NEURONS + c.NUM_AUDITORY_NEURONS,
                     weight=self.h_m_Weights[currentRow][currentColumn]
                     )
-                
+        """        
         # Randomize auditory to motor
         for currentRow in range(c.NUM_AUDITORY_NEURONS):
             for currentColumn in range(c.NUM_MOTOR_NEURONS):
@@ -144,7 +144,8 @@ class SOLUTION:
                     targetNeuronName=currentColumn + c.NUM_SENSOR_NEURONS + c.NUM_HIDDEN_NEURONS + c.NUM_AUDITORY_NEURONS, 
                     weight=self.a_m_Weights[currentRow][currentColumn]
                     )
-                
+        """        
+        
         pyrosim.End()
 
     def Mutate(self):
@@ -202,4 +203,14 @@ class SOLUTION:
         self.fitness = float(fitnessFile.read())
         fitnessFile.close()
         os.system("rm " + fitnessFileName)
+
+        if c.OPTIMIZE_AGE == False:
+            fitnessFileName2 = "fitnessb" + str(self.myID) + ".txt"
+            while not os.path.exists(fitnessFileName2):
+                time.sleep(0.001)
+            fitnessFile2 = open(fitnessFileName2, "r")
+            self.fitness2 = float(fitnessFile2.read())
+            fitnessFile2.close()
+            os.system("rm " + fitnessFileName2)
+        
         self.wasSimulated = True

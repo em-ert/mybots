@@ -10,11 +10,19 @@ MotionThreadFunc thread started
 b3Printf: b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
 
 b3Printf: expected a world element, continuing without it.
+Traceback (most recent call last):
+  File "/Users/eertle/repos/mybots/simulate.py", line 9, in <module>
+    simulation.Run(solutionID)
+  File "/Users/eertle/repos/mybots/simulation.py", line 53, in Run
+    self.Load()
+  File "/Users/eertle/repos/mybots/simulation.py", line 103, in Load
+    raise Exception("Time error, ended with " + str(remaining) + " seconds")
+Exception: Time error, ended with -0.0005338191986083984 seconds
 numActiveThreads = 0
 stopping threads
-Thread with taskId 0 exiting
-Thread TERMINATED
 destroy semaphore
 semaphore destroyed
+Thread with taskId 0 exiting
+Thread TERMINATED
 destroy main semaphore
 main semaphore destroyed

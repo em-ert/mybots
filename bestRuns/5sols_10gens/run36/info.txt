@@ -1,0 +1,27 @@
+Time of run: 23:27 PM on 08/21/2023
+Random Seed: 0
+Additional Details: Run with auditory neuron connected directly to motor neurons, audio weight are not maximized
+
+-----REVIEW COMMAND-----
+python3 reSimulate.py GUI 36 True 2&>1
+
+-----GENERAL DETAILS-----
+Morphology: Capsule Bot
+Pop. Size: 5
+Num. Gens: 10
+Steps per sim.: 200
+
+-----RHYTHMIC DETAILS-----
+TEMPOS: [120, 80, 100]
+Frame Rate: 0.025
+
+-----NETWORK DETAILS-----
+Sensor: 4
+Auditory: 1
+Hidden: 3
+Motor: 8
+
+-----BEST SOLUTION-----
+Soln. ID: 52
+Fitness: 38.5
+

@@ -19,7 +19,7 @@ class SENSOR:
             return 0
 
     def Prepare_To_Sense(self):
-        self.values = np.zeros(c.SIM_STEPS)
+        self.values = np.zeros(c.SIM_STEPS * len(c.TEMPOS))
 
     def Save_Values(self, path):
         fullPath = path + "data/" + self.linkName + "_sensor_values.npy"

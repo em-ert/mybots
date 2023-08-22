@@ -7,8 +7,8 @@ import pyrosim.pyrosim as pyrosim
 class MOTOR:
     def __init__(self, jointName, hollow):
         self.jointName = jointName
-        self.storedValues = np.zeros(c.SIM_STEPS)
-        self.sensorValues = np.zeros(c.SIM_STEPS)
+        self.storedValues = np.zeros(c.SIM_STEPS * len(c.TEMPOS))
+        self.sensorValues = np.zeros(c.SIM_STEPS * len(c.TEMPOS))
         if hollow:
             self.stepSound = media("sounds/step.mp3", streaming=False)
 
