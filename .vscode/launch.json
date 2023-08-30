@@ -31,7 +31,7 @@
             "type": "python",
             "request": "launch",
             "program": "reSimulate.py",
-            "args": ["17", "2&>1"],
+            "args": ["52", "2&>1"],
             "console": "integratedTerminal",
             "justMyCode": false 
         },
@@ -60,7 +60,7 @@
             "type": "python",
             "request": "launch",
             "program": "simulate.py",
-            "args": ["DIRECT", "55", "True", "2&>1"],
+            "args": ["DIRECT", "108", "True", "2&>1"],
             "console": "integratedTerminal",
             "justMyCode": false 
         },

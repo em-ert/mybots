@@ -5,5 +5,8 @@
     "lucid-ws.folder": "",
     "files.exclude": {},
     "files.watcherExclude": {},
-    "lucid-ws.filters": []
+    "lucid-ws.filters": [],
+    "cSpell.words": [
+        "timestep"
+    ]
 }

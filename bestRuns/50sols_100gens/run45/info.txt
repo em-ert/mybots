@@ -1,0 +1,27 @@
+Time of run: 18:38 PM on 08/29/2023
+Random Seed: 0
+Additional Details: Run with cos function non-shifted: (np.cos(((2*np.pi)/framesPerBeat)*timestep))
+
+-----REVIEW COMMAND-----
+python3 reSimulate.py GUI 45 True 2&>1
+
+-----GENERAL DETAILS-----
+Morphology: Capsule Bot
+Pop. Size: 50
+Num. Gens: 100
+Steps per sim.: 800
+
+-----RHYTHMIC DETAILS-----
+TEMPOS: [120, 80, 100]
+Frame Rate: 0.025
+
+-----NETWORK DETAILS-----
+Sensor: 4
+Auditory: 1
+Hidden: 3
+Motor: 8
+
+-----BEST SOLUTION-----
+Soln. ID: 3967
+Fitness: 10.778739329480805
+
