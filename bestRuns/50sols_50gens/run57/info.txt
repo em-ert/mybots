@@ -1,0 +1,27 @@
+Time of run: 14:36 PM on 08/31/2023
+Random Seed: 0
+Additional Details: Unscaled cos function: (2 * framesPerBeat * np.cos(((2*np.pi)/framesPerBeat)*timestep)) and maximized auditory neurons
+
+-----REVIEW COMMAND-----
+python3 reSimulate.py GUI 57 True 2&>1
+
+-----GENERAL DETAILS-----
+Morphology: Capsule Bot
+Pop. Size: 50
+Num. Gens: 50
+Steps per sim.: 800
+
+-----RHYTHMIC DETAILS-----
+TEMPOS: [120, 80, 100]
+Frame Rate: 0.025
+
+-----NETWORK DETAILS-----
+Sensor: 4
+Auditory: 1
+Hidden: 3
+Motor: 8
+
+-----BEST SOLUTION-----
+Soln. ID: 1322
+Fitness: 2471.251210278113
+
