@@ -90,8 +90,8 @@ class ROBOT:
             stepValue += step
 
         if stepValue > 0:
-            self.fitness += (framesPerBeat * np.cos(((2*np.pi)/framesPerBeat)*timestep))
-
+            self.fitness += (0.5 * framesPerBeat * np.cos(((2*np.pi)/framesPerBeat)*timestep))
+            
         """
         stepValue = 0
         curr_sensor = self.sensors["RightLower"]
