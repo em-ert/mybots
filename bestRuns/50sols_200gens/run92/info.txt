@@ -1,0 +1,33 @@
+Time of run: 23:45 PM on 09/10/2023
+Random Seed: 0
+Additional Details: 1 mutation, FPB scaled exp function, single leg COS + SYMMETRY - long run
+
+-----REVIEW COMMAND-----
+python3 reSimulate.py GUI 92 True 2&>1
+
+-----OPTIMIZATION DETAILS-----
+Fit. Function Type: COS
+Optimize Age?: False
+2nd Objective: SYMMETRY
+Num. Mutations: 1
+
+-----GENERAL DETAILS-----
+Morphology: Capsule Bot
+Pop. Size: 50
+Num. Gens: 200
+Steps per tempo.: 800
+
+-----RHYTHMIC DETAILS-----
+TEMPOS: [120, 80, 100]
+Frame Rate: 0.025
+
+-----NETWORK DETAILS-----
+Sensor: 4
+Auditory: 1
+Hidden: 3
+Motor: 8
+
+-----BEST SOLUTION-----
+Soln. ID: 11955
+Fitness: 1794.3832873427796
+

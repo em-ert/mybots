@@ -1,0 +1,27 @@
+Time of run: 13:05 PM on 09/05/2023
+Random Seed: 0
+Additional Details: FIXED MUTATIONS! 1 mutation, FPB scaled cos function, age: (framesPerBeat * np.cos(((2*np.pi)/framesPerBeat)*timestep)) and maximized auditory neurons
+
+-----REVIEW COMMAND-----
+python3 reSimulate.py GUI 71 True 2&>1
+
+-----GENERAL DETAILS-----
+Morphology: Capsule Bot
+Pop. Size: 50
+Num. Gens: 50
+Steps per sim.: 800
+
+-----RHYTHMIC DETAILS-----
+TEMPOS: [120, 80, 100]
+Frame Rate: 0.025
+
+-----NETWORK DETAILS-----
+Sensor: 4
+Auditory: 1
+Hidden: 3
+Motor: 8
+
+-----BEST SOLUTION-----
+Soln. ID: 2291
+Fitness: 2190.550422891591
+
