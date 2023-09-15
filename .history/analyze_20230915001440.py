@@ -134,15 +134,14 @@ class ANALYZE:
         if rand == True:
             fig, ax3 = plt.subplots(figsize=(7,7))
             # Modified for specific random data
-            randAgeFitnessArray = np.load("bestRuns/100sols_1gens/run95/" + "data/age_fitness_values.npy")
-            ageFitnessArray = np.load(path + "data/age_fitness_values.npy")
+            ageFitnessArray = np.load("bestRuns/1sols_1gens/run93" + "data/age_fitness_values.npy")
             bestFitness = np.amax(ageFitnessArray[c.NUMBER_OF_GENERATIONS - 1, :, :], axis=0)[0]
-            ax3.barh(bestFitness, label="Best Solution", color = "red", height=40, width=2, alpha=1.0)
-            randomPopulation = randAgeFitnessArray[0, :, :]
+            ax3.barh(bestFitness, label="Best Solution", color = "red", height=40, width=1, alpha=1.0)
+            randomPopulation = ageFitnessArray[0, :, :]
             randSolutions = (randomPopulation[:, 0])
             ax3.hist(randSolutions, label="Random Solutions", bins=30, orientation="horizontal", alpha=0.5)
             fig.legend()
-            plt.gca().set(title='Frequency Histogram', ylabel='Fitness', xlabel='Number of Solutions')
+            plt.gca().set(title='Frequency Histogram', ylabel='Fitness', yxlabel='Number of Solutions')
             ax3.set_title("Distribution of random solution fitnesses")
 
             plt.savefig(path + "plots/Rand.png")

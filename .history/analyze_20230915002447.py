@@ -137,7 +137,7 @@ class ANALYZE:
             randAgeFitnessArray = np.load("bestRuns/100sols_1gens/run95/" + "data/age_fitness_values.npy")
             ageFitnessArray = np.load(path + "data/age_fitness_values.npy")
             bestFitness = np.amax(ageFitnessArray[c.NUMBER_OF_GENERATIONS - 1, :, :], axis=0)[0]
-            ax3.barh(bestFitness, label="Best Solution", color = "red", height=40, width=2, alpha=1.0)
+            ax3.barh(bestFitness, label="Best Solution", color = "red", height=40, width=1, alpha=1.0)
             randomPopulation = randAgeFitnessArray[0, :, :]
             randSolutions = (randomPopulation[:, 0])
             ax3.hist(randSolutions, label="Random Solutions", bins=30, orientation="horizontal", alpha=0.5)

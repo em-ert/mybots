@@ -3,8 +3,8 @@ MAX_FORCE = 40
 
 #REVIEW - For re-sims: edit pop. size and num. gens to match
 SEED = 0
-NUMBER_OF_GENERATIONS = 50
-POPULATION_SIZE = 50
+NUMBER_OF_GENERATIONS = 2
+POPULATION_SIZE = 100
 CHECKPOINT_EVERY = 20
 BODY = "Capsule Bot"
 
