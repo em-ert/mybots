@@ -1,9 +1,9 @@
 import constants as c
 import numpy as np
 import pybullet as p
-from pyglet.resource import media
-import pyglet.media as pyglet
+# from pyglet.resource import media
 import pyrosim.pyrosim as pyrosim
+import pygame
 
 class MOTOR:
     def __init__(self, jointName, hollow):
@@ -11,7 +11,11 @@ class MOTOR:
         self.storedValues = np.zeros(c.SIM_STEPS * len(c.TEMPOS))
         self.sensorValues = np.zeros(c.SIM_STEPS * len(c.TEMPOS))
         if hollow:
-            self.stepSound = media("sounds/step.mp3", streaming=False)           
+            pygame.init()
+            pygame.mixer.init()
+            pygame.mixer.music.load("sounds/step.mp3")
+            pygame.mixer.music.set_volume(1.0)
+            # self.stepSound = media("sounds/step.mp3", streaming=False)      
 
 
     def Load_Value_Array(self, storedValues):
@@ -53,7 +57,7 @@ class MOTOR:
             targetPosition=desiredAngle,
             maxForce=c.MAX_FORCE)
         if self.sensorValues[timestep] > self.sensorValues[timestep - 1]:
-            self.stepSound.play()
+            pygame.mixer.music.play(1)
 
     """
     def Save_Values(self):

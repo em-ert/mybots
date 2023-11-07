@@ -60,15 +60,28 @@ class ANALYZE:
                 # print(gen)
             # print(maxFitnesses)
 
-            fig, ax2 = plt.subplots()
+            fig, ax = plt.subplots(1, 2, sharey=True, figsize = (10,5))
+            plt.legend()
             y = maxFitnesses
             x = np.arange(len(y))
-            ax2.xaxis.set_major_locator(ticker.MultipleLocator(base=10))
-            ax2.plot(x, y)
-            ax2.set_xlim(0, len(y)-1)
-            ax2.set_ylabel("Fitness")
-            ax2.set_xlabel("Generation")
-            ax2.set_title("Best solution step timing against metronome strikes")
+            ax[0].xaxis.set_major_locator(ticker.MultipleLocator(base=10))
+            ax[0].plot(x, y)
+            ax[0].set_xlim(0, len(y)-1)
+            ax[0].set_ylabel("Fitness")
+            ax[0].set_xlabel("Generation")
+            ax[0].set_title("Evolution over generations")
+
+            # Modified for specific random data
+            randAgeFitnessArray = np.load("bestRuns/100sols_1gens/run95/" + "data/age_fitness_values.npy")
+            ageFitnessArray = np.load(path + "data/age_fitness_values.npy")
+            bestFitness = np.amax(ageFitnessArray[c.NUMBER_OF_GENERATIONS - 1, :, :], axis=0)[0]
+            ax[1].barh(bestFitness, label="Best Solution", color = "red", height=40, width=2, alpha=1.0)
+            randomPopulation = randAgeFitnessArray[0, :, :]
+            randSolutions = (randomPopulation[:, 0])
+            ax[1].hist(randSolutions, label="Random Solutions", bins=30, orientation="horizontal", alpha=0.5)
+            fig.legend()
+            plt.gca().set(title='Frequency Histogram', xlabel='Count')
+            ax[1].set_title("Distribution of Random Bots")
 
             plt.savefig(path + "plots/Fitness.png")
 
@@ -153,4 +166,4 @@ for i in range(len(list)):
     ANALYZE.Run_Analysis("bestRuns/50sols_50gens/run" + str(list[i]) + "/", bar=False)
 """
 
-ANALYZE.Run_Analysis("bestRuns/50sols_50gens/run88/", bar=False)
+"""ANALYZE.Run_Analysis("bestRuns/50sols_50gens/run88/", bar=False)"""
