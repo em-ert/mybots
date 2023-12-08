@@ -1,3 +1,4 @@
+import subprocess
 from bots.capsuleBot import CAPSULE_BOT
 import constants as c
 import math
@@ -187,15 +188,22 @@ class SOLUTION:
         self.myID = ID
 
     def Start_Simulation(self, directOrGUI, showBest):
+        # TODO: Setup program so fitness can be passed back
         self.Create_Brain()
         if not showBest:
-            os.system("python3 simulate.py " + directOrGUI + " " + str(self.myID) + " False 2&>1 &")
+            sp = subprocess.Popen("python3 simulate.py " + directOrGUI + " " + str(self.myID) + " False 2&>1 &", stdout=subprocess.PIPE)
+
+            stdout, stderr = sp.communicate()
+            sp.wait()
+            spResult = stdout.decode()
+
             
         # Note: Without "&" best runs are shown serially
         else:
             os.system("python3 simulate.py " + directOrGUI + " " + str(self.myID) + " True 2&>1")
 
     def Wait_For_Simulation_To_End(self):
+        # TODO: Modify function so fitness files are not used
         fitnessFileName = "fitness" + str(self.myID) + ".txt"
         while not os.path.exists(fitnessFileName):
             time.sleep(0.001)
