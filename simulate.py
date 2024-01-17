@@ -3,7 +3,6 @@ import time
 
 # Create a physicsClient object and draw the results to a GUI
 physicsClient = p.connect(p.GUI)
-p.configureDebugVisualizer(p.COV_ENABLE_GUI,0)
 
 for i in range(1000):
     # Step the physics simulation then sleep for 1/60th of a second
