@@ -15,7 +15,6 @@ class AFPO:
     def __init__(self, nextAvailableID=0, currentGeneration=0, population={}, paretoFront = [], fitnessData=None):
         # Clear brain and fitness files
         os.system("rm brain*.nndf")
-        os.system("rm fitness*.txt")
 
 
         # Create the world and body files for the simulation
@@ -266,10 +265,6 @@ class AFPO:
         for solution in solutions:
             if not solutions[solution].wasSimulated:
                 solutions[solution].Start_Simulation("DIRECT", False)
-        for solution in solutions:
-            if not solutions[solution].wasSimulated:
-                solutions[solution].Wait_For_Simulation_To_End()
-
 
     def Get_Best_Brain(self):
         popList = list(self.population.values())

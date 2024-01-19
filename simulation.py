@@ -65,7 +65,8 @@ class SIMULATION:
                 self.robot.Act()
                 time.sleep(c.SLEEP_TIME)
                 p.stepSimulation()
-            self.robot.Get_Fitness(solutionID)
+        # NOTE: Fitness only obtained once in simulation (one fitness for all tempos). If fitness for each individual tempo is desired, this could be moved to the and of the loop above       
+        self.robot.Get_Fitness(solutionID)
 
 
     def Save(self):
@@ -91,7 +92,6 @@ class SIMULATION:
 
 
     def Load(self):
-        os.system("rm fitness*.txt")
         p.stepSimulation()
         for i in range(len(c.TEMPOS)):
             self.metronome.Reset(tempo=c.TEMPOS[i])

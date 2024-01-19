@@ -7,6 +7,7 @@ import pybullet as p
 from pyrosim.neuralNetwork import NEURAL_NETWORK
 import pyrosim.pyrosim as pyrosim
 from sensor import SENSOR
+import sys
 from metronomeSensor import METRONOME_SENSOR
 from motor import MOTOR
 import numpy as np
@@ -35,16 +36,6 @@ class ROBOT:
 
     
     def Get_Fitness(self, solutionID):
-
-        # Define tmp and true fitness file names
-        tmpFitnessFileName = "tmp" + str(solutionID) + ".txt"
-        fitnessFileName = "fitness" + str(solutionID) + ".txt"
-        # Write to temp file so reading doesn't occur before writing concludes
-        tmpFitnessFile = open(tmpFitnessFileName, "w")
-        tmpFitnessFile.write(str(self.fitness))
-        tmpFitnessFile.close()
-        os.system("mv " + tmpFitnessFileName + " " + fitnessFileName)
-        
         if c.OPTIMIZE_AGE == False and c.SECOND_OBJ == "DISTANCE":
             stateOfLinkZero = p.getLinkState(self.robotId, 0)
             positionOfLinkZero = stateOfLinkZero[0]
@@ -52,29 +43,14 @@ class ROBOT:
             yCoordinateOfLinkZero = positionOfLinkZero[1]
             self.fitness2 = math.sqrt((xCoordinateOfLinkZero**2) + (yCoordinateOfLinkZero**2))
 
-            # Define tmp and true fitness2 file names
-            tmpFitnessFileName2 = "tmpb" + str(solutionID) + ".txt"
-            fitnessFileName2 = "fitnessb" + str(solutionID) + ".txt"
-            # Write to temp file so reading doesn't occur before writing concludes
-            tmpFitnessFile2 = open(tmpFitnessFileName2, "w")
-            tmpFitnessFile2.write(str(self.fitness2))
-            tmpFitnessFile2.close()
-            os.system("mv " + tmpFitnessFileName2 + " " + fitnessFileName2)
-
         if c.OPTIMIZE_AGE == False and c.SECOND_OBJ == "SYMMETRY":
             for sensor in self.sensors:
                 for sensorB in self.sensors:
                     if self.sensors[sensor].name < self.sensors[sensorB].name:
                         self.fitness2 += -1 * abs(self.sensors[sensor].numSteps - self.sensors[sensorB].numSteps)
 
-            # Define tmp and true fitness2 file names
-            tmpFitnessFileName2 = "tmpb" + str(solutionID) + ".txt"
-            fitnessFileName2 = "fitnessb" + str(solutionID) + ".txt"
-            # Write to temp file so reading doesn't occur before writing concludes
-            tmpFitnessFile2 = open(tmpFitnessFileName2, "w")
-            tmpFitnessFile2.write(str(self.fitness2))
-            tmpFitnessFile2.close()
-            os.system("mv " + tmpFitnessFileName2 + " " + fitnessFileName2)            
+        # NOTE: Here is where I print the fitness to stderr
+        print(str(self.fitness) + "," + str(self.fitness2), file=sys.stderr)         
 
 
     def Prepare_To_Sense(self):

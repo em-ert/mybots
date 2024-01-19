@@ -1,12 +1,13 @@
-import subprocess
 from bots.capsuleBot import CAPSULE_BOT
 import constants as c
+import csv
 import math
 import numpy as np
 import os
 import pybullet as p
 import pyrosim.pyrosim as pyrosim
 import random
+import subprocess
 import time
 
 
@@ -45,7 +46,7 @@ class SOLUTION:
         self.wasSimulated = False
         self.links = []
         self.joints = []
-        # self.fitness (set in self.Wait_For_Simulation_To_End())
+        # self.fitness (set in self.Start_Simulation())
 
     @staticmethod
     def Create_World():
@@ -191,34 +192,18 @@ class SOLUTION:
         # TODO: Setup program so fitness can be passed back
         self.Create_Brain()
         if not showBest:
-            sp = subprocess.Popen("python3 simulate.py " + directOrGUI + " " + str(self.myID) + " False 2&>1 &", stdout=subprocess.PIPE)
+            sp = subprocess.Popen(["python3", "simulate.py", directOrGUI, str(self.myID), "False", "2&>1", "&"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
             stdout, stderr = sp.communicate()
             sp.wait()
-            spResult = stdout.decode()
-
+            spResult = stderr.decode()
             
-        # Note: Without "&" best runs are shown serially
+            resultsArray = spResult.split("\n")
+            fitnessArray = resultsArray[1].split(",")
+            self.fitness = float(fitnessArray[0])
+            self.fitness2 = float(fitnessArray[1])
+            self.wasSimulated = True
+            
+        # NOTE: Without "&" best runs are shown serially
         else:
             os.system("python3 simulate.py " + directOrGUI + " " + str(self.myID) + " True 2&>1")
-
-    def Wait_For_Simulation_To_End(self):
-        # TODO: Modify function so fitness files are not used
-        fitnessFileName = "fitness" + str(self.myID) + ".txt"
-        while not os.path.exists(fitnessFileName):
-            time.sleep(0.001)
-        fitnessFile = open(fitnessFileName, "r")
-        self.fitness = float(fitnessFile.read())
-        fitnessFile.close()
-        os.system("rm " + fitnessFileName)
-
-        if c.OPTIMIZE_AGE == False:
-            fitnessFileName2 = "fitnessb" + str(self.myID) + ".txt"
-            while not os.path.exists(fitnessFileName2):
-                time.sleep(0.001)
-            fitnessFile2 = open(fitnessFileName2, "r")
-            self.fitness2 = float(fitnessFile2.read())
-            fitnessFile2.close()
-            os.system("rm " + fitnessFileName2)
-        
-        self.wasSimulated = True
