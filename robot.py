@@ -23,9 +23,15 @@ class ROBOT:
         self.joints = bot.joints
 
         self.nn = NEURAL_NETWORK("brain" + str(solutionID) + ".nndf")
-
+        
+        self.storedSteps = np.zeros(c.SIM_STEPS)
+        self.previousLocation = [0, 0]
+        self.totalDistance = 0
         self.fitness = 0
         self.fitness2 = 0
+
+        # TODO: Modify and incorporate this into fitness function calculation
+        # self.storedSteps = np.zeros(c.SIM_STEPS * len(c.TEMPOS))
 
         pyrosim.Prepare_To_Simulate(self.robotId)
         self.Prepare_To_Act()
@@ -48,9 +54,13 @@ class ROBOT:
                 for sensorB in self.sensors:
                     if self.sensors[sensor].name < self.sensors[sensorB].name:
                         self.fitness2 += -1 * abs(self.sensors[sensor].numSteps - self.sensors[sensorB].numSteps)
-
+        
         # NOTE: Here is where I print the fitness to stderr
-        print(str(self.fitness) + "," + str(self.fitness2), file=sys.stderr)         
+        if c.OPTIMIZE_AGE == True:
+            multipliedFitness = self.fitness * self.totalDistance
+            print(str(multipliedFitness) + "," + str(self.fitness2), file=sys.stderr)
+        else:
+            print(str(self.fitness) + "," + str(self.fitness2), file=sys.stderr)
 
 
     def Prepare_To_Sense(self):
@@ -78,8 +88,22 @@ class ROBOT:
             curr_sensor = self.sensors[sensor]
             curr_sensor.Get_Value(timestep)
             stepValue = curr_sensor.Get_Step(timestep)
-            if curr_sensor == self.sensors["RightLower"] and stepValue > 0:
-                self.fitness += (metInfo * np.cos(((2*np.pi)/metInfo)*timestep))  
+            
+            # Reward the first step of any leg when the metronome strikes
+            if stepValue > 0 and metInfo == 1 and self.storedSteps[timestep] == 0:
+                self.storedSteps[timestep] = stepValue
+                self.fitness += stepValue
+                
+        stateOfLinkZero = p.getLinkState(self.robotId, 0)
+        positionOfLinkZero = stateOfLinkZero[0]
+        currentLocation = [positionOfLinkZero[0], positionOfLinkZero[1]]
+        self.totalDistance += math.abs(math.dist(currentLocation, self.previousLocation))
+        self.previousLocation = currentLocation
+
+        """
+        if curr_sensor == self.sensors["RightLower"] and stepValue > 0:
+            self.fitness += (metInfo * np.cos(((2*np.pi)/metInfo)*timestep)) 
+        """     
 
         """stepValue = 0
         for sensor in self.sensors:

@@ -35,6 +35,17 @@ class METRONOME:
                 return [self.CLICK, self.framesPerBeat]
             else: 
                 return [self.NO_CLICK, self.framesPerBeat]
+
+
+        if c.FIT_FUNCTION == "BIN":
+            # Increment subdivision with each step
+            self.subdivision += 1
+            # Click if number of subdivision reaches limit
+            if self.framesPerBeat - self.subdivision < 0:
+                self.__Click()
+                return [self.CLICK, 1]
+            else: 
+                return [self.NO_CLICK, 0]    
         
 
         if c.FIT_FUNCTION == "EXP":

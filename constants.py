@@ -9,9 +9,9 @@ CHECKPOINT_EVERY = 20
 BODY = "Capsule Bot"
 
 #REVIEW - [3] Edit fitness function here
-ADDITIONAL_DETAILS = "1 mutation, FPB scaled exp function, single leg COS + SYMMETRY - long run"
-# Can be COS, EXP, or EXP_PUNISH
-FIT_FUNCTION = "COS"
+ADDITIONAL_DETAILS = "1 mutation, binary function, all legs first step + age"
+# Can be COS, EXP, EXP_PUNISH, or BIN
+FIT_FUNCTION = "BIN"
 
 # General COS:
     # if stepValue > 0: self.fitness += (framesPerBeat * np.cos(((2*np.pi)/framesPerBeat)*timestep))
@@ -22,9 +22,9 @@ FIT_FUNCTION = "COS"
 
 
 #REVIEW - [3.5] Edit fitness function here
-OPTIMIZE_AGE = False
+OPTIMIZE_AGE = True
 # Below can be AGE, DISTANCE, or SYMMETRY
-SECOND_OBJ = "SYMMETRY"
+SECOND_OBJ = "AGE"
 NUM_MUTATIONS = 1
 
 # Can accommodate 60, 75, 80, 100, 120, 150, and 160 BPM
