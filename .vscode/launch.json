@@ -8,7 +8,7 @@
 
         {
             "name": "Python: search",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "search.py",
             "args": "0 2&>1.txt",
@@ -18,7 +18,7 @@
 
         {
             "name": "Python: checkpoint",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "search.py",
             "args": "3 2&>1.txt",
@@ -28,7 +28,7 @@
 
         {
             "name": "Python: re-simulate",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "reSimulate.py",
             "args": ["88", "2&>1"],
@@ -38,7 +38,7 @@
 
         {
             "name": "Python: mod-simulate",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "modSimulate.py",
             "args": ["3", "2&>1"],
@@ -48,7 +48,7 @@
         
         {
             "name": "Python: analyze",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "analyze.py",
             "console": "integratedTerminal",
@@ -57,7 +57,7 @@
 
         {
             "name": "Python: simulate",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "simulate.py",
             "args": ["DIRECT", "2083", "False", "2&>1"],
@@ -67,7 +67,7 @@
         
         {
             "name": "Python: Current File",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",

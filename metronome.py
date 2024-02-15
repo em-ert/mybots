@@ -43,9 +43,9 @@ class METRONOME:
             # Click if number of subdivision reaches limit
             if self.framesPerBeat - self.subdivision < 0:
                 self.__Click()
-                return [self.CLICK, 1]
+                return [self.CLICK, self.subdivision]
             else: 
-                return [self.NO_CLICK, 0]    
+                return [self.NO_CLICK, self.framesPerBeat/self.subdivision]    
         
 
         if c.FIT_FUNCTION == "EXP":

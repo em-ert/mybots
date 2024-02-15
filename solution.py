@@ -46,7 +46,8 @@ class SOLUTION:
         self.wasSimulated = False
         self.links = []
         self.joints = []
-        # self.fitness (set in self.Start_Simulation())
+        self.fitness = 0
+        self.fitness2 = 0
 
     @staticmethod
     def Create_World():
@@ -189,21 +190,13 @@ class SOLUTION:
         self.myID = ID
 
     def Start_Simulation(self, directOrGUI, showBest):
-        # TODO: Setup program so fitness can be passed back
         self.Create_Brain()
         if not showBest:
-            sp = subprocess.Popen(["python3", "simulate.py", directOrGUI, str(self.myID), "False", "2&>1", "&"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
-            stdout, stderr = sp.communicate()
-            sp.wait()
-            spResult = stderr.decode()
-            
-            resultsArray = spResult.split("\n")
-            fitnessArray = resultsArray[1].split(",")
-            self.fitness = float(fitnessArray[0])
-            self.fitness2 = float(fitnessArray[1])
-            self.wasSimulated = True
+            sp = subprocess.Popen(["python3", "simulate.py", directOrGUI, str(self.myID), "False", "2&>1"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            return sp    
             
         # NOTE: Without "&" best runs are shown serially
         else:
             os.system("python3 simulate.py " + directOrGUI + " " + str(self.myID) + " True 2&>1")
+
+            return

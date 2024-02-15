@@ -1,0 +1,33 @@
+Time of run: 13:16 PM on 02/09/2024
+Random Seed: 0
+Additional Details: 1 mutation, binary function, all legs first step + age
+
+-----REVIEW COMMAND-----
+python3 reSimulate.py GUI 146 True 2&>1
+
+-----OPTIMIZATION DETAILS-----
+Fit. Function Type: BIN
+Optimize Age?: True
+2nd Objective: AGE
+Num. Mutations: 1
+
+-----GENERAL DETAILS-----
+Morphology: Capsule Bot
+Pop. Size: 10
+Num. Gens: 30
+Steps per tempo.: 400
+
+-----RHYTHMIC DETAILS-----
+TEMPOS: [120, 80, 100]
+Frame Rate: 0.025
+
+-----NETWORK DETAILS-----
+Sensor: 4
+Auditory: 1
+Hidden: 3
+Motor: 8
+
+-----BEST SOLUTION-----
+Soln. ID: 267
+Fitness: 2918.5342777451797
+

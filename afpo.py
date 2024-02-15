@@ -262,9 +262,43 @@ class AFPO:
     Runs simulations for any solutions that have not been simulated
     """
     def Run_Simulations(self, solutions):
+        # Create an list to store subprocesses
+        subprocesses = []
+        fitnesses = []
+
+        # Iterate through all solutions and start simulations using subprocesses
         for solution in solutions:
-            if not solutions[solution].wasSimulated:
-                solutions[solution].Start_Simulation("DIRECT", False)
+            currSolution = solutions[solution]
+            if not currSolution.wasSimulated:
+                sp = currSolution.Start_Simulation("DIRECT", False)
+                subprocesses.append([currSolution.myID, sp])
+                currSolution.wasSimulated = True
+
+        # After all necessary subprocesses have started, iterate through all subprocesses and wait for them to finish
+        for spArray in subprocesses:
+            spArray[1].wait()
+                            
+        # Collect data from the subprocess in the fitness list and update values for all subprocesses
+        for spArray in subprocesses:
+            sp = spArray[1]
+            stdout, stderr = sp.communicate()
+            spResult = stderr.decode()
+            resultsArray = spResult.split("\n")
+            fitnessArray = resultsArray[1].split(",")
+            fitnesses.append([spArray[0], fitnessArray[0], fitnessArray[1]])
+            
+        #TODO - Debug here and figure out what is up with the zero values in the fitnesses array    
+        if len(fitnesses) != 0:
+            for solution in solutions:
+                currSolution = solutions[solution]
+                fitnessData = fitnesses[0]
+                if currSolution.myID == fitnessData[0]:
+                    currSolution.fitness = float(fitnessData[1])
+                    currSolution.fitness2 = float(fitnessData[2])
+                    print(f"f1: {fitnessData[1]}, f2: {fitnessData[2]}")
+                    fitnesses.pop(0)
+                    if len(fitnesses) == 0:
+                        break
 
     def Get_Best_Brain(self):
         popList = list(self.population.values())

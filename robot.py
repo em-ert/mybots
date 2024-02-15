@@ -24,7 +24,7 @@ class ROBOT:
 
         self.nn = NEURAL_NETWORK("brain" + str(solutionID) + ".nndf")
         
-        self.storedSteps = np.zeros(c.SIM_STEPS)
+        self.storedSteps = np.zeros(c.SIM_STEPS * len(c.TEMPOS))
         self.previousLocation = [0, 0]
         self.totalDistance = 0
         self.fitness = 0
@@ -92,12 +92,22 @@ class ROBOT:
             # Reward the first step of any leg when the metronome strikes
             if stepValue > 0 and metInfo == 1 and self.storedSteps[timestep] == 0:
                 self.storedSteps[timestep] = stepValue
-                self.fitness += stepValue
+                self.fitness += stepValue * 4
+            elif stepValue > 0 and metInfo == 1 and self.storedSteps[timestep] != 0:
+                self.fitness -= stepValue
+            elif stepValue > 0 and metInfo % 1 == 0 and self.storedSteps[timestep] == 0:
+                self.storedSteps[timestep] = stepValue
+                self.fitness += stepValue * 2
+            elif stepValue > 0 and metInfo % 1 == 0 and self.storedSteps[timestep] != 0:
+                self.fitness -= stepValue   
+            elif stepValue > 0 and metInfo % 1 != 0:
+                self.fitness -= stepValue * 2   
                 
+
         stateOfLinkZero = p.getLinkState(self.robotId, 0)
         positionOfLinkZero = stateOfLinkZero[0]
         currentLocation = [positionOfLinkZero[0], positionOfLinkZero[1]]
-        self.totalDistance += math.abs(math.dist(currentLocation, self.previousLocation))
+        self.totalDistance += abs(math.dist(currentLocation, self.previousLocation))
         self.previousLocation = currentLocation
 
         """

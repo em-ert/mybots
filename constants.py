@@ -1,11 +1,11 @@
-SIM_STEPS = 800
+SIM_STEPS = 400
 MAX_FORCE = 40
 
 #REVIEW - For re-sims: edit pop. size and num. gens to match
 SEED = 0
-NUMBER_OF_GENERATIONS = 50
-POPULATION_SIZE = 50
-CHECKPOINT_EVERY = 20
+NUMBER_OF_GENERATIONS = 30
+POPULATION_SIZE = 15
+CHECKPOINT_EVERY = 5
 BODY = "Capsule Bot"
 
 #REVIEW - [3] Edit fitness function here
