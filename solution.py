@@ -19,7 +19,7 @@ class SOLUTION:
 
         # Auditory to hidden weights
         self.a_h_Weights = np.ones((c.NUM_AUDITORY_NEURONS, c.NUM_HIDDEN_NEURONS), dtype=float)
-        a_h_Weights = (self.a_h_Weights * 2) - 1
+        self.a_h_Weights = (self.a_h_Weights * 2) - 1
 
         # Hidden to hidden weights
         self.h_h_Weights = np.random.rand(c.NUM_HIDDEN_NEURONS, c.NUM_HIDDEN_NEURONS)

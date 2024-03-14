@@ -3,6 +3,7 @@ import constants as c
 import os
 import pickle
 import math
+import string
 import pybullet as p
 from pyrosim.neuralNetwork import NEURAL_NETWORK
 import pyrosim.pyrosim as pyrosim
@@ -23,15 +24,17 @@ class ROBOT:
         self.joints = bot.joints
 
         self.nn = NEURAL_NETWORK("brain" + str(solutionID) + ".nndf")
-        
-        self.storedSteps = np.zeros(c.SIM_STEPS * len(c.TEMPOS))
+
         self.previousLocation = [0, 0]
         self.totalDistance = 0
         self.fitness = 0
         self.fitness2 = 0
+        self.numClicks = 0
+        self.maxFitness = 0
 
         # TODO: Modify and incorporate this into fitness function calculation
-        # self.storedSteps = np.zeros(c.SIM_STEPS * len(c.TEMPOS))
+        self.storedSteps = np.zeros(sum(c.FRAMES_PER_TEMPO))
+        self.storedDistances = np.zeros(sum(c.FRAMES_PER_TEMPO))
 
         pyrosim.Prepare_To_Simulate(self.robotId)
         self.Prepare_To_Act()
@@ -40,7 +43,7 @@ class ROBOT:
 
         os.system("rm brain" + str(solutionID) + ".nndf")
 
-    
+    # REVIEW: [1.5] Edit fitness function here
     def Get_Fitness(self, solutionID):
         if c.OPTIMIZE_AGE == False and c.SECOND_OBJ == "DISTANCE":
             stateOfLinkZero = p.getLinkState(self.robotId, 0)
@@ -54,11 +57,179 @@ class ROBOT:
                 for sensorB in self.sensors:
                     if self.sensors[sensor].name < self.sensors[sensorB].name:
                         self.fitness2 += -1 * abs(self.sensors[sensor].numSteps - self.sensors[sensorB].numSteps)
+
+        if c.OPTIMIZE_AGE == False and c.SECOND_OBJ == "DUAL":  
+            #  !--- CALCULATE BALANCE ---!
+            balanceScore = 0
+            numActiveSensors = 0
+            for sensor in self.sensors:
+                if sensor != self.sensors["RightLower"] and sensor.endswith("Lower"):
+                   numActiveSensors += 1
+                   balanceScore += abs(self.sensors["RightLower"].numSteps - self.sensors[sensor].numSteps)
+                   
+            # Take average and add 1
+            self.fitness2 = (balanceScore / numActiveSensors) + 1
+            self.fitness2 = -1 * self.fitness2
+
+            # !--- CALCULATE DISTANCE ---!
+            # Calculate how closely the robot was to the distance goal
+            # Post-process steps to find fitnesses
+            distanceScore = 0
+            frameStartIndex = 0
+            # Perform for each tempo...
+            for i in range(len(c.TEMPOS)):
+                # Get number of frames per beat for the tempo
+                framesPerBeat = c.FRAMES_PER_BEAT[i]
+                # Isolate region of data relevant to the current tempo - the current 'condition'
+                conditionDistData = self.storedDistances[frameStartIndex : frameStartIndex + c.FRAMES_PER_TEMPO[i]]
+                conditionDistData = np.reshape(conditionDistData, (c.CLICKS_PER_TEMPO, framesPerBeat))
+                distancePerClick = np.sum(conditionDistData, axis = 1)
+                # Add 1 point for each spot distance is goal amount
+                metGoalDistance = distancePerClick[distancePerClick >= c.TRAVEL_PER_CLICK_GOAL]
+                distanceScore += len(metGoalDistance)
+                # Otherwise add sqrt(real/goal)
+                belowGoalDistance = distancePerClick[distancePerClick < c.TRAVEL_PER_CLICK_GOAL]
+                belowGoalDistance = belowGoalDistance / c.TRAVEL_PER_CLICK_GOAL
+                distanceScore += sum(np.sqrt(belowGoalDistance))
+                self.numClicks += len(distancePerClick)
+            # Find average
+            distanceScore = distanceScore / self.numClicks   
+            
+            # !--- CALCULATE POINTS ---!
+            # Post-process steps to find fitnesses
+            frameStartIndex = 0
+            # Perform for each tempo...
+            for i in range(len(c.TEMPOS)):
+                # Get number of frames per beat for the tempo
+                framesPerBeat = c.FRAMES_PER_BEAT[i]
+                # Isolate region of full data relevant to the current tempo - the current 'condition'
+                conditionData = self.storedSteps[frameStartIndex : frameStartIndex + c.FRAMES_PER_TEMPO[i]]
+                conditionData = np.reshape(conditionData, (c.CLICKS_PER_TEMPO, framesPerBeat))
+                # Create an array containing a single period worth of cosine values
+                cosPointsArray = np.linspace(0, framesPerBeat, framesPerBeat + 1)
+                cosPointsArray = cosPointsArray[0: framesPerBeat] 
+                cosPointsArray = framesPerBeat * np.cos(((2*np.pi)/framesPerBeat) * cosPointsArray)
+                # Multiply each row in conditionData by cosPointsArray 
+                conditionData = np.multiply(conditionData, cosPointsArray)
+                # Flatten it back into one row
+                conditionData = conditionData.flatten()
+            
+                # Iterate through the arrays to find points values
+                remaining = c.FRAMES_PER_TEMPO[i]
+                startIndex = 0
+                self.fitness += np.max(conditionData[startIndex : math.ceil(framesPerBeat/2)])
+                startIndex = math.ceil(framesPerBeat/2)
+                remaining -= (startIndex - 1)
+                self.maxFitness += framesPerBeat
+                while remaining > 0:
+                    if remaining < framesPerBeat:
+                        self.fitness += np.max(conditionData[startIndex : startIndex + remaining])
+                    else:
+                        self.fitness += np.max(conditionData[startIndex : startIndex + framesPerBeat])
+                        self.maxFitness += framesPerBeat
+                    startIndex += framesPerBeat
+                    remaining -= framesPerBeat 
+
+
+
+            multipliedFitness = (self.fitness * 2/self.maxFitness) * distanceScore
+
+            print(str(multipliedFitness) + "," + str(self.fitness2), file=sys.stderr)       
         
-        # NOTE: Here is where I print the fitness to stderr
+        # NOTE: Here is where I print the fitness to stderr    
         if c.OPTIMIZE_AGE == True:
-            multipliedFitness = self.fitness * self.totalDistance
+            #  !--- CALCULATE BALANCE ---!
+            balanceScore = 0
+            numActiveSensors = 0
+            for sensor in self.sensors:
+                if sensor != self.sensors["RightLower"] and sensor.endswith("Lower"):
+                   numActiveSensors += 1
+                   balanceScore += abs(self.sensors["RightLower"].numSteps - self.sensors[sensor].numSteps)
+                   
+            # Take average and add 1
+            balanceScore = (balanceScore / numActiveSensors) + 1
+            # Scale so 1 is the max
+            balanceScore = 1 / balanceScore
+
+            # !--- CALCULATE DISTANCE ---!
+            # Calculate how closely the robot was to the distance goal
+            # Post-process steps to find fitnesses
+            distanceScore = 0
+            frameStartIndex = 0
+            # Perform for each tempo...
+            for i in range(len(c.TEMPOS)):
+                # Get number of frames per beat for the tempo
+                framesPerBeat = c.FRAMES_PER_BEAT[i]
+                # Isolate region of data relevant to the current tempo - the current 'condition'
+                conditionDistData = self.storedDistances[frameStartIndex : frameStartIndex + c.FRAMES_PER_TEMPO[i]]
+                conditionDistData = np.reshape(conditionDistData, (c.CLICKS_PER_TEMPO, framesPerBeat))
+                distancePerClick = np.sum(conditionDistData, axis = 1)
+                # Add 1 point for each spot distance is goal amount
+                metGoalDistance = distancePerClick[distancePerClick >= c.TRAVEL_PER_CLICK_GOAL]
+                distanceScore += len(metGoalDistance)
+                # Otherwise add sqrt(real/goal)
+                belowGoalDistance = distancePerClick[distancePerClick < c.TRAVEL_PER_CLICK_GOAL]
+                belowGoalDistance = belowGoalDistance / c.TRAVEL_PER_CLICK_GOAL
+                distanceScore += sum(np.sqrt(belowGoalDistance))
+                self.numClicks += len(distancePerClick)
+            # Find average
+            distanceScore = distanceScore / self.numClicks   
+            
+            # !--- CALCULATE POINTS ---!
+            # Post-process steps to find fitnesses
+            frameStartIndex = 0
+            # Perform for each tempo...
+            for i in range(len(c.TEMPOS)):
+                # Get number of frames per beat for the tempo
+                framesPerBeat = c.FRAMES_PER_BEAT[i]
+                # Isolate region of full data relevant to the current tempo - the current 'condition'
+                conditionData = self.storedSteps[frameStartIndex : frameStartIndex + c.FRAMES_PER_TEMPO[i]]
+                conditionData = np.reshape(conditionData, (c.CLICKS_PER_TEMPO, framesPerBeat))
+                # Create an array containing a single period worth of cosine values
+                cosPointsArray = np.linspace(0, framesPerBeat, framesPerBeat + 1)
+                cosPointsArray = cosPointsArray[0: framesPerBeat] 
+                cosPointsArray = framesPerBeat * np.cos(((2*np.pi)/framesPerBeat) * cosPointsArray)
+                # Multiply each row in conditionData by cosPointsArray 
+                conditionData = np.multiply(conditionData, cosPointsArray)
+                # Flatten it back into one row
+                conditionData = conditionData.flatten()
+            
+                # Iterate through the arrays to find points values
+                remaining = c.FRAMES_PER_TEMPO[i]
+                startIndex = 0
+                tempFitness = np.max(conditionData[startIndex : math.ceil(framesPerBeat/2)])
+                # If more steps than one, decrease score by 25%
+                if tempFitness < np.sum(conditionData[startIndex : math.ceil(framesPerBeat/2)]):
+                    self.fitness += tempFitness * (1 - c.DOUBLE_STEP_PUNISHMENT)
+                else:
+                    self.fitness += tempFitness
+                startIndex = math.ceil(framesPerBeat/2)
+                remaining -= (startIndex - 1)
+                self.maxFitness += framesPerBeat
+                while remaining > 0:
+                    # If not a full amount remain to be processed
+                    if remaining < framesPerBeat:
+                        # If more steps than one, decrease score by 25%
+                        tempFitness = np.max(conditionData[startIndex : startIndex + remaining])
+                        if tempFitness < np.sum(conditionData[startIndex : startIndex + remaining]):
+                            self.fitness += tempFitness * (1 - c.DOUBLE_STEP_PUNISHMENT)
+                        else:
+                            self.fitness += tempFitness  
+                    # If a normal number of steps remain to be processed        
+                    else:
+                        tempFitness = np.max(conditionData[startIndex : startIndex + framesPerBeat])
+                        self.maxFitness += framesPerBeat
+                        # If more steps than one, decrease score by 25%
+                        if tempFitness < np.sum(conditionData[startIndex : startIndex + framesPerBeat]):
+                            self.fitness += tempFitness * (1 - c.DOUBLE_STEP_PUNISHMENT)
+                        else:
+                            self.fitness += tempFitness 
+                    startIndex += framesPerBeat
+                    remaining -= framesPerBeat 
+
+            multipliedFitness = (self.fitness * 3/self.maxFitness) * balanceScore * distanceScore
             print(str(multipliedFitness) + "," + str(self.fitness2), file=sys.stderr)
+        
         else:
             print(str(self.fitness) + "," + str(self.fitness2), file=sys.stderr)
 
@@ -82,17 +253,35 @@ class ROBOT:
 
 
     #REVIEW - [1] Edit fitness function here + stepsToClick v. framesPerBeat
-    def Sense(self, timestep, metInfo):
+    def Sense(self, timestep, framesPerBeat, metInfo):
         stepValue = 0
         for sensor in self.sensors:
             curr_sensor = self.sensors[sensor]
             curr_sensor.Get_Value(timestep)
             stepValue = curr_sensor.Get_Step(timestep)
-            
+
+            if curr_sensor == self.sensors["RightLower"] and stepValue > 0:
+                self.storedSteps[timestep] = stepValue
+
+            """
+            if metInfo == framesPerBeat:
+                self.numClicks += 1
+                self.maxFitness += framesPerBeat
+
+            # Look at movement of only one leg - POINTS
+            if curr_sensor == self.sensors["RightLower"] and stepValue > 0:
+                # Adjust subdivision for graphing (1 index to 0)
+                metInfo -= 1
+                # Reward the first step of any leg when the metronome strikes
+                if self.storedSteps[self.numClicks] == 0:
+                    self.storedSteps[self.numClicks] = stepValue
+                    self.fitness += (framesPerBeat * np.cos(((2*np.pi)/framesPerBeat) * metInfo))
+            """
+            """
             # Reward the first step of any leg when the metronome strikes
             if stepValue > 0 and metInfo == 1 and self.storedSteps[timestep] == 0:
                 self.storedSteps[timestep] = stepValue
-                self.fitness += stepValue * 4
+                self.fitness += (framesPerBeat * np.cos(((2*np.pi)/framesPerBeat) * metInfo))
             elif stepValue > 0 and metInfo == 1 and self.storedSteps[timestep] != 0:
                 self.fitness -= stepValue
             elif stepValue > 0 and metInfo % 1 == 0 and self.storedSteps[timestep] == 0:
@@ -102,17 +291,19 @@ class ROBOT:
                 self.fitness -= stepValue   
             elif stepValue > 0 and metInfo % 1 != 0:
                 self.fitness -= stepValue * 2   
-                
+            """    
 
+        # For distance - Use this to scale 
         stateOfLinkZero = p.getLinkState(self.robotId, 0)
         positionOfLinkZero = stateOfLinkZero[0]
         currentLocation = [positionOfLinkZero[0], positionOfLinkZero[1]]
-        self.totalDistance += abs(math.dist(currentLocation, self.previousLocation))
+        self.storedDistances[timestep] = abs(math.dist(currentLocation, self.previousLocation))
+        # self.totalDistance += abs(math.dist(currentLocation, self.previousLocation))
         self.previousLocation = currentLocation
 
         """
         if curr_sensor == self.sensors["RightLower"] and stepValue > 0:
-            self.fitness += (metInfo * np.cos(((2*np.pi)/metInfo)*timestep)) 
+            self.fitness += (framesPerBeat * np.cos(((2*np.pi)/framesPerBeat)*timestep)) 
         """     
 
         """stepValue = 0
@@ -122,17 +313,14 @@ class ROBOT:
             step = curr_sensor.Get_Step(timestep)
             stepValue += step
 
-        # metInfo here is framesPerBeat
         if c.FIT_FUNCTION == "COS":
             if stepValue > 0:
-                self.fitness += (metInfo * np.cos(((2*np.pi)/metInfo)*timestep))
+                self.fitness += (framesPerBeat * np.cos(((2*np.pi)/framesPerBeat)*timestep))
 
-        # metInfo here is stepsToClick
         elif c.FIT_FUNCTION == "EXP":
             if metInfo >= 0 and stepValue > 0:    
                 self.fitness += (((2-metInfo)**2)+0.5)
 
-        # metInfo here is stepsToClick
         elif c.FIT_FUNCTION == "EXP_PUNISH":
             if metInfo >= 0 and stepValue > 0:    
                 self.fitness += (((2-metInfo)**2)+0.5)

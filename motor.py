@@ -8,8 +8,8 @@ import pygame
 class MOTOR:
     def __init__(self, jointName, hollow):
         self.jointName = jointName
-        self.storedValues = np.zeros(c.SIM_STEPS * len(c.TEMPOS))
-        self.sensorValues = np.zeros(c.SIM_STEPS * len(c.TEMPOS))
+        self.storedValues = np.zeros(sum(c.FRAMES_PER_TEMPO))
+        self.sensorValues = np.zeros(sum(c.FRAMES_PER_TEMPO))
         if hollow:
             pygame.init()
             pygame.mixer.init()

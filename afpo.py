@@ -4,6 +4,7 @@ import datetime
 from historian import HISTORIAN
 import numpy as np
 import matplotlib.pyplot as plt
+import math
 import os
 import operator
 import pickle
@@ -114,7 +115,8 @@ class AFPO:
         # Spawn children for next generation
         children = self.Spawn_Children_From_Parents()
         self.Mutate(children)
-        children = self.Spawn_Random_Child(children)
+        for i in range(c.NUM_RANDOM_CHILDREN):
+            children = self.Spawn_Random_Child(children)
 
         # Run Simulations on children to get their respective fitnesses
         self.Run_Simulations(children)
@@ -248,7 +250,7 @@ class AFPO:
             else:
                 return False
         else:
-            # If indivuduals have same stats, return newer one (i1 dom. if newer)
+            # If individuals have same stats, return newer one (i1 dom. if newer)
             if self.population[i1].fitness2 == self.population[i2].fitness2 and self.population[i1].fitness == self.population[i2].fitness:
                 return self.population[i1].myID > self.population[i2].myID
             
@@ -262,32 +264,54 @@ class AFPO:
     Runs simulations for any solutions that have not been simulated
     """
     def Run_Simulations(self, solutions):
+        # Create a list to store all solutions that must be simulated
+        # If more than 20 solutions will be simulated, we will split the groups up to avoid having two many
+        # subprocesses running in parallel
+        notSimulated = []
         # Create an list to store subprocesses
         subprocesses = []
         fitnesses = []
-
-        # Iterate through all solutions and start simulations using subprocesses
         for solution in solutions:
-            currSolution = solutions[solution]
-            if not currSolution.wasSimulated:
+            if not solutions[solution].wasSimulated:
+                notSimulated.append(solution)
+
+        # Create sublists and run in sublists
+        baseSize = math.floor(len(notSimulated) / c.NUM_PARALLEL_RUN_GROUPS)
+        overflow = len(notSimulated) % c.NUM_PARALLEL_RUN_GROUPS
+        startIndex = 0
+        for i in range(c.NUM_PARALLEL_RUN_GROUPS):
+            subListSize = baseSize
+            if i < overflow:
+                subListSize += 1
+            endIndex = startIndex + subListSize    
+            subList = notSimulated[startIndex : endIndex]    
+            for solution in subList:
+                currSolution = solutions[solution]
                 sp = currSolution.Start_Simulation("DIRECT", False)
                 subprocesses.append([currSolution.myID, sp])
                 currSolution.wasSimulated = True
 
-        # After all necessary subprocesses have started, iterate through all subprocesses and wait for them to finish
-        for spArray in subprocesses:
-            spArray[1].wait()
-                            
-        # Collect data from the subprocess in the fitness list and update values for all subprocesses
-        for spArray in subprocesses:
-            sp = spArray[1]
-            stdout, stderr = sp.communicate()
-            spResult = stderr.decode()
-            resultsArray = spResult.split("\n")
-            fitnessArray = resultsArray[1].split(",")
-            fitnesses.append([spArray[0], fitnessArray[0], fitnessArray[1]])
+            # After all necessary subprocesses have started, iterate through all subprocesses and wait for them to finish
+            for spArray in subprocesses:
+                spArray[1].wait()
+
+            # REVIEW: [4] Edit fitness function here               
+            # Collect data from the subprocess in the fitness list and update values for all subprocesses
+            for spArray in subprocesses:
+                sp = spArray[1]
+                stdout, stderr = sp.communicate()
+                spResult = stderr.decode()
+                resultsArray = spResult.split("\n")
+                fitnessArray = resultsArray[1].split(",")
+                if (c.OPTIMIZE_AGE):
+                    fitnesses.append([spArray[0], fitnessArray[0], solutions[int(spArray[0])].age])
+                else:
+                    fitnesses.append([spArray[0], fitnessArray[0], fitnessArray[1]])     
+            # Empty the subprocess list for next time
+            subprocesses = []            
+            startIndex = endIndex     
             
-        #TODO - Debug here and figure out what is up with the zero values in the fitnesses array    
+        #TODO - Debug here and figure out what is up with the zero values in the fitnesses array           
         if len(fitnesses) != 0:
             for solution in solutions:
                 currSolution = solutions[solution]
@@ -299,6 +323,8 @@ class AFPO:
                     fitnesses.pop(0)
                     if len(fitnesses) == 0:
                         break
+                elif currSolution.myID > fitnessData[0]:
+                    print("ERROR: Fitness data cannot be collected (afpo.py, ~line 319)")   
 
     def Get_Best_Brain(self):
         popList = list(self.population.values())

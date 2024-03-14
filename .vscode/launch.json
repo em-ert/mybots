@@ -21,7 +21,7 @@
             "type": "debugpy",
             "request": "launch",
             "program": "search.py",
-            "args": "3 2&>1.txt",
+            "args": "30 2&>1.txt",
             "console": "integratedTerminal",
             "justMyCode": false
         },
@@ -31,7 +31,7 @@
             "type": "debugpy",
             "request": "launch",
             "program": "reSimulate.py",
-            "args": ["88", "2&>1"],
+            "args": ["208", "2&>1"],
             "console": "integratedTerminal",
             "justMyCode": false 
         },

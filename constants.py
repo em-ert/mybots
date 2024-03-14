@@ -1,17 +1,23 @@
+import math
+
 SIM_STEPS = 400
 MAX_FORCE = 40
 
 #REVIEW - For re-sims: edit pop. size and num. gens to match
 SEED = 0
-NUMBER_OF_GENERATIONS = 30
-POPULATION_SIZE = 15
+NUMBER_OF_GENERATIONS = 2
+POPULATION_SIZE = 16
 CHECKPOINT_EVERY = 5
+NUM_PARALLEL_RUN_GROUPS = 2
 BODY = "Capsule Bot"
+BODY_SIZE = 1
+TRAVEL_PER_CLICK_GOAL = BODY_SIZE / 25
+DOUBLE_STEP_PUNISHMENT = 0.05
 
 #REVIEW - [3] Edit fitness function here
 ADDITIONAL_DETAILS = "1 mutation, binary function, all legs first step + age"
 # Can be COS, EXP, EXP_PUNISH, or BIN
-FIT_FUNCTION = "BIN"
+FIT_FUNCTION = "COS"
 
 # General COS:
     # if stepValue > 0: self.fitness += (framesPerBeat * np.cos(((2*np.pi)/framesPerBeat)*timestep))
@@ -23,13 +29,17 @@ FIT_FUNCTION = "BIN"
 
 #REVIEW - [3.5] Edit fitness function here
 OPTIMIZE_AGE = True
-# Below can be AGE, DISTANCE, or SYMMETRY
-SECOND_OBJ = "AGE"
+# Below can be AGE, DISTANCE, DUAL, or SYMMETRY
+SECOND_OBJ = "Age"
 NUM_MUTATIONS = 1
+NUM_RANDOM_CHILDREN = 4
 
 # Can accommodate 60, 75, 80, 100, 120, 150, and 160 BPM
 TEMPOS = [120, 80, 100]
 FRAME_RATE = 0.0250
+FRAMES_PER_BEAT = [math.ceil((60/tempo)/FRAME_RATE) for tempo in TEMPOS]
+CLICKS_PER_TEMPO = math.ceil(SIM_STEPS/min(FRAMES_PER_BEAT))
+FRAMES_PER_TEMPO = [numFrames * CLICKS_PER_TEMPO for numFrames in FRAMES_PER_BEAT]
 
 INCLUDE_UPPER_LINKS = False
 NUM_SENSOR_NEURONS = 4

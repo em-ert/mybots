@@ -12,7 +12,7 @@ class METRONOME_SENSOR:
         self.values[timestep] = click
 
     def Prepare_To_Sense(self):
-        self.values = np.zeros(c.SIM_STEPS * len(c.TEMPOS))
+        self.values = np.zeros(sum(c.FRAMES_PER_TEMPO))
 
     def Save_Values(self, path):
         fullPath = path + "data/metronome_sensor_values.npy"

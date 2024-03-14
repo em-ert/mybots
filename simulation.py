@@ -9,6 +9,7 @@ from pyglet.resource import media
 import pyrosim.pyrosim as pyrosim
 from robot import ROBOT
 from savedRobot import SAVED_ROBOT
+import math
 import time
 from world import WORLD
 
@@ -57,9 +58,11 @@ class SIMULATION:
         p.stepSimulation()
         for i in range(len(c.TEMPOS)):
             self.metronome.Reset(tempo=c.TEMPOS[i])
-            for t in range(c.SIM_STEPS):
+            # Find number of metronome clicks for the first tempo and use that to scale the rest
+            # That way, robots trained on same number of clicks per tempo
+            for t in range(c.FRAMES_PER_TEMPO[i]):
                 clickInfo = self.metronome.StepFunction()
-                self.robot.Sense(t + (c.SIM_STEPS * i), clickInfo[1])
+                self.robot.Sense(t + (c.SIM_STEPS * i), clickInfo[1], clickInfo[2])
                 self.robot.Sense_Rhythm(t + (c.SIM_STEPS * i), clickInfo[0])
                 self.robot.Think(clickInfo[0])
                 self.robot.Act()
@@ -73,9 +76,9 @@ class SIMULATION:
         p.stepSimulation()
         for i in range(len(c.TEMPOS)):
             self.metronome.Reset(tempo=c.TEMPOS[i])
-            for t in range(c.SIM_STEPS):
+            for t in range(c.FRAMES_PER_TEMPO[i]):
                 clickInfo = self.metronome.StepFunction()
-                self.robot.Sense(t + (c.SIM_STEPS * i), clickInfo[1])       # Steps to click
+                self.robot.Sense(t + (c.SIM_STEPS * i), clickInfo[1], clickInfo[2])       # Steps to click
                 self.robot.Sense_Rhythm(t + (c.SIM_STEPS * i), clickInfo[0])   # Click (1 or 0)
                 self.robot.Think(clickInfo[0])
                 self.robot.Act_And_Save(t + (c.SIM_STEPS * i))
@@ -95,7 +98,7 @@ class SIMULATION:
         p.stepSimulation()
         for i in range(len(c.TEMPOS)):
             self.metronome.Reset(tempo=c.TEMPOS[i])
-            for t in range(c.SIM_STEPS):
+            for t in range(c.FRAMES_PER_TEMPO[i]):
                 stepEnd = time.time() + (c.FRAME_RATE)
                 self.metronome.StepFunction()
                 self.robot.Act(t + (c.SIM_STEPS * i))

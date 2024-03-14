@@ -32,9 +32,9 @@ class METRONOME:
             # Click if number of subdivision reaches limit
             if self.framesPerBeat - self.subdivision < 0:
                 self.__Click()
-                return [self.CLICK, self.framesPerBeat]
+                return [self.CLICK, self.framesPerBeat, self.subdivision]
             else: 
-                return [self.NO_CLICK, self.framesPerBeat]
+                return [self.NO_CLICK, self.framesPerBeat, self.subdivision]
 
 
         if c.FIT_FUNCTION == "BIN":
@@ -43,9 +43,9 @@ class METRONOME:
             # Click if number of subdivision reaches limit
             if self.framesPerBeat - self.subdivision < 0:
                 self.__Click()
-                return [self.CLICK, self.subdivision]
+                return [self.CLICK, self.framesPerBeat, self.subdivision]
             else: 
-                return [self.NO_CLICK, self.framesPerBeat/self.subdivision]    
+                return [self.NO_CLICK, self.framesPerBeat, self.framesPerBeat/self.subdivision]    
         
 
         if c.FIT_FUNCTION == "EXP":
@@ -54,18 +54,18 @@ class METRONOME:
             # Click if number of subdivision reaches limit
             if self.framesPerBeat - self.subdivision < 0:
                 self.__Click()
-                return [self.CLICK, 0]
+                return [self.CLICK, self.framesPerBeat, 0]
             
             # Return distance from click if <= 2 from click on either end
             elif self.subdivision <= 2:
-                return [self.NO_CLICK, self.subdivision]
+                return [self.NO_CLICK, self.framesPerBeat, self.subdivision]
             
             elif self.framesPerBeat - self.subdivision <= 2:
-                return [self.NO_CLICK, self.framesPerBeat - self.subdivision]
+                return [self.NO_CLICK, self.framesPerBeat, self.framesPerBeat - self.subdivision]
             
             # Otherwise return -1 for distance from click
             else: 
-                return [self.NO_CLICK, -1]
+                return [self.NO_CLICK, self.framesPerBeat, -1]
             
         
     def __Click(self):
@@ -85,11 +85,12 @@ class METRONOME:
 
           
     def Reset(self, tempo, timeSignature=[4,4]):
-        self.beat = 1
-        self.subdivision = 1
         self.tempo = tempo
         self.timeSignature = timeSignature
         self.framesPerBeat = (60/self.tempo)/c.FRAME_RATE
+        # Maximize these so all simulations begin with a click
+        self.beat = self.timeSignature[0]
+        self.subdivision = self.framesPerBeat + 1
 
         # Garbage collection / reset for sound if sonify is true
         if self.sonify:
