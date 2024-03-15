@@ -5,9 +5,9 @@ MAX_FORCE = 40
 
 #REVIEW - For re-sims: edit pop. size and num. gens to match
 SEED = 0
-NUMBER_OF_GENERATIONS = 2
-POPULATION_SIZE = 16
-CHECKPOINT_EVERY = 5
+NUMBER_OF_GENERATIONS = 30
+POPULATION_SIZE = 40
+CHECKPOINT_EVERY = 10
 NUM_PARALLEL_RUN_GROUPS = 2
 BODY = "Capsule Bot"
 BODY_SIZE = 1
@@ -15,7 +15,7 @@ TRAVEL_PER_CLICK_GOAL = BODY_SIZE / 25
 DOUBLE_STEP_PUNISHMENT = 0.05
 
 #REVIEW - [3] Edit fitness function here
-ADDITIONAL_DETAILS = "1 mutation, binary function, all legs first step + age"
+ADDITIONAL_DETAILS = "if (rhythm * balance) >= 0.95: scaffoldedFitness = (rhythm * balance) + distance)"
 # Can be COS, EXP, EXP_PUNISH, or BIN
 FIT_FUNCTION = "COS"
 

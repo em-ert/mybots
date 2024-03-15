@@ -13,7 +13,7 @@ class ANALYZE:
         pass
 
     @staticmethod  
-    def Run_Analysis(path, fitness=True, steps=True, bar=True, rand=True):
+    def Run_Analysis(path, fitness=True, steps=True, bar=True, waterfall=True):
         now = datetime.datetime.now()
 
         while not os.path.exists(path + "data/BackLower_sensor_values.npy"):
@@ -72,10 +72,10 @@ class ANALYZE:
             ax[0].set_title("Evolution over generations")
 
             # Modified for specific random data
-            randAgeFitnessArray = np.load("bestRuns/100sols_1gens/run95/" + "data/age_fitness_values.npy")
+            randAgeFitnessArray = np.load("bestRuns/100sols_1gens/run223/" + "data/age_fitness_values.npy")
             ageFitnessArray = np.load(path + "data/age_fitness_values.npy")
             bestFitness = np.amax(ageFitnessArray[c.NUMBER_OF_GENERATIONS - 1, :, :], axis=0)[0]
-            ax[1].barh(bestFitness, label="Best Solution", color = "red", height=40, width=2, alpha=1.0)
+            ax[1].barh(bestFitness, label="Best Solution", color = "red", height=0.002, width=2, alpha=1.0)
             randomPopulation = randAgeFitnessArray[0, :, :]
             randSolutions = (randomPopulation[:, 0])
             ax[1].hist(randSolutions, label="Random Solutions", bins=30, orientation="horizontal", alpha=0.5)
@@ -144,26 +144,52 @@ class ANALYZE:
 
             plt.savefig(path + "plots/Bar.png")
 
-        if rand == True:
-            fig, ax3 = plt.subplots(figsize=(7,7))
-            # Modified for specific random data
-            randAgeFitnessArray = np.load("bestRuns/100sols_1gens/run95/" + "data/age_fitness_values.npy")
+        if waterfall == True:
             ageFitnessArray = np.load(path + "data/age_fitness_values.npy")
-            bestFitness = np.amax(ageFitnessArray[c.NUMBER_OF_GENERATIONS - 1, :, :], axis=0)[0]
-            ax3.barh(bestFitness, label="Best Solution", color = "red", height=40, width=2, alpha=1.0)
-            randomPopulation = randAgeFitnessArray[0, :, :]
-            randSolutions = (randomPopulation[:, 0])
-            ax3.hist(randSolutions, label="Random Solutions", bins=30, orientation="horizontal", alpha=0.5)
-            fig.legend()
-            plt.gca().set(title='Frequency Histogram', ylabel='Fitness', xlabel='Number of Solutions')
-            ax3.set_title("Distribution of random solution fitnesses")
+            line_hist = []
+            ageFitDict = {}
+            # Iterate through all generations. End at number + 1 so last generation can be properly processed
+            for gen in range(c.NUMBER_OF_GENERATIONS + 1):
+                # Create a preliminary entry with lowest possible fitness.
+                ageFitDict[gen] = {0: 0}
 
-            plt.savefig(path + "plots/Rand.png")
+                for i in range(c.POPULATION_SIZE): #find the most fit at each clade 
+                    currFitness = ageFitnessArray[gen, i, 0]
+                    currAge = int(ageFitnessArray[gen, i, 1])
 
-"""
-list = [54, 55, 56, 57, 58, 59, 61, 64, 67]
+                    if currAge not in ageFitDict[gen] or currFitness > ageFitDict[gen][currAge]: # MIN FITNESS
+                        ageFitDict[gen][currAge] = currFitness  # most fit at each age level
+
+                if gen > 0:
+                    for age in ageFitDict[gen-1]: # for each clade 
+                        if age + 1 not in ageFitDict[gen] or gen == c.NUMBER_OF_GENERATIONS:  # extinction # find oldest age 
+                            this_line = []
+                            n = 0
+                            while age - n > -1:
+                                this_line.append([ageFitDict[gen-1-n][age-n]])
+                                n += 1
+
+                            # this_line.sort()
+                            # this_line.reverse()
+                            # print(this_line[::-1])
+                            pre_fill = [None]*(gen - int(age))
+                            line_hist += [pre_fill + list(this_line[::-1])]
+
+
+            fig, ax = plt.subplots(1, 1, figsize=(7, 5))
+
+            for line in line_hist:
+                ax.plot(range(len(line)), line, linewidth=0.8)
+            plt.xlabel("Age in Generations")
+            plt.ylabel("Fitness")
+            plt.title('rainbow plot')
+            plt.savefig("waterfall.png") 
+
+
+
+list = [213, 214, 220, 221, 222]
 for i in range(len(list)):
-    ANALYZE.Run_Analysis("bestRuns/50sols_50gens/run" + str(list[i]) + "/", bar=False)
-"""
+    ANALYZE.Run_Analysis("bestRuns/40sols_50gens/run" + str(list[i]) + "/", bar=False)
+
 
 """ANALYZE.Run_Analysis("bestRuns/50sols_50gens/run88/", bar=False)"""

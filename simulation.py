@@ -56,34 +56,38 @@ class SIMULATION:
 
     def Standard(self, solutionID):
         p.stepSimulation()
+        timestep = 0
         for i in range(len(c.TEMPOS)):
             self.metronome.Reset(tempo=c.TEMPOS[i])
             # Find number of metronome clicks for the first tempo and use that to scale the rest
             # That way, robots trained on same number of clicks per tempo
             for t in range(c.FRAMES_PER_TEMPO[i]):
                 clickInfo = self.metronome.StepFunction()
-                self.robot.Sense(t + (c.SIM_STEPS * i), clickInfo[1], clickInfo[2])
-                self.robot.Sense_Rhythm(t + (c.SIM_STEPS * i), clickInfo[0])
+                self.robot.Sense(timestep, clickInfo[1], clickInfo[2])
+                self.robot.Sense_Rhythm(timestep, clickInfo[0])
                 self.robot.Think(clickInfo[0])
                 self.robot.Act()
                 time.sleep(c.SLEEP_TIME)
                 p.stepSimulation()
+                timestep += 1
         # NOTE: Fitness only obtained once in simulation (one fitness for all tempos). If fitness for each individual tempo is desired, this could be moved to the and of the loop above       
         self.robot.Get_Fitness(solutionID)
 
 
     def Save(self):
         p.stepSimulation()
+        timestep = 0
         for i in range(len(c.TEMPOS)):
             self.metronome.Reset(tempo=c.TEMPOS[i])
             for t in range(c.FRAMES_PER_TEMPO[i]):
                 clickInfo = self.metronome.StepFunction()
-                self.robot.Sense(t + (c.SIM_STEPS * i), clickInfo[1], clickInfo[2])       # Steps to click
-                self.robot.Sense_Rhythm(t + (c.SIM_STEPS * i), clickInfo[0])   # Click (1 or 0)
+                self.robot.Sense(timestep, clickInfo[1], clickInfo[2])       # Steps to click
+                self.robot.Sense_Rhythm(timestep, clickInfo[0])   # Click (1 or 0)
                 self.robot.Think(clickInfo[0])
-                self.robot.Act_And_Save(t + (c.SIM_STEPS * i))
+                self.robot.Act_And_Save(timestep)
                 time.sleep(c.SLEEP_TIME)
                 p.stepSimulation()
+                timestep += 1
 
         # Get the unique ID from the historian and set in robot
         uniqueID = HISTORIAN.Get_Unique_Run_ID()
@@ -96,12 +100,13 @@ class SIMULATION:
 
     def Load(self):
         p.stepSimulation()
+        timestep = 0
         for i in range(len(c.TEMPOS)):
             self.metronome.Reset(tempo=c.TEMPOS[i])
             for t in range(c.FRAMES_PER_TEMPO[i]):
                 stepEnd = time.time() + (c.FRAME_RATE)
                 self.metronome.StepFunction()
-                self.robot.Act(t + (c.SIM_STEPS * i))
+                self.robot.Act(timestep)
                 remaining = stepEnd - time.time()
                 if remaining > 0:
                     time.sleep(remaining)
@@ -110,7 +115,8 @@ class SIMULATION:
                 # REVIEW: Temporarily changed this
                 """else:
                     raise Exception("Time error, ended with " + str(remaining) + " seconds")"""
-                p.stepSimulation()       
+                p.stepSimulation()
+                timestep += 1     
 
                    
     """

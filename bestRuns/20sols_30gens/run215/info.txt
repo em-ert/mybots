@@ -1,0 +1,33 @@
+Time of run: 18:20 PM on 03/14/2024
+Random Seed: 0
+Additional Details: if (balanceScore * distanceScore) >= 0.8: fit = balance * distance + rhythm
+
+-----REVIEW COMMAND-----
+python3 reSimulate.py GUI 215 True 2&>1
+
+-----OPTIMIZATION DETAILS-----
+Fit. Function Type: COS
+Optimize Age?: True
+2nd Objective: Age
+Num. Mutations: 1
+
+-----GENERAL DETAILS-----
+Morphology: Capsule Bot
+Pop. Size: 20
+Num. Gens: 30
+Steps per tempo.: 400
+
+-----RHYTHMIC DETAILS-----
+TEMPOS: [150, 120, 160]
+Frame Rate: 0.025
+
+-----NETWORK DETAILS-----
+Sensor: 4
+Auditory: 1
+Hidden: 3
+Motor: 8
+
+-----BEST SOLUTION-----
+Soln. ID: 661
+Fitness: 1.049810224903153
+

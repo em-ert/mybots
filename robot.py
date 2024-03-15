@@ -106,9 +106,11 @@ class ROBOT:
                 conditionData = self.storedSteps[frameStartIndex : frameStartIndex + c.FRAMES_PER_TEMPO[i]]
                 conditionData = np.reshape(conditionData, (c.CLICKS_PER_TEMPO, framesPerBeat))
                 # Create an array containing a single period worth of cosine values
+                period = framesPerBeat
+                amplitude, offset = framesPerBeat / 2
                 cosPointsArray = np.linspace(0, framesPerBeat, framesPerBeat + 1)
                 cosPointsArray = cosPointsArray[0: framesPerBeat] 
-                cosPointsArray = framesPerBeat * np.cos(((2*np.pi)/framesPerBeat) * cosPointsArray)
+                cosPointsArray = amplitude * np.cos(((2*np.pi)/period) * cosPointsArray) + offset
                 # Multiply each row in conditionData by cosPointsArray 
                 conditionData = np.multiply(conditionData, cosPointsArray)
                 # Flatten it back into one row
@@ -117,18 +119,18 @@ class ROBOT:
                 # Iterate through the arrays to find points values
                 remaining = c.FRAMES_PER_TEMPO[i]
                 startIndex = 0
-                self.fitness += np.max(conditionData[startIndex : math.ceil(framesPerBeat/2)])
-                startIndex = math.ceil(framesPerBeat/2)
+                self.fitness += np.max(conditionData[startIndex : math.ceil(period / 2)])
+                startIndex = math.ceil(period / 2)
                 remaining -= (startIndex - 1)
-                self.maxFitness += framesPerBeat
+                self.maxFitness += (amplitude + offset)
                 while remaining > 0:
-                    if remaining < framesPerBeat:
+                    if remaining < period:
                         self.fitness += np.max(conditionData[startIndex : startIndex + remaining])
                     else:
-                        self.fitness += np.max(conditionData[startIndex : startIndex + framesPerBeat])
-                        self.maxFitness += framesPerBeat
-                    startIndex += framesPerBeat
-                    remaining -= framesPerBeat 
+                        self.fitness += np.max(conditionData[startIndex : startIndex + period])
+                        self.maxFitness += (amplitude + offset)
+                    startIndex += period
+                    remaining -= period 
 
 
 
@@ -186,9 +188,11 @@ class ROBOT:
                 conditionData = self.storedSteps[frameStartIndex : frameStartIndex + c.FRAMES_PER_TEMPO[i]]
                 conditionData = np.reshape(conditionData, (c.CLICKS_PER_TEMPO, framesPerBeat))
                 # Create an array containing a single period worth of cosine values
-                cosPointsArray = np.linspace(0, framesPerBeat, framesPerBeat + 1)
-                cosPointsArray = cosPointsArray[0: framesPerBeat] 
-                cosPointsArray = framesPerBeat * np.cos(((2*np.pi)/framesPerBeat) * cosPointsArray)
+                period = framesPerBeat
+                amplitude, offset = framesPerBeat / 2
+                cosPointsArray = np.linspace(0, period, period + 1)
+                cosPointsArray = cosPointsArray[0: period] 
+                cosPointsArray = amplitude * np.cos(((2*np.pi)/period) * cosPointsArray) + offset
                 # Multiply each row in conditionData by cosPointsArray 
                 conditionData = np.multiply(conditionData, cosPointsArray)
                 # Flatten it back into one row
@@ -197,18 +201,18 @@ class ROBOT:
                 # Iterate through the arrays to find points values
                 remaining = c.FRAMES_PER_TEMPO[i]
                 startIndex = 0
-                tempFitness = np.max(conditionData[startIndex : math.ceil(framesPerBeat/2)])
+                tempFitness = np.max(conditionData[startIndex : math.ceil(period / 2)])
                 # If more steps than one, decrease score by 25%
-                if tempFitness < np.sum(conditionData[startIndex : math.ceil(framesPerBeat/2)]):
+                if tempFitness < np.sum(conditionData[startIndex : math.ceil(period / 2)]):
                     self.fitness += tempFitness * (1 - c.DOUBLE_STEP_PUNISHMENT)
                 else:
                     self.fitness += tempFitness
-                startIndex = math.ceil(framesPerBeat/2)
+                startIndex = math.ceil(period / 2)
                 remaining -= (startIndex - 1)
-                self.maxFitness += framesPerBeat
+                self.maxFitness += (amplitude + offset)
                 while remaining > 0:
                     # If not a full amount remain to be processed
-                    if remaining < framesPerBeat:
+                    if remaining < period:
                         # If more steps than one, decrease score by 25%
                         tempFitness = np.max(conditionData[startIndex : startIndex + remaining])
                         if tempFitness < np.sum(conditionData[startIndex : startIndex + remaining]):
@@ -217,18 +221,30 @@ class ROBOT:
                             self.fitness += tempFitness  
                     # If a normal number of steps remain to be processed        
                     else:
-                        tempFitness = np.max(conditionData[startIndex : startIndex + framesPerBeat])
-                        self.maxFitness += framesPerBeat
-                        # If more steps than one, decrease score by 25%
-                        if tempFitness < np.sum(conditionData[startIndex : startIndex + framesPerBeat]):
+                        tempFitness = np.max(conditionData[startIndex : startIndex + period])
+                        self.maxFitness += (amplitude + offset)
+                        # If more steps than one, decrease score by double step punishment%
+                        if tempFitness < np.sum(conditionData[startIndex : startIndex + period]):
                             self.fitness += tempFitness * (1 - c.DOUBLE_STEP_PUNISHMENT)
                         else:
                             self.fitness += tempFitness 
-                    startIndex += framesPerBeat
-                    remaining -= framesPerBeat 
+                    startIndex += period
+                    remaining -= period 
 
-            multipliedFitness = (self.fitness * 3/self.maxFitness) * balanceScore * distanceScore
-            print(str(multipliedFitness) + "," + str(self.fitness2), file=sys.stderr)
+
+            scaledRhythmFitness = self.fitness / self.maxFitness
+
+            calculatedFitness = (scaledRhythmFitness * 0.75) + (balanceScore * 0.25)
+            
+            """
+            if (scaledRhythmFitness * balanceScore) >= 0.95:
+                calculatedFitness = (scaledRhythmFitness * balanceScore) + distanceScore
+            else:
+                calculatedFitness = scaledRhythmFitness * balanceScore
+            """
+
+            # multipliedFitness = (self.fitness * 3/self.maxFitness) * balanceScore * distanceScore
+            print(str(calculatedFitness) + "," + str(self.fitness2), file=sys.stderr)
         
         else:
             print(str(self.fitness) + "," + str(self.fitness2), file=sys.stderr)
