@@ -21,7 +21,7 @@
             "type": "debugpy",
             "request": "launch",
             "program": "search.py",
-            "args": "30 2&>1.txt",
+            "args": "40 2&>1.txt",
             "console": "integratedTerminal",
             "justMyCode": false
         },

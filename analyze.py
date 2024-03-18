@@ -72,12 +72,11 @@ class ANALYZE:
             ax[0].set_title("Evolution over generations")
 
             # Modified for specific random data
-            randAgeFitnessArray = np.load("bestRuns/100sols_1gens/run223/" + "data/age_fitness_values.npy")
+            randAgeFitnessArray = np.load(path + "data/random_age_fitness_values.npy")
             ageFitnessArray = np.load(path + "data/age_fitness_values.npy")
             bestFitness = np.amax(ageFitnessArray[c.NUMBER_OF_GENERATIONS - 1, :, :], axis=0)[0]
             ax[1].barh(bestFitness, label="Best Solution", color = "red", height=0.002, width=2, alpha=1.0)
-            randomPopulation = randAgeFitnessArray[0, :, :]
-            randSolutions = (randomPopulation[:, 0])
+            randSolutions = randAgeFitnessArray[:, 0]
             ax[1].hist(randSolutions, label="Random Solutions", bins=30, orientation="horizontal", alpha=0.5)
             fig.legend()
             plt.gca().set(title='Frequency Histogram', xlabel='Count')
@@ -148,32 +147,39 @@ class ANALYZE:
             ageFitnessArray = np.load(path + "data/age_fitness_values.npy")
             line_hist = []
             ageFitDict = {}
-            # Iterate through all generations. End at number + 1 so last generation can be properly processed
+            # Iterate through all generations
             for gen in range(c.NUMBER_OF_GENERATIONS + 1):
-                # Create a preliminary entry with lowest possible fitness.
-                ageFitDict[gen] = {0: 0}
+                if gen == c.NUMBER_OF_GENERATIONS:
+                    ageFitDict[gen] = {}
+                else:
+                    # Create a preliminary entry with lowest possible fitness.
+                    ageFitDict[gen] = {1: 0}
+                
+                    # For each individual in the generation, save the fitness info
+                    for i in range(c.POPULATION_SIZE):
+                        currFitness = ageFitnessArray[gen, i, 0]
+                        currAge = int(ageFitnessArray[gen, i, 1])
 
-                for i in range(c.POPULATION_SIZE): #find the most fit at each clade 
-                    currFitness = ageFitnessArray[gen, i, 0]
-                    currAge = int(ageFitnessArray[gen, i, 1])
-
-                    if currAge not in ageFitDict[gen] or currFitness > ageFitDict[gen][currAge]: # MIN FITNESS
-                        ageFitDict[gen][currAge] = currFitness  # most fit at each age level
+                        # If an individual of this age is not found in this generation yet or the individual is more 
+                        # fit than the stored individual, replace the data with that of the current individual
+                        if currAge not in ageFitDict[gen] or currFitness > ageFitDict[gen][currAge]:
+                            ageFitDict[gen][currAge] = currFitness  # Fittest individual of its age 
 
                 if gen > 0:
-                    for age in ageFitDict[gen-1]: # for each clade 
-                        if age + 1 not in ageFitDict[gen] or gen == c.NUMBER_OF_GENERATIONS:  # extinction # find oldest age 
-                            this_line = []
+                    # For each parent generation
+                    for age in ageFitDict[gen - 1]:
+                        # Find extinct lineages - if no individual from that age group moved on, or if we are on the final generation
+                        if (age + 1) not in ageFitDict[gen] or gen == c.NUMBER_OF_GENERATIONS:
+                            # Start a 'lineage'
+                            currLine = []
                             n = 0
-                            while age - n > -1:
-                                this_line.append([ageFitDict[gen-1-n][age-n]])
+                            # Iterate through the age fitness dictionary and add individuals to line
+                            while age - n > 0:
+                                currLine += [ageFitDict[gen-1-n][age-n]]
                                 n += 1
-
-                            # this_line.sort()
-                            # this_line.reverse()
-                            # print(this_line[::-1])
-                            pre_fill = [None]*(gen - int(age))
-                            line_hist += [pre_fill + list(this_line[::-1])]
+                            # (Age - 1) to adjust for 1 indexed ages    
+                            prefill = [None]*(gen - int(age - 1))
+                            line_hist.append(prefill + currLine[::-1])
 
 
             fig, ax = plt.subplots(1, 1, figsize=(7, 5))
@@ -182,14 +188,13 @@ class ANALYZE:
                 ax.plot(range(len(line)), line, linewidth=0.8)
             plt.xlabel("Age in Generations")
             plt.ylabel("Fitness")
-            plt.title('rainbow plot')
-            plt.savefig("waterfall.png") 
+            plt.title('Rainbow Waterfall Plot')
+            plt.savefig(path + "plots/Waterfall.png") 
 
 
-
+"""
 list = [213, 214, 220, 221, 222]
 for i in range(len(list)):
     ANALYZE.Run_Analysis("bestRuns/40sols_50gens/run" + str(list[i]) + "/", bar=False)
-
-
-"""ANALYZE.Run_Analysis("bestRuns/50sols_50gens/run88/", bar=False)"""
+"""
+# ANALYZE.Run_Analysis("bestRuns/100sols_70gens/run17/", bar=False)

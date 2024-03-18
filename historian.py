@@ -35,43 +35,51 @@ class HISTORIAN:
             # Record time of run
             now = datetime.now()
             f.write(now.strftime("Time of run: %H:%M %p on %m/%d/%Y\n"))
-            f.write("Random Seed: {}\n".format(c.SEED))
-            f.write("Additional Details: {}\n".format(c.ADDITIONAL_DETAILS))
+            f.write(f"Random Seed: {c.SEED}\n")
+            f.write(f"Additional Details: {c.ADDITIONAL_DETAILS}\n")
             f.write("\n")
 
             f.write("-----REVIEW COMMAND-----\n")
-            f.write("python3 reSimulate.py GUI " + str(self.uniqueID) + " True 2&>1\n")
+            f.write(f"python3 reSimulate.py GUI {self.uniqueID} True 2&>1\n")
             f.write("\n")
 
             f.write("-----OPTIMIZATION DETAILS-----\n")
-            f.write("Fit. Function Type: {}\n".format(c.FIT_FUNCTION))
-            f.write("Optimize Age?: {}\n".format(c.OPTIMIZE_AGE))
-            f.write("2nd Objective: {}\n".format(c.SECOND_OBJ))
-            f.write("Num. Mutations: {}\n".format(c.NUM_MUTATIONS))
+            f.write(f"Fit. Function Type: {c.FIT_FUNCTION}\n")
+            f.write(f"Optimize Age?: {c.OPTIMIZE_AGE}\n")
+            f.write(f"2nd Objective: {c.SECOND_OBJ}\n")
+            f.write(f"Travel Per Click Goal: {c.SECOND_OBJ}\n")
+            f.write(f"Double Step Punishment: {c.DOUBLE_STEP_PUNISHMENT}\n")
+            f.write(f"Num. Mutations: {c.NUM_MUTATIONS}\n")
+            f.write(f"Num. Rand. Children: {c.NUM_RANDOM_CHILDREN}\n")
             f.write("\n")
 
             f.write("-----GENERAL DETAILS-----\n")
-            f.write("Morphology: {}\n".format(c.BODY))
-            f.write("Pop. Size: {}\n".format(c.POPULATION_SIZE))
-            f.write("Num. Gens: {}\n".format(c.NUMBER_OF_GENERATIONS))
-            f.write("Steps per tempo.: {}\n".format(c.SIM_STEPS))
+            f.write(f"Morphology: {c.BODY}\n")
+            f.write(f"Pop. Size: {c.POPULATION_SIZE}\n")
+            f.write(f"Num. Gens: {c.NUMBER_OF_GENERATIONS}\n")
+            f.write(f"Num. Parallel Run Groups: {c.NUM_PARALLEL_RUN_GROUPS}\n")
+            f.write(f"Sim Frequency: {c.SIM_FREQUENCY}\n")
+            f.write(f"Num. Random Solutions Graphed: {c.NUM_RANDOM_SIMS_FOR_GRAPHING}\n")
             f.write("\n")
 
             f.write("-----RHYTHMIC DETAILS-----\n")
-            f.write("TEMPOS: {}\n".format(c.TEMPOS))
-            f.write("Frame Rate: {}\n".format(c.FRAME_RATE))
+            f.write(f"Tempos: {c.TEMPOS}\n")
+            f.write(f"Frame Rate: {c.FRAME_RATE}\n")
+            f.write(f"Frames Per Beat: {c.FRAME_RATE}\n")
+            f.write(f"Clicks Per Tempo: {c.CLICKS_PER_TEMPO}\n")
+            f.write(f"Frames Per Tempo: {c.FRAMES_PER_TEMPO}\n")
             f.write("\n")
 
             f.write("-----NETWORK DETAILS-----\n")
-            f.write("Sensor: {}\n".format(c.NUM_SENSOR_NEURONS))
-            f.write("Auditory: {}\n".format(c.NUM_AUDITORY_NEURONS))
-            f.write("Hidden: {}\n".format(c.NUM_HIDDEN_NEURONS))
-            f.write("Motor: {}\n".format(c.NUM_MOTOR_NEURONS))
+            f.write(f"Sensor: {c.NUM_SENSOR_NEURONS}\n")
+            f.write(f"Auditory: {c.NUM_AUDITORY_NEURONS}\n")
+            f.write(f"Hidden: {c.NUM_HIDDEN_NEURONS}\n")
+            f.write(f"Motor: {c.NUM_MOTOR_NEURONS}\n")
             f.write("\n")
 
             f.write("-----BEST SOLUTION-----\n")
-            f.write("Soln. ID: {}\n".format(solutionID))
-            f.write("Fitness: {}\n".format(bestFitness))
+            f.write(f"Soln. ID: {solutionID}\n")
+            f.write(f"Fitness: {bestFitness}\n")
             f.write("\n")
 
     
@@ -108,5 +116,5 @@ class HISTORIAN:
         
     
     # Generates graphs for the run and any additional analysis
-    def Run_Analysis(self, fitness=True, steps=True, bar=False):
-        ANALYZE.Run_Analysis(self.path, fitness, steps, bar)
+    def Run_Analysis(self, fitness=True, steps=True, bar=False, waterfall=True):
+        ANALYZE.Run_Analysis(self.path, fitness, steps, bar, waterfall)

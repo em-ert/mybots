@@ -107,7 +107,8 @@ class ROBOT:
                 conditionData = np.reshape(conditionData, (c.CLICKS_PER_TEMPO, framesPerBeat))
                 # Create an array containing a single period worth of cosine values
                 period = framesPerBeat
-                amplitude, offset = framesPerBeat / 2
+                amplitude = framesPerBeat / 2
+                offset = framesPerBeat / 2
                 cosPointsArray = np.linspace(0, framesPerBeat, framesPerBeat + 1)
                 cosPointsArray = cosPointsArray[0: framesPerBeat] 
                 cosPointsArray = amplitude * np.cos(((2*np.pi)/period) * cosPointsArray) + offset
@@ -189,7 +190,8 @@ class ROBOT:
                 conditionData = np.reshape(conditionData, (c.CLICKS_PER_TEMPO, framesPerBeat))
                 # Create an array containing a single period worth of cosine values
                 period = framesPerBeat
-                amplitude, offset = framesPerBeat / 2
+                amplitude = framesPerBeat / 2
+                offset = framesPerBeat / 2
                 cosPointsArray = np.linspace(0, period, period + 1)
                 cosPointsArray = cosPointsArray[0: period] 
                 cosPointsArray = amplitude * np.cos(((2*np.pi)/period) * cosPointsArray) + offset
@@ -234,7 +236,7 @@ class ROBOT:
 
             scaledRhythmFitness = self.fitness / self.maxFitness
 
-            calculatedFitness = (scaledRhythmFitness * 0.75) + (balanceScore * 0.25)
+            # calculatedFitness = (scaledRhythmFitness * 0.75) + (balanceScore * 0.25)
             
             """
             if (scaledRhythmFitness * balanceScore) >= 0.95:
@@ -243,9 +245,8 @@ class ROBOT:
                 calculatedFitness = scaledRhythmFitness * balanceScore
             """
 
-            # multipliedFitness = (self.fitness * 3/self.maxFitness) * balanceScore * distanceScore
+            calculatedFitness = scaledRhythmFitness * balanceScore * distanceScore
             print(str(calculatedFitness) + "," + str(self.fitness2), file=sys.stderr)
-        
         else:
             print(str(self.fitness) + "," + str(self.fitness2), file=sys.stderr)
 

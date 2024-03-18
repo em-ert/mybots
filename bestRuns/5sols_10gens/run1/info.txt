@@ -1,0 +1,41 @@
+Time of run: 19:32 PM on 03/15/2024
+Random Seed: 0
+Additional Details: if (rhythm * balance) >= 0.95: scaffoldedFitness = (rhythm * balance) + distance)
+
+-----REVIEW COMMAND-----
+python3 reSimulate.py GUI 1 True 2&>1
+
+-----OPTIMIZATION DETAILS-----
+Fit. Function Type: COS
+Optimize Age?: True
+2nd Objective: Age
+Travel Per Click Goal: Age
+Double Step Punishment: 0.05
+Num. Mutations: 1
+Num. Rand. Children: 4
+
+-----GENERAL DETAILS-----
+Morphology: Capsule Bot
+Pop. Size: 5
+Num. Gens: 10
+Num. Parallel Run Groups: 2
+Sim Frequency: 40.0
+Num. Random Solutions Graphed: 0
+
+-----RHYTHMIC DETAILS-----
+Tempos: [120, 80, 100]
+Frame Rate: 0.025
+Frames Per Beat: 0.025
+Clicks Per Tempo: 20
+Frames Per Tempo: [400, 600, 480]
+
+-----NETWORK DETAILS-----
+Sensor: 4
+Auditory: 1
+Hidden: 3
+Motor: 8
+
+-----BEST SOLUTION-----
+Soln. ID: 63
+Fitness: 0.6990913355190913
+

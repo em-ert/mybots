@@ -263,7 +263,7 @@ class AFPO:
     """
     Runs simulations for any solutions that have not been simulated
     """
-    def Run_Simulations(self, solutions):
+    def Run_Simulations(self, solutions, numParallelRunGroups=c.NUM_PARALLEL_RUN_GROUPS):
         # Create a list to store all solutions that must be simulated
         # If more than 20 solutions will be simulated, we will split the groups up to avoid having two many
         # subprocesses running in parallel
@@ -276,10 +276,10 @@ class AFPO:
                 notSimulated.append(solution)
 
         # Create sublists and run in sublists
-        baseSize = math.floor(len(notSimulated) / c.NUM_PARALLEL_RUN_GROUPS)
-        overflow = len(notSimulated) % c.NUM_PARALLEL_RUN_GROUPS
+        baseSize = math.floor(len(notSimulated) / numParallelRunGroups)
+        overflow = len(notSimulated) % numParallelRunGroups
         startIndex = 0
-        for i in range(c.NUM_PARALLEL_RUN_GROUPS):
+        for i in range(numParallelRunGroups):
             subListSize = baseSize
             if i < overflow:
                 subListSize += 1
@@ -367,8 +367,35 @@ class AFPO:
     
     def Preserve_Record(self, bestID, bestFitness):
         self.historian.Archive_Run_Info(bestID, bestFitness)
+        self.Run_Random_Sims_For_Analysis()
         self.historian.Run_Analysis(fitness=True, steps=True)
 
-    
+    def Run_Random_Sims_For_Analysis(self):
+        if c.NUM_RANDOM_SIMS_FOR_GRAPHING > 0:
+            randomPopulation = {}
+            randomFitnessData = np.zeros(shape=(c.NUM_RANDOM_SIMS_FOR_GRAPHING, 2))
+            
+            # Create initial population
+            for i in range(c.NUM_RANDOM_SIMS_FOR_GRAPHING):
+                randomPopulation[self.nextAvailableID] = SOLUTION(self.nextAvailableID)
+                self.nextAvailableID += 1
+            # Run all their simulations    
+            self.Run_Simulations(randomPopulation, 5)
+
+            # Collect their fitnesses/ages in a numpy array
+            for index, solID in enumerate(randomPopulation):
+                randomFitnessData[index, 0] = randomPopulation[solID].fitness
+                if self.optimizeAge == True:
+                    randomFitnessData[index, 1] = randomPopulation[solID].age
+                else:
+                    randomFitnessData[index, 1] = randomPopulation[solID].fitness2
+        else:
+            randomFitnessData = self.fitnessData[0]
+
+        # Save the results so they can be graphed!        
+        fullPath = self.historian.path + "data/random_age_fitness_values.npy"
+        np.save(fullPath, randomFitnessData)
+        print("Data saved to " + fullPath)
+
     def Show_Best_Brain(self):
         os.system("python3 simulate.py GUI " + str(self.historian.uniqueID) + " True 2&>1")

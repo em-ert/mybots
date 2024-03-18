@@ -6,33 +6,28 @@ MAX_FORCE = 40
 #REVIEW - For re-sims: edit pop. size and num. gens to match
 SEED = 0
 NUMBER_OF_GENERATIONS = 30
-POPULATION_SIZE = 40
+POPULATION_SIZE = 20
+
 CHECKPOINT_EVERY = 10
-NUM_PARALLEL_RUN_GROUPS = 2
+NUM_PARALLEL_RUN_GROUPS = 1
+NUM_RANDOM_SIMS_FOR_GRAPHING = 0    # If 0, first gen will just be used
+
 BODY = "Capsule Bot"
 BODY_SIZE = 1
-TRAVEL_PER_CLICK_GOAL = BODY_SIZE / 25
+TRAVEL_PER_CLICK_GOAL = BODY_SIZE / 4
 DOUBLE_STEP_PUNISHMENT = 0.05
 
 #REVIEW - [3] Edit fitness function here
-ADDITIONAL_DETAILS = "if (rhythm * balance) >= 0.95: scaffoldedFitness = (rhythm * balance) + distance)"
+ADDITIONAL_DETAILS = "distance"
 # Can be COS, EXP, EXP_PUNISH, or BIN
 FIT_FUNCTION = "COS"
-
-# General COS:
-    # if stepValue > 0: self.fitness += (framesPerBeat * np.cos(((2*np.pi)/framesPerBeat)*timestep))
-# General EXP:
-    # if stepsToClick >= 0 and stepValue > 0: self.fitness += (((2-stepsToClick)**2)+0.5)    
-# General EXP_PUNISH:
-    # if stepsToClick >= 0 and stepValue > 0: self.fitness += (((2-stepsToClick)**2)+0.5); else: self.fitness -= stepValue * 0.5
-
 
 #REVIEW - [3.5] Edit fitness function here
 OPTIMIZE_AGE = True
 # Below can be AGE, DISTANCE, DUAL, or SYMMETRY
 SECOND_OBJ = "Age"
 NUM_MUTATIONS = 1
-NUM_RANDOM_CHILDREN = 4
+NUM_RANDOM_CHILDREN = 1
 
 # Can accommodate 60, 75, 80, 100, 120, 150, and 160 BPM
 TEMPOS = [120, 80, 100]
@@ -51,6 +46,6 @@ HERTZ = 1000
 S_TO_MS = 1000
 SIM_FREQUENCY = HERTZ / (FRAME_RATE * S_TO_MS)
 
-MOTOR_JOINT_RANGE = 0.4
+MOTOR_JOINT_RANGE = 0.6
 SLEEP_TIME = 0.000166
 REPLAY_DELAY_TOLERANCE = -0.05
