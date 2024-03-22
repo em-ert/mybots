@@ -68,88 +68,6 @@ class ROBOT:
                    balanceScore += abs(self.sensors["RightLower"].numSteps - self.sensors[sensor].numSteps)
                    
             # Take average and add 1
-            self.fitness2 = (balanceScore / numActiveSensors) + 1
-            self.fitness2 = -1 * self.fitness2
-
-            # !--- CALCULATE DISTANCE ---!
-            # Calculate how closely the robot was to the distance goal
-            # Post-process steps to find fitnesses
-            distanceScore = 0
-            frameStartIndex = 0
-            # Perform for each tempo...
-            for i in range(len(c.TEMPOS)):
-                # Get number of frames per beat for the tempo
-                framesPerBeat = c.FRAMES_PER_BEAT[i]
-                # Isolate region of data relevant to the current tempo - the current 'condition'
-                conditionDistData = self.storedDistances[frameStartIndex : frameStartIndex + c.FRAMES_PER_TEMPO[i]]
-                conditionDistData = np.reshape(conditionDistData, (c.CLICKS_PER_TEMPO, framesPerBeat))
-                distancePerClick = np.sum(conditionDistData, axis = 1)
-                # Add 1 point for each spot distance is goal amount
-                metGoalDistance = distancePerClick[distancePerClick >= c.TRAVEL_PER_CLICK_GOAL]
-                distanceScore += len(metGoalDistance)
-                # Otherwise add sqrt(real/goal)
-                belowGoalDistance = distancePerClick[distancePerClick < c.TRAVEL_PER_CLICK_GOAL]
-                belowGoalDistance = belowGoalDistance / c.TRAVEL_PER_CLICK_GOAL
-                distanceScore += sum(np.sqrt(belowGoalDistance))
-                self.numClicks += len(distancePerClick)
-            # Find average
-            distanceScore = distanceScore / self.numClicks   
-            
-            # !--- CALCULATE POINTS ---!
-            # Post-process steps to find fitnesses
-            frameStartIndex = 0
-            # Perform for each tempo...
-            for i in range(len(c.TEMPOS)):
-                # Get number of frames per beat for the tempo
-                framesPerBeat = c.FRAMES_PER_BEAT[i]
-                # Isolate region of full data relevant to the current tempo - the current 'condition'
-                conditionData = self.storedSteps[frameStartIndex : frameStartIndex + c.FRAMES_PER_TEMPO[i]]
-                conditionData = np.reshape(conditionData, (c.CLICKS_PER_TEMPO, framesPerBeat))
-                # Create an array containing a single period worth of cosine values
-                period = framesPerBeat
-                amplitude = framesPerBeat / 2
-                offset = framesPerBeat / 2
-                cosPointsArray = np.linspace(0, framesPerBeat, framesPerBeat + 1)
-                cosPointsArray = cosPointsArray[0: framesPerBeat] 
-                cosPointsArray = amplitude * np.cos(((2*np.pi)/period) * cosPointsArray) + offset
-                # Multiply each row in conditionData by cosPointsArray 
-                conditionData = np.multiply(conditionData, cosPointsArray)
-                # Flatten it back into one row
-                conditionData = conditionData.flatten()
-            
-                # Iterate through the arrays to find points values
-                remaining = c.FRAMES_PER_TEMPO[i]
-                startIndex = 0
-                self.fitness += np.max(conditionData[startIndex : math.ceil(period / 2)])
-                startIndex = math.ceil(period / 2)
-                remaining -= (startIndex - 1)
-                self.maxFitness += (amplitude + offset)
-                while remaining > 0:
-                    if remaining < period:
-                        self.fitness += np.max(conditionData[startIndex : startIndex + remaining])
-                    else:
-                        self.fitness += np.max(conditionData[startIndex : startIndex + period])
-                        self.maxFitness += (amplitude + offset)
-                    startIndex += period
-                    remaining -= period 
-
-
-
-            multipliedFitness = (self.fitness * 2/self.maxFitness) * distanceScore
-
-            print(str(multipliedFitness) + "," + str(self.fitness2), file=sys.stderr)       
-        
-        # NOTE: Here is where I print the fitness to stderr    
-        if c.OPTIMIZE_AGE == True:
-            #  !--- CALCULATE BALANCE ---!
-            balanceScore = 0
-            numActiveSensors = 0
-            for sensor in self.sensors:
-                if sensor != self.sensors["RightLower"] and sensor.endswith("Lower"):
-                   numActiveSensors += 1
-                   balanceScore += abs(self.sensors["RightLower"].numSteps - self.sensors[sensor].numSteps)
-                   
-            # Take average and add 1
             balanceScore = (balanceScore / numActiveSensors) + 1
             # Scale so 1 is the max
             balanceScore = 1 / balanceScore
@@ -215,38 +133,143 @@ class ROBOT:
                 while remaining > 0:
                     # If not a full amount remain to be processed
                     if remaining < period:
-                        # If more steps than one, decrease score by 25%
-                        tempFitness = np.max(conditionData[startIndex : startIndex + remaining])
-                        if tempFitness < np.sum(conditionData[startIndex : startIndex + remaining]):
-                            self.fitness += tempFitness * (1 - c.DOUBLE_STEP_PUNISHMENT)
+                        # For each extra step, detract amount specified in constants
+                        regionOfInterest = conditionData[startIndex : startIndex + remaining]
+                        tempFitness = np.max(regionOfInterest)
+                        if tempFitness < np.sum(regionOfInterest):
+                            numExtraSteps = len(regionOfInterest[regionOfInterest > 0]) - 1
+                            self.fitness += tempFitness * (1 - (c.DOUBLE_STEP_PUNISHMENT * (numExtraSteps**2)))
                         else:
                             self.fitness += tempFitness  
                     # If a normal number of steps remain to be processed        
                     else:
-                        tempFitness = np.max(conditionData[startIndex : startIndex + period])
+                        regionOfInterest = conditionData[startIndex : startIndex + period]
+                        tempFitness = np.max(regionOfInterest)
                         self.maxFitness += (amplitude + offset)
                         # If more steps than one, decrease score by double step punishment%
-                        if tempFitness < np.sum(conditionData[startIndex : startIndex + period]):
-                            self.fitness += tempFitness * (1 - c.DOUBLE_STEP_PUNISHMENT)
+                        if tempFitness < np.sum(regionOfInterest):
+                            numExtraSteps = len(regionOfInterest[regionOfInterest > 0]) - 1
+                            self.fitness += tempFitness * (1 - (c.DOUBLE_STEP_PUNISHMENT * (numExtraSteps**2)))
                         else:
-                            self.fitness += tempFitness 
+                            self.fitness += tempFitness
                     startIndex += period
                     remaining -= period 
 
 
-            scaledRhythmFitness = self.fitness / self.maxFitness
+            scaledRhythmFitness = (self.fitness / self.maxFitness)
+            self.fitness = scaledRhythmFitness
+            if scaledRhythmFitness > 0.97:
+                self.fitness += distanceScore
 
-            # calculatedFitness = (scaledRhythmFitness * 0.75) + (balanceScore * 0.25)
+            self.fitness2 = balanceScore
+
+            print(str(self.fitness) + "," + str(self.fitness2), file=sys.stderr)    
+        
+        # NOTE: Here is where I print the fitness to stderr    
+        if c.OPTIMIZE_AGE == True:
+            #  !--- CALCULATE BALANCE ---!
+            balanceScore = 0
+            numActiveSensors = 0
+            for sensor in self.sensors:
+                if sensor != self.sensors["RightLower"] and sensor.endswith("Lower"):
+                   numActiveSensors += 1
+                   balanceScore += (self.sensors["RightLower"].numSteps - self.sensors[sensor].numSteps)**2
+                   
+            # Take average and add 1
+            balanceScore = (balanceScore / numActiveSensors) + 1
+            # Scale so 1 is the max
+            balanceScore = 1 / math.sqrt(balanceScore)
+
+            # !--- CALCULATE DISTANCE ---!
+            # Calculate how closely the robot was to the distance goal
+            # Post-process steps to find fitnesses
+            distanceScore = 0
+            frameStartIndex = 0
+            # Perform for each tempo...
+            for i in range(len(c.TEMPOS)):
+                # Get number of frames per beat for the tempo
+                framesPerBeat = c.FRAMES_PER_BEAT[i]
+                # Isolate region of data relevant to the current tempo - the current 'condition'
+                conditionDistData = self.storedDistances[frameStartIndex : frameStartIndex + c.FRAMES_PER_TEMPO[i]]
+                conditionDistData = np.reshape(conditionDistData, (c.CLICKS_PER_TEMPO, framesPerBeat))
+                distancePerClick = np.sum(conditionDistData, axis = 1)
+                # Add 1 point for each spot distance is goal amount
+                metGoalDistance = distancePerClick[distancePerClick >= c.TRAVEL_PER_CLICK_GOAL]
+                distanceScore += len(metGoalDistance)
+                # Otherwise add sqrt(real/goal)
+                belowGoalDistance = distancePerClick[distancePerClick < c.TRAVEL_PER_CLICK_GOAL]
+                belowGoalDistance = belowGoalDistance / c.TRAVEL_PER_CLICK_GOAL
+                distanceScore += sum(np.sqrt(belowGoalDistance))
+                self.numClicks += len(distancePerClick)
+            # Find average
+            distanceScore = distanceScore / self.numClicks   
             
-            """
-            if (scaledRhythmFitness * balanceScore) >= 0.95:
-                calculatedFitness = (scaledRhythmFitness * balanceScore) + distanceScore
-            else:
-                calculatedFitness = scaledRhythmFitness * balanceScore
-            """
+            # !--- CALCULATE POINTS ---!
+            # Post-process steps to find fitnesses
+            frameStartIndex = 0
+            # Perform for each tempo...
+            for i in range(len(c.TEMPOS)):
+                # Get number of frames per beat for the tempo
+                framesPerBeat = c.FRAMES_PER_BEAT[i]
+                # Isolate region of full data relevant to the current tempo - the current 'condition'
+                conditionData = self.storedSteps[frameStartIndex : frameStartIndex + c.FRAMES_PER_TEMPO[i]]
+                conditionData = np.reshape(conditionData, (c.CLICKS_PER_TEMPO, framesPerBeat))
+                # Create an array containing a single period worth of cosine values
+                period = framesPerBeat
+                amplitude = framesPerBeat / 2
+                offset = framesPerBeat / 2
+                cosPointsArray = np.linspace(0, period, period + 1)
+                cosPointsArray = cosPointsArray[0: period] 
+                cosPointsArray = amplitude * np.cos(((2*np.pi)/period) * cosPointsArray) + offset
+                # Multiply each row in conditionData by cosPointsArray 
+                conditionData = np.multiply(conditionData, cosPointsArray)
+                # Flatten it back into one row
+                conditionData = conditionData.flatten()
+            
+                # Iterate through the arrays to find points values
+                remaining = c.FRAMES_PER_TEMPO[i]
+                startIndex = 0
+                regionOfInterest = conditionData[startIndex : math.ceil(period / 2)]
+                tempFitness = np.max(regionOfInterest)
+                # If more steps than one, decrease score
+                if tempFitness < np.sum(regionOfInterest):
+                    numExtraSteps = len(regionOfInterest[regionOfInterest > 0]) - 1
+                    self.fitness += tempFitness * (1 - (c.DOUBLE_STEP_PUNISHMENT * (numExtraSteps**2)))
+                else:
+                    self.fitness += tempFitness
+                startIndex = math.ceil(period / 2)
+                remaining -= (startIndex - 1)
+                self.maxFitness += (amplitude + offset)
+                while remaining > 0:
+                    # If not a full amount remain to be processed
+                    if remaining < period:
+                        # For each extra step, detract amount specified in constants
+                        regionOfInterest = conditionData[startIndex : startIndex + remaining]
+                        tempFitness = np.max(regionOfInterest)
+                        if tempFitness < np.sum(regionOfInterest):
+                            numExtraSteps = len(regionOfInterest[regionOfInterest > 0]) - 1
+                            self.fitness += tempFitness * (1 - (c.DOUBLE_STEP_PUNISHMENT * (numExtraSteps**2)))
+                        else:
+                            self.fitness += tempFitness  
+                    # If a normal number of steps remain to be processed        
+                    else:
+                        regionOfInterest = conditionData[startIndex : startIndex + period]
+                        tempFitness = np.max(regionOfInterest)
+                        self.maxFitness += (amplitude + offset)
+                        # If more steps than one, decrease score by double step punishment%
+                        if tempFitness < np.sum(regionOfInterest):
+                            numExtraSteps = len(regionOfInterest[regionOfInterest > 0]) - 1
+                            self.fitness += tempFitness * (1 - (c.DOUBLE_STEP_PUNISHMENT * (numExtraSteps**2)))
+                        else:
+                            self.fitness += tempFitness
+                    startIndex += period
+                    remaining -= period 
+            scaledRhythmFitness = (self.fitness / self.maxFitness)
 
-            calculatedFitness = scaledRhythmFitness * balanceScore * distanceScore
-            print(str(calculatedFitness) + "," + str(self.fitness2), file=sys.stderr)
+            self.fitness = scaledRhythmFitness * balanceScore * distanceScore
+
+            # calculatedFitness = scaledRhythmFitness * balanceScore * distanceScore
+            print(f"{self.fitness}, {scaledRhythmFitness}, {balanceScore}, {distanceScore}", file=sys.stderr)
         else:
             print(str(self.fitness) + "," + str(self.fitness2), file=sys.stderr)
 

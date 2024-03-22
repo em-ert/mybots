@@ -27,6 +27,15 @@ else:
         raise Exception("Pickled checkpoint file not found: " + pickleFile)
     else:
         afpo = pickleObject[0]
+        if c.NUMBER_OF_GENERATIONS > afpo.genSize:
+            print(f"Number of gens increased from {afpo.genSize} to {c.NUMBER_OF_GENERATIONS}")
+            afpo.fitnessData = np.append(afpo.fitnessData, np.zeros((c.NUMBER_OF_GENERATIONS - afpo.genSize, np.size(afpo.fitnessData, axis=1),  np.size(afpo.fitnessData, axis=2))), axis=0)
+            afpo.genSize = c.NUMBER_OF_GENERATIONS
+        elif c.NUMBER_OF_GENERATIONS < afpo.currentGeneration:
+            print(f"ERROR: Number of generations was modified in a manner that is not executable.")
+        elif c.NUMBER_OF_GENERATIONS < afpo.genSize:
+            print(f"Number of gens decreased from {afpo.genSize} to {c.NUMBER_OF_GENERATIONS}")
+            afpo.genSize = c.NUMBER_OF_GENERATIONS
         np.random.set_state(pickleObject[1])
         random.setstate(pickleObject[2])
         afpo.Evolve(int(checkpoint))

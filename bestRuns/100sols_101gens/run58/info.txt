@@ -1,0 +1,41 @@
+Time of run: 18:19 PM on 03/19/2024
+Random Seed: 0
+Additional Details: Bi-Objective with Balance, select best individual by knee
+
+-----REVIEW COMMAND-----
+python3 reSimulate.py GUI 58 True 2&>1
+
+-----OPTIMIZATION DETAILS-----
+Fit. Function Type: COS
+Optimize Age?: False
+2nd Objective: DUAL
+Travel Per Click Goal: DUAL
+Double Step Punishment: 0.5
+Num. Mutations: 1
+Num. Rand. Children: 1
+
+-----GENERAL DETAILS-----
+Morphology: Capsule Bot
+Pop. Size: 100
+Num. Gens: 101
+Num. Parallel Run Groups: 5
+Sim Frequency: 40.0
+Num. Random Solutions Graphed: 0
+
+-----RHYTHMIC DETAILS-----
+Tempos: [120, 80, 100]
+Frame Rate: 0.025
+Frames Per Beat: 0.025
+Clicks Per Tempo: 20
+Frames Per Tempo: [400, 600, 480]
+
+-----NETWORK DETAILS-----
+Sensor: 4
+Auditory: 1
+Hidden: 3
+Motor: 8
+
+-----BEST SOLUTION-----
+Soln. ID: 10067
+Fitness: 0.7510112563834438
+

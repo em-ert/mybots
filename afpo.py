@@ -2,6 +2,7 @@ import constants as c
 import copy
 import datetime
 from historian import HISTORIAN
+from kneed import KneeLocator
 import numpy as np
 import matplotlib.pyplot as plt
 import math
@@ -33,8 +34,13 @@ class AFPO:
         self.currentGeneration = currentGeneration
         self.population = population
         self.paretoFront = paretoFront
+        if (c.OPTIMIZE_AGE):
+            # OverallMultipliedFitness, age, rhythmn, balance, distance
+            self.numFitnessMetrics = 5
+        else:
+            self.numFitnessMetrics = 2    
         if fitnessData == None:
-            self.fitnessData = np.zeros(shape=(self.genSize, self.popSize, 2))
+            self.fitnessData = np.zeros(shape=(self.genSize, self.popSize, self.numFitnessMetrics))
 
         # Create initial population
         for i in range(self.popSize):
@@ -81,7 +87,7 @@ class AFPO:
         self.Save_Best_Brain(best, self.historian.path)
         self.Prep_Best_Brain(best)
         self.Save_Fitness_Data_For_Analysis(self.historian.path)
-        bestFitness = (np.amax(self.fitnessData[self.genSize-1, :, :], axis=0)[0])
+        bestFitness = best.fitness
         self.Preserve_Record(best.myID, bestFitness)
         self.Show_Best_Brain()
     
@@ -90,12 +96,17 @@ class AFPO:
             self.fitnessData[self.currentGeneration, index, 0] = self.population[solID].fitness
             if self.optimizeAge == True:
                 self.fitnessData[self.currentGeneration, index, 1] = self.population[solID].age
+                self.fitnessData[self.currentGeneration, index, 2] = self.population[solID].rhythmicity
+                self.fitnessData[self.currentGeneration, index, 3] = self.population[solID].balance
+                self.fitnessData[self.currentGeneration, index, 4] = self.population[solID].distance
             else:
                 self.fitnessData[self.currentGeneration, index, 1] = self.population[solID].fitness2
-
+        
+        self.Save_Fitness_Data_For_Analysis(self.historian.path)        
+        self.historian.Run_Analysis(fitness=False, steps=False, bar=False, waterfall=False, subFunctionFitness=True)
         # XXX: Eventually remove this after testing
         print("\n")
-        print(np.amax(self.fitnessData[self.currentGeneration, :, :], axis=0)[0])
+        # print(np.amax(self.fitnessData[self.currentGeneration, :, :], axis=0)[0])
 
     def Save_Checkpoint(self):
         filename = "checkpoints/{}gens.pickle".format(self.currentGeneration)
@@ -197,10 +208,9 @@ class AFPO:
         self.Update_Pareto_Front()
         # Validate pareto front size to prevent infinite loop
         if len(self.paretoFront) > self.popSize:
-            newLayer = np.zeros((self.genSize, len(self.paretoFront)-self.popSize , 2), float)
+            newLayer = np.zeros((self.genSize, len(self.paretoFront)-self.popSize, self.numFitnessMetrics), float)
             self.fitnessData = np.append(self.fitnessData, newLayer, axis=1)
             self.popSize = len(self.paretoFront)
-
 
         while len(self.population) > self.popSize:
             # Pick two random ints in range of pop.size
@@ -233,6 +243,14 @@ class AFPO:
                     break
             if iNonDominated:
                 self.paretoFront.append(i)
+        
+        print("Pareto front:") 
+        paretoOptimalPop = []
+        for individual in self.paretoFront: 
+            paretoOptimalPop.append(self.population[individual])
+        paretoOptimalPop = sorted(paretoOptimalPop, key=operator.attrgetter('fitness2'))
+        for individual in paretoOptimalPop:  
+            print(f"{individual.myID}\t| f1: {individual.fitness}, f2: {individual.fitness2}")         
             
 
     """
@@ -303,33 +321,58 @@ class AFPO:
                 spResult = stderr.decode()
                 resultsArray = spResult.split("\n")
                 fitnessArray = resultsArray[1].split(",")
+                # Collect relevant information from the subprocess
                 if (c.OPTIMIZE_AGE):
-                    fitnesses.append([spArray[0], fitnessArray[0], solutions[int(spArray[0])].age])
+                    fitnesses.append([spArray[0], fitnessArray[0], solutions[int(spArray[0])].age, fitnessArray[1], fitnessArray[2], fitnessArray[3]])
                 else:
                     fitnesses.append([spArray[0], fitnessArray[0], fitnessArray[1]])     
             # Empty the subprocess list for next time
             subprocesses = []            
             startIndex = endIndex     
-            
-        #TODO - Debug here and figure out what is up with the zero values in the fitnesses array           
+
+        # If there are still fitnesses to record (fitnesses list is not empty)...   
         if len(fitnesses) != 0:
             for solution in solutions:
                 currSolution = solutions[solution]
+                # Get fitness from the front of the list
                 fitnessData = fitnesses[0]
                 if currSolution.myID == fitnessData[0]:
                     currSolution.fitness = float(fitnessData[1])
                     currSolution.fitness2 = float(fitnessData[2])
-                    print(f"f1: {fitnessData[1]}, f2: {fitnessData[2]}")
+                    if c.OPTIMIZE_AGE:
+                        currSolution.rhythmicity = float(fitnessData[3])
+                        currSolution.balance = float(fitnessData[4])
+                        currSolution.distance = float(fitnessData[5])
+                    # print(f"f1: {fitnessData[1]}, f2: {fitnessData[2]}")
                     fitnesses.pop(0)
                     if len(fitnesses) == 0:
                         break
                 elif currSolution.myID > fitnessData[0]:
-                    print("ERROR: Fitness data cannot be collected (afpo.py, ~line 319)")   
+                    print("ERROR: Fitness data cannot be collected (afpo.py, ~line 319)")       
 
+    #REVIEW - Change this back if necessary!
     def Get_Best_Brain(self):
-        popList = list(self.population.values())
-        return sorted(popList, key=operator.attrgetter('fitness'), reverse=True)[0]
-    
+        if c.OPTIMIZE_AGE:
+            popList = list(self.population.values())
+            return sorted(popList, key=operator.attrgetter('fitness'), reverse=True)[0]
+        else:
+            paretoOptimalPop = []
+            x = []
+            y = []
+            for individual in self.paretoFront: 
+                paretoOptimalPop.append(self.population[individual])
+            sortedParetoOptimalPop = sorted(paretoOptimalPop, key=operator.attrgetter('fitness2'))
+            for individual in sortedParetoOptimalPop:
+                x.append(individual.fitness2)
+                y.append(individual.fitness)
+            kneedle = KneeLocator(x, y, S=0.0, curve="concave", direction="decreasing")
+            plt.figure(1, clear=True)
+            kneedle.plot_knee()
+            for individual in sortedParetoOptimalPop:
+                if kneedle.knee_y == individual.fitness:
+                    return individual
+            return sorted(sortedParetoOptimalPop, key=operator.attrgetter('fitness'), reverse=True)[0] 
+
 
     def Save_Best_Brain(self, bestSolution, path):
         bestSolution.Create_Brain()
@@ -353,7 +396,7 @@ class AFPO:
     def Save_All_Pareto_Front_Brains(self, path):
         for individual in self.paretoFront: 
             best = self.population[individual]
-            best.Create_Brain()       
+            best.Create_Brain()     
             fullPath =  path + "brain" + str(best.myID) + ".nndf"
             os.system("mv brain" + str(best.myID) + ".nndf " + fullPath)
             print("Data saved to " + fullPath)

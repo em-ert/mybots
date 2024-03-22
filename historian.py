@@ -116,5 +116,5 @@ class HISTORIAN:
         
     
     # Generates graphs for the run and any additional analysis
-    def Run_Analysis(self, fitness=True, steps=True, bar=False, waterfall=True):
-        ANALYZE.Run_Analysis(self.path, fitness, steps, bar, waterfall)
+    def Run_Analysis(self, fitness=True, steps=True, bar=False, waterfall=True, subFunctionFitness=True):
+        ANALYZE.Run_Analysis(self.path, fitness, steps, bar, waterfall, subFunctionFitness)

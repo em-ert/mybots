@@ -13,39 +13,40 @@ class ANALYZE:
         pass
 
     @staticmethod  
-    def Run_Analysis(path, fitness=True, steps=True, bar=True, waterfall=True):
+    def Run_Analysis(path, fitness=True, steps=True, bar=True, waterfall=True, subFunctionFitness=True):
         now = datetime.datetime.now()
 
-        while not os.path.exists(path + "data/BackLower_sensor_values.npy"):
-            time.sleep(c.SLEEP_TIME)
-        backLegSensor = np.load(path + "data/BackLower_sensor_values.npy")
-        frontLegSensor = np.load(path + "data/FrontLower_sensor_values.npy")
-        leftLegSensor = np.load(path + "data/LeftLower_sensor_values.npy")
-        rightLegSensor = np.load(path + "data/RightLower_sensor_values.npy")
-        metronomeSensor = np.load(path + "data/metronome_sensor_values.npy")
+        if steps or bar:
+            while not os.path.exists(path + "data/BackLower_sensor_values.npy"):
+                time.sleep(c.SLEEP_TIME)
+            backLegSensor = np.load(path + "data/BackLower_sensor_values.npy")
+            frontLegSensor = np.load(path + "data/FrontLower_sensor_values.npy")
+            leftLegSensor = np.load(path + "data/LeftLower_sensor_values.npy")
+            rightLegSensor = np.load(path + "data/RightLower_sensor_values.npy")
+            metronomeSensor = np.load(path + "data/metronome_sensor_values.npy")
 
-        backLegTouch = []
-        frontLegTouch = []
-        rightLegTouch = []
-        leftLegTouch = []
-        metronomeClick = []
-        for i in range(c.SIM_STEPS * len(c.TEMPOS)):
-            if backLegSensor[i] == 1 and backLegSensor[i-1] == -1:
-                backLegTouch.append(i+1)
-            if frontLegSensor[i] == 1 and frontLegSensor[i-1] == -1:
-                frontLegTouch.append(i+1)
-            if leftLegSensor[i] == 1 and leftLegSensor[i-1] == -1:
-                leftLegTouch.append(i+1)
-            if rightLegSensor[i] == 1 and rightLegSensor[i-1] == -1:
-                rightLegTouch.append(i+1)
-            if metronomeSensor[i] == 1:
-                metronomeClick.append(i+1)
+            backLegTouch = []
+            frontLegTouch = []
+            rightLegTouch = []
+            leftLegTouch = []
+            metronomeClick = []
+            for i in range(c.SIM_STEPS * len(c.TEMPOS)):
+                if backLegSensor[i] == 1 and backLegSensor[i-1] == -1:
+                    backLegTouch.append(i+1)
+                if frontLegSensor[i] == 1 and frontLegSensor[i-1] == -1:
+                    frontLegTouch.append(i+1)
+                if leftLegSensor[i] == 1 and leftLegSensor[i-1] == -1:
+                    leftLegTouch.append(i+1)
+                if rightLegSensor[i] == 1 and rightLegSensor[i-1] == -1:
+                    rightLegTouch.append(i+1)
+                if metronomeSensor[i] == 1:
+                    metronomeClick.append(i+1)
 
-        np.trim_zeros(backLegTouch)
-        np.trim_zeros(frontLegTouch)
-        np.trim_zeros(leftLegTouch)
-        np.trim_zeros(rightLegTouch)
-        np.trim_zeros(metronomeClick)
+            np.trim_zeros(backLegTouch)
+            np.trim_zeros(frontLegTouch)
+            np.trim_zeros(leftLegTouch)
+            np.trim_zeros(rightLegTouch)
+            np.trim_zeros(metronomeClick)
         
 
         if fitness == True:
@@ -83,6 +84,46 @@ class ANALYZE:
             ax[1].set_title("Distribution of Random Bots")
 
             plt.savefig(path + "plots/Fitness.png")
+
+        #TODO: Add lines for rhythmicity, balance, and distance IN THAT ORDER, specify only for if c.OPTIMIZE_AGE is true -- avoid indexing errors
+        if subFunctionFitness == True and c.OPTIMIZE_AGE:
+            while not os.path.exists(path + "data/age_fitness_values.npy"):
+                time.sleep(c.SLEEP_TIME)
+            ageFitnessArray = np.load(path + "data/age_fitness_values.npy")
+            
+            # Create new empty list for best fitnesses
+            maxAllFitnesses = np.zeros((c.NUMBER_OF_GENERATIONS, 4))
+
+            for i in range(c.NUMBER_OF_GENERATIONS):
+                # Age can't be 0, so if it is, we've gotten to a gen that has not been run yet
+                gen = ageFitnessArray[i, :, :]
+                if gen[0, 1] == 0:
+                    break
+                bestIndex = np.argmax(gen, axis=0)[0]
+                maxAllFitnesses[i, 0] = gen[bestIndex, 0]
+                maxAllFitnesses[i, 1] = gen[bestIndex, 2]
+                maxAllFitnesses[i, 2] = gen[bestIndex, 3]
+                maxAllFitnesses[i, 3] = gen[bestIndex, 4]
+                gensComplete = i
+
+                # print(gen)
+            # print(maxFitnesses)
+            
+            fig, ax = plt.subplots(1, figsize = (10,5))
+            x = np.arange(gensComplete)
+            ax.xaxis.set_major_locator(ticker.MultipleLocator(base=10))
+            ax.plot(x, maxAllFitnesses[:gensComplete, 0], color="black", label="r * b * d")
+            ax.plot(x, maxAllFitnesses[:gensComplete, 1], label="rhythmicity [r]", linestyle="dashed")
+            ax.plot(x, maxAllFitnesses[:gensComplete, 2], label="balance [b]", linestyle="dashed")
+            ax.plot(x, maxAllFitnesses[:gensComplete, 3], label="distance [d]", linestyle="dashed")
+            ax.set_xlim(0, c.NUMBER_OF_GENERATIONS-1)
+            ax.set_ylim(0, 1)
+            ax.set_ylabel("Fitness")
+            ax.set_xlabel("Generation")
+            ax.set_title("Evolution over generations")
+            ax.legend()
+
+            plt.savefig(path + "plots/subFunctionFitness.png")    
 
         if steps == True:
             fig, ax1 = plt.subplots(figsize=(15, 4))

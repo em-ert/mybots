@@ -48,6 +48,9 @@ class SOLUTION:
         self.joints = []
         self.fitness = 0
         self.fitness2 = 0
+        self.rhythmicity = 0
+        self.balance = 0
+        self.distance = 0
 
     @staticmethod
     def Create_World():
